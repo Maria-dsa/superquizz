@@ -10,12 +10,12 @@ class QuestionManager extends AbstractManager
 
     public function selectAll(string $orderBy = '', string $direction = 'ASC'): array
     {
-        $query = "SELECT q.content AS question, a.content AS answer, q.theme, a.is_correct FROM question AS q INNER JOIN answer AS a ON q.id=a.question_id";
+        $query = "SELECT q.id, q.content AS question, a.content AS answer, q.theme, a.is_correct FROM question AS q INNER JOIN answer AS a ON q.id=a.question_id";
         if ($orderBy) {
             $query .= ' ORDER BY ' . $orderBy . ' ' . $direction;
         }
 
-        return $this->pdo->query($query)->fetchAll();
+        return $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function selectOneById(int $id): array|false

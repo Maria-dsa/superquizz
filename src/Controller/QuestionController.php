@@ -12,9 +12,24 @@ class QuestionController extends AbstractController
     public function index(): string
     {
         $questionManager = new QuestionManager();
-        $questions = $questionManager->selectAll();
+        $requestQuestions = $questionManager->selectAll();
 
-        return $this->twig->render('Admin/show.html.twig', ['questions' => $questions]);
+        $result = [];
+        foreach ($requestQuestions as $requestLine) {
+            extract($requestLine);
+            if (!array_key_exists($question, $result)) {
+                $result[$question]['id']=$id;
+                $result[$question]['theme']=$theme;
+                $result[$question]['answer'][$answer]=$is_correct;
+            } else {
+                $result[$question]['answer'][$answer]=$is_correct;
+            }
+
+        }
+    
+        //var_dump($result);
+
+        return $this->twig->render('Admin/show.html.twig', ['questions' => $result]);
     }
 
     /**
@@ -22,7 +37,7 @@ class QuestionController extends AbstractController
      */
     public function show(int $id): string
     {
-        $itemManager = new ItemManager();
+        $itemManager = new QuestionManager();
         $item = $itemManager->selectOneById($id);
 
         return $this->twig->render('Item/show.html.twig', ['item' => $item]);
@@ -33,7 +48,7 @@ class QuestionController extends AbstractController
      */
     public function edit(int $id): ?string
     {
-        $itemManager = new ItemManager();
+        $itemManager = new QuestionManager();
         $item = $itemManager->selectOneById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -68,7 +83,7 @@ class QuestionController extends AbstractController
             // TODO validations (length, format...)
 
             // if validation is ok, insert and redirection
-            $itemManager = new ItemManager();
+            $itemManager = new QuestionManager();
             $id = $itemManager->insert($item);
 
             header('Location:/items/show?id=' . $id);
@@ -85,7 +100,7 @@ class QuestionController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
-            $itemManager = new ItemManager();
+            $itemManager = new QuestionManager();
             $itemManager->delete((int)$id);
 
             header('Location:/items');

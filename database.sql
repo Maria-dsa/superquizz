@@ -16,6 +16,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 
+DROP DATABASE IF EXISTS superquizz;
+CREATE DATABASE superquizz;
+USE superquizz;
+
 --
 -- Base de données :  `super-quizz`
 --
@@ -105,21 +109,22 @@ REFERENCES answer(id);
 --
 
 INSERT INTO `question` (`content`, `theme`, `difficulty-level`) VALUES
-('question 1', 'test', 1),
-('question 2', 'autre', 2);
+('Quelle est la couleur dune tomate mure ?','test',1),
+('Quelle est le meilleur langage de programmation ?','autre',2);
 
 --
 -- Contenu de la table `answer`
 --
 
 INSERT INTO `answer` (`content`, `is_correct`, `question_id`) VALUES
-('reponse 1', true, 1),
-('reponse 2', false, 1),
-('reponse 3', false, 1),
-('reponse 4', false, 1),
-('reponse 5', false, 2),
-('reponse 6', true, 2)
-;
+('bleu',0,1),
+('rouge',1,1),
+('vert',0,1),
+('jaune',0,1),
+('PHP',1,2),
+('JavaScript',0,2),
+('Java',0,2),
+('C#',0,2);
 
 --
 -- contenu de la table `user`
