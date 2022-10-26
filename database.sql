@@ -87,12 +87,12 @@ CREATE TABLE `game_has_question` (
 ALTER TABLE `game_has_question`
 ADD CONSTRAINT fk_game_has_question_game
 FOREIGN KEY (game_id)
-REFERENCES game(id); 
+REFERENCES game(id);
 
 ALTER TABLE `game_has_question`
 ADD CONSTRAINT fk_game_has_question_question
 FOREIGN KEY (question_id)
-REFERENCES question(id); 
+REFERENCES question(id);
 
 ALTER TABLE `game_has_question`
 ADD CONSTRAINT fk_game_has_question_answer
@@ -117,8 +117,8 @@ INSERT INTO `answer` (`content`, `is_correct`, `question_id`) VALUES
 ('reponse 2', false, 1),
 ('reponse 3', false, 1),
 ('reponse 4', false, 1),
-('reponse 5', false, 1),
-('reponse 6', true, 1)
+('reponse 5', false, 2),
+('reponse 6', true, 2)
 ;
 
 --
