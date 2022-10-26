@@ -1,6 +1,34 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheet %}
+	<link rel="stylesheet" href="/assets/css/_home.css">
+	<link rel="stylesheet" href="/assets/css/_navbar.css">
+{% endblock %}
+
 {% block content %}
-    <h1>Hello Wilder !</h1>
-    <p>Find a complete CRUD example on <a href="/items">/items</a> page.</p>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-3 col-md-4 col-sm-4 col-8 mx-auto mt-5 d-block">
+				<img src="../assets/images/home-quiz.png" class="img-fluid" alt="Mix Quiz">
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col-lg-5 col-md-4 col-sm-4 col-8 mx-auto mt-4 d-block bg-secondary shadow p-3 mb-5 rounded">
+				<h1 class="text-white text-center font-weight-bold">À toi de jouer !</h1>
+				<form class="form" method="post" action="">
+					<div>
+						<input type="text" class="form-control" placeholder="Choisis ton pseudo...">
+					</div>
+
+					<div class="text-center">
+						<a href="#" class="btn btn-neutral btn-round btn-sm mt-2">C'est parti !</a>
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+	</div>
 {% endblock %}

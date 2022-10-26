@@ -1,0 +1,25 @@
+.form-control {
+    background-color: #eef1f6;
+    border: 1px solid #eef1f6;
+    border-radius: 30px;
+    color: #171c20;
+    line-height: normal;
+    font-size: 0.8571em;
+}
+
+.btn-neutral {
+    background-color: #eef1f6;
+    color: #f96332;
+}
+
+.btn-neutral:hover {
+    background-color: #eef1f6;
+    box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.17);
+    color: #f96332;
+}
+
+.btn-round {
+    border-width: 1px;
+    border-radius: 30px;
+    padding: 11px 23px;
+}
