@@ -15,20 +15,21 @@ class QuestionController extends AbstractController
         $requestQuestions = $questionManager->selectAll();
 
         $result = [];
+
         foreach ($requestQuestions as $requestLine) {
-            extract($requestLine);
+            $id = $requestLine['id'];
+            $question = $requestLine['question'];
+            $answer = $requestLine['answer'];
+            $theme = $requestLine['theme'];
+            $value = $requestLine['is_correct'];
             if (!array_key_exists($question, $result)) {
-                $result[$question]['id']=$id;
-                $result[$question]['theme']=$theme;
-                $result[$question]['answer'][$answer]=$is_correct;
+                $result[$question]['id'] = $id;
+                $result[$question]['theme'] = $theme;
+                $result[$question]['answer'][$answer] = $value;
             } else {
-                $result[$question]['answer'][$answer]=$is_correct;
+                $result[$question]['answer'][$answer] = $value;
             }
-
         }
-    
-        //var_dump($result);
-
         return $this->twig->render('Admin/show.html.twig', ['questions' => $result]);
     }
 
