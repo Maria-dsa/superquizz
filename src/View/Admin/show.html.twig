@@ -4,19 +4,22 @@
 
 <h1>Voici la liste des questions :</h1>
 
-{% for question, content in questions %}
-        <h2>Question N° {{ content.id }} : {{ question }}</h2>
-        <p>Thème : {{content.theme}}</p>
+{% for question in questions %}
+        <h2>Question N° {{ question.id }} : {{ question.content }}</h2>
+        <p>Thème : {{question.theme}}</p>
         <ul>
-            {% for ans, value in content.answer %}
+            {% for ans, value in question.answers %}
             <li>{{ ans }} : {{ value ? 'bonne' : 'fausse' }}</li>
             {% endfor %}
         </ul>
         <div>
-            <a href="/update?id={{ content.id }}">update</a>
+            <button><a href="/items/edit?id={{ question.id }}">Edit</a></button>
         </div>
         <div>
-            <a href="/delete?id={{ content.id }}">delete</a>
+            <form action="/admin/delete" method="POST">
+                <input type="hidden" name="id" value="{{ question.id }}">
+                <button>Delete</button>
+            </form>
         </div>
 {% endfor %}
 

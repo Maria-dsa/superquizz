@@ -6,69 +6,20 @@ use App\Model\QuestionManager;
 
 class QuestionController extends AbstractController
 {
+    private QuestionManager $questionManager;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->questionManager = new QuestionManager();
+    }
     /**
      * List items
      */
     public function index(): string
     {
-        $questionManager = new QuestionManager();
-        $requestQuestions = $questionManager->selectAll();
-
-        $result = [];
-        foreach ($requestQuestions as $requestLine) {
-            $id = $requestLine['id'];
-            $question = $requestLine['question'];
-            $answer = $requestLine['answer'];
-            $theme = $requestLine['theme'];
-            $value = $requestLine['is_correct'];
-            if (!array_key_exists($question, $result)) {
-                $result[$question]['id'] = $id;
-                $result[$question]['theme'] = $theme;
-                $result[$question]['answer'][$answer] = $value;
-            } else {
-                $result[$question]['answer'][$answer] = $value;
-            }
-        }
-        return $this->twig->render('Admin/show.html.twig', ['questions' => $result]);
-    }
-
-    /**
-     * Show informations for a specific item
-     */
-    public function show(int $id): string
-    {
-        $itemManager = new QuestionManager();
-        $item = $itemManager->selectOneById($id);
-
-        return $this->twig->render('Item/show.html.twig', ['item' => $item]);
-    }
-
-    /**
-     * Edit a specific item
-     */
-    public function edit(int $id): ?string
-    {
-        $itemManager = new QuestionManager();
-        $item = $itemManager->selectOneById($id);
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // clean $_POST data
-            $item = array_map('trim', $_POST);
-
-            // TODO validations (length, format...)
-
-            // if validation is ok, update and redirection
-            $itemManager->update($item);
-
-            header('Location: /items/show?id=' . $id);
-
-            // we are redirecting so we don't want any content rendered
-            return null;
-        }
-
-        return $this->twig->render('Item/edit.html.twig', [
-            'item' => $item,
-        ]);
+        $questions = $this->questionManager->selectAllWithAnswer();
+        return $this->twig->render('Admin/show.html.twig', ['questions' => $questions]);
     }
 
     /**
@@ -76,6 +27,7 @@ class QuestionController extends AbstractController
      */
     public function add(): ?string
     {
+        $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $item = array_map('trim', $_POST);
@@ -90,7 +42,7 @@ class QuestionController extends AbstractController
             return null;
         }
 
-        return $this->twig->render('Item/add.html.twig');
+        return $this->twig->render('Admin/add.html.twig', ['errors' => $errors]);
     }
 
     /**
@@ -100,10 +52,9 @@ class QuestionController extends AbstractController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
-            $itemManager = new QuestionManager();
-            $itemManager->delete((int)$id);
-
-            header('Location:/items');
+            $id = htmlentities($id);
+            $this->questionManager->delete((int)$id);
+            header('Location:/admin/show');
         }
     }
 }

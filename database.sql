@@ -32,7 +32,7 @@ CREATE TABLE `question` (
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `content` TEXT NOT NULL,
   `theme` VARCHAR(255),
-  `difficulty-level` INT
+  `difficulty_level` INT
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -48,6 +48,7 @@ CREATE TABLE `answer` (
   CONSTRAINT `fk_answer_question`
     FOREIGN KEY (question_id)
     REFERENCES `question`(`id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
