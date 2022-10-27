@@ -15,7 +15,6 @@ class QuestionController extends AbstractController
         $requestQuestions = $questionManager->selectAll();
 
         $result = [];
-
         foreach ($requestQuestions as $requestLine) {
             $id = $requestLine['id'];
             $question = $requestLine['question'];
