@@ -1,9 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
-@import url('fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gluten:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-    --primary-color: #01557a;
-    --secondary-color: #f08e1f;
-    --third-color: #eef1f6;
-    --main-font: "Open Sans", "sans-serif";
+    --bs-primary-rgb: 1, 85, 122;
+    --bs-primary: rgb(var(--bs-primary-rgb));
+    /*bleu*/
+    --bs-secondary-rgb: 249, 99, 50;
+    --bs-secondary: rgb(var(--bs-primary-rgb));
+    /*orange*/
+    --bs-white-rgb: 238, 241, 246;
+    --bs-white: rgb(var(--bs-white-rgb));
+    /*blanc*/
+    --bs-dark-rgb: 23, 28, 32;
+    --bs-dark: rgb(var(--bs-dark-rgb));
+    /*anthracite*/
+
+    --bs-font-sans-serif: Open Sans, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-heading-font-sans-serif: Gluten, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
 }
