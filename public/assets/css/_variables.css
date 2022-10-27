@@ -6,7 +6,7 @@
     --bs-primary: rgb(var(--bs-primary-rgb));
     /*bleu*/
     --bs-secondary-rgb: 249, 99, 50;
-    --bs-secondary: rgb(var(--bs-primary-rgb));
+    --bs-secondary: rgb(var(--bs-secondary-rgb));
     /*orange*/
     --bs-white-rgb: 238, 241, 246;
     --bs-white: rgb(var(--bs-white-rgb));
