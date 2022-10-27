@@ -10,54 +10,137 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de données :  `simple-mvc`
---
 
+DROP DATABASE IF EXISTS superquizz;
+CREATE DATABASE superquizz;
+USE superquizz;
+
+--
+-- Base de données :  `super-quizz`
+--
 -- --------------------------------------------------------
 
 --
--- Structure de la table `item`
+-- Structure de la table `question`
+--
+CREATE TABLE `question` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `content` TEXT NOT NULL,
+  `theme` VARCHAR(255),
+  `difficulty_level` INT
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Structure de la table `answer`
 --
 
-CREATE TABLE `item` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `title` varchar(255) NOT NULL
+CREATE TABLE `answer` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `content` TEXT NOT NULL,
+  `is_correct` BOOLEAN NOT NULL,
+  `question_id` INT,
+  CONSTRAINT `fk_answer_question`
+    FOREIGN KEY (question_id)
+    REFERENCES `question`(`id`)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Contenu de la table `item`
+-- Structure de la table `user`
 --
 
-INSERT INTO `item` (`id`, `title`) VALUES
-(1, 'Stuff'),
-(2, 'Doodads');
+CREATE TABLE `user` (
+  `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `nickname` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Index pour les tables exportées
+-- Structure de la table `game`
 --
 
---
--- Index pour la table `item`
---
-ALTER TABLE `item`
-  ADD PRIMARY KEY (`id`);
+CREATE TABLE `game` (
+  `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `type` INT NULL,
+  `created_at` DATETIME NOT NULL,
+  `ended_at` DATETIME NOT NULL,
+  `user_id` INT NOT NULL,
+  CONSTRAINT game_user
+    FOREIGN KEY (user_id)
+    REFERENCES user(id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 --
--- AUTO_INCREMENT pour les tables exportées
+-- Structure de la table `game_has_question`
 --
 
+CREATE TABLE `game_has_question` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+  `game_id` INT NOT NULL,
+  `question_id` INT NOT NULL,
+  `answer_id` INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+ALTER TABLE `game_has_question`
+ADD CONSTRAINT fk_game_has_question_game
+FOREIGN KEY (game_id)
+REFERENCES game(id);
+
+ALTER TABLE `game_has_question`
+ADD CONSTRAINT fk_game_has_question_question
+FOREIGN KEY (question_id)
+REFERENCES question(id);
+
+ALTER TABLE `game_has_question`
+ADD CONSTRAINT fk_game_has_question_answer
+FOREIGN KEY (answer_id)
+REFERENCES answer(id);
+
+
 --
--- AUTO_INCREMENT pour la table `item`
+-- Contenu de la table `question`
 --
-ALTER TABLE `item`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+INSERT INTO `question` (`content`, `theme`, `difficulty-level`) VALUES
+('Quelle est la couleur dune tomate mure ?','test',1),
+('Quelle est le meilleur langage de programmation ?','autre',2);
+
+--
+-- Contenu de la table `answer`
+--
+
+INSERT INTO `answer` (`content`, `is_correct`, `question_id`) VALUES
+('bleu',0,1),
+('rouge',1,1),
+('vert',0,1),
+('jaune',0,1),
+('PHP',1,2),
+('JavaScript',0,2),
+('Java',0,2),
+('C#',0,2);
+
+--
+-- contenu de la table `user`
+--
+INSERT INTO `user` (`nickname`, `password`) VALUES
+('florent', 'florent'),
+('nicolas', 'nicolas'),
+('maria', 'maria'),
+('magali', 'magali'),
+('JF', 'JF');
+
+--
+-- Contenu de la table `game`
+--
+
+INSERT INTO `game` (`type`, `created_at`, `ended_at`, `user_id`) VALUES
+(1, '2022-10-25 10:10:00', '2022-10-25 10:13:25', 1),
+(2, '2022-10-26 10:10:00', '2022-10-26 10:11:00', 2);
