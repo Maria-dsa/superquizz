@@ -26,15 +26,19 @@ class QuestionManager extends AbstractManager
 
 
     /* TODO */
-    public function selectOneById(int $id): array|false
+    public function selectOneWithAnswer(int $id): array|false
     {
-        // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM ' . self::TABLE . ' 
-            INNER JOIN answer ON question.id=answer.question_id' . WHERE question.id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
-        $statement->execute();
+        $answerManager = new AnswerManager();
+        $question = $this->selectOneById($id);
 
-        return $statement->fetch();
+        if (!isset($question['id']) || empty($question['id'])) {
+            return $question;
+        }
+        $answers = $answerManager->selectAllByQuestionsId($question['id']);
+        foreach ($answers as $answer) {
+            $question['answers'][$answer['answer']] = $answer['isTrue'];
+        }
+        return $question;
     }
 
     /* TODO */
@@ -56,7 +60,7 @@ class QuestionManager extends AbstractManager
     }
 
     /**
-     * Delete question form an ID : ok !
+     * Delete question from an ID : ok !
     **/
     public function delete(int $id): void
     {
@@ -67,7 +71,7 @@ class QuestionManager extends AbstractManager
     }
 
     /**
-     * Delete question form an ID : ok !
+     * Inset question in BDD ok !
     **/
     public function insert(array $questions): int
     {

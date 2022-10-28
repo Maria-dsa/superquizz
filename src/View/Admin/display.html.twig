@@ -1,0 +1,27 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block content %}
+
+<h1>Voici la liste des questions :</h1>
+
+        {{ dump(question) }}
+
+
+        <h2>Question N° {{ question.id }} : {{ question.content }}</h2>
+        <p>Thème : {{question.theme}}</p>
+        <ul>
+            {% for ans, value in question.answers %}
+            <li>{{ ans }} : {{ value ? 'bonne' : 'fausse' }}</li>
+            {% endfor %}
+        </ul>
+        <div>
+            <button><a href="/items/edit?id={{ question.id }}">Edit</a></button>
+        </div>
+        <div>
+            <form action="/admin/delete" method="POST">
+                <input type="hidden" name="id" value="{{ question.id }}">
+                <button>Delete</button>
+            </form>
+        </div>
+
+{% endblock %}

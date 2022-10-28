@@ -26,6 +26,29 @@ class QuestionController extends AbstractController
     }
 
     /**
+     * Show informations for a specific question
+    **/
+    public function display(int $choosenId): string
+    {
+        $id = filter_var($choosenId, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
+        if (!$id) {
+            header("Location: /");
+            //exit("Wrong input parameter");
+        }
+        $question = $this->questionManager->selectOneWithAnswer($id);
+
+        if (!isset($question['content']) || empty($question['content'])) {
+            header('Location: /');
+            //exit("Question not found");
+        }
+
+
+
+
+        return $this->twig->render('Admin/display.html.twig', ['question' => $question]);
+    }
+
+    /**
      * Add a new item
      */
     public function add(): ?string
