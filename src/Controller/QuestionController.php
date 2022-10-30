@@ -27,25 +27,28 @@ class QuestionController extends AbstractController
 
     public function update()
     {
-        $test = 's';
         $id = $_GET["id"];
         $questionInfo = $this->questionManager->selectOneWithAnswer($id);
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
-            $item = array_map('trim', $_POST);
+            $questionPost = array_map('trim', $_POST);
 
             // TODO validations (length, format...)
 
+            $errors = $this->validate($questionPost);
+
             // if validation is ok, insert and redirection
-            $test = $this->questionManager->update($item, $questionInfo);
-            // header('Location:/admin/update?id=' . $id);
-            // return null;
+            if (empty($errors)) {
+                $this->questionManager->update($questionPost, $questionInfo);
+                header('Location:/admin/update?id=' . $id);
+                return null;
+            }
         }
 
         return $this->twig->render(
             'Admin/update.html.twig',
-            ['questionsInfos' => $questionInfo, 'errors' => $errors, 'id' => $id, 'test' => $test]
+            ['questionsInfos' => $questionInfo, 'errors' => $errors, 'id' => $id,]
         );
     }
     /**
