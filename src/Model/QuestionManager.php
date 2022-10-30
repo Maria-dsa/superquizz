@@ -10,7 +10,7 @@ class QuestionManager extends AbstractManager
 
     /**
      * SELECT all question & associates answers : ok !
-    **/
+     **/
     public function selectAllWithAnswer(string $orderBy = '', string $direction = 'ASC'): array
     {
         $answerManager = new AnswerManager();
@@ -35,33 +35,35 @@ class QuestionManager extends AbstractManager
             return $question;
         }
         $answers = $answerManager->selectAllByQuestionsId($question['id']);
+
+        $index = 1;
         foreach ($answers as $answer) {
-            $question['answers'][$answer['answer']] = $answer['isTrue'];
+            $question['answers']['answer' . $index] = $answer;
+            $index++;
         }
         return $question;
     }
 
     /* TODO */
-    public function update(array $questions)
+    public function update(array $questionsPost, $questions)
     {
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `content` = :content WHERE id=:id");
-        $statement->bindValue(':id', $questions['id'], PDO::PARAM_INT);
-        $statement->bindValue(':content', $questions['content'], PDO::PARAM_STR);
+        $answerManager = new AnswerManager();
+
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE .
+            " SET `content` = :question, `theme` = :theme, difficulty_level = :level WHERE id=:id");
+        $statement->bindValue(':id', $questionsPost['id'], PDO::PARAM_INT);
+        $statement->bindValue(':question', $questionsPost['question'], PDO::PARAM_STR);
+        $statement->bindValue(':theme', $questionsPost['theme'], PDO::PARAM_STR);
+        $statement->bindValue(':level', $questionsPost['level'], PDO::PARAM_STR);
 
         $statement->execute();
 
-        $temp = (int)$this->pdo->lastInsertId();
-
-        $statement = $this->pdo->prepare("UPDATE answer SET `content` = :content WHERE id=:id");
-        $statement->bindValue(':id', $temp, PDO::PARAM_INT);
-        $statement->bindValue(':content', $questions['goodAnswer'], PDO::PARAM_STR);
-
-        return;
+        return $answerManager->update($questionsPost, $questions);
     }
 
     /**
      * Delete question from an ID : ok !
-    **/
+     **/
     public function delete(int $id): void
     {
         // prepared request
@@ -72,7 +74,7 @@ class QuestionManager extends AbstractManager
 
     /**
      * Inset question in BDD ok !
-    **/
+     **/
     public function insert(array $questions): int
     {
         $statement = $this->pdo->prepare('INSERT INTO ' . self::TABLE .

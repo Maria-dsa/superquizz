@@ -25,9 +25,32 @@ class QuestionController extends AbstractController
         return $this->twig->render('Admin/show.html.twig', ['questions' => $questions]);
     }
 
+    public function update()
+    {
+        $test = 's';
+        $id = $_GET["id"];
+        $questionInfo = $this->questionManager->selectOneWithAnswer($id);
+        $errors = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $item = array_map('trim', $_POST);
+
+            // TODO validations (length, format...)
+
+            // if validation is ok, insert and redirection
+            $test = $this->questionManager->update($item, $questionInfo);
+            // header('Location:/admin/update?id=' . $id);
+            // return null;
+        }
+
+        return $this->twig->render(
+            'Admin/update.html.twig',
+            ['questionsInfos' => $questionInfo, 'errors' => $errors, 'id' => $id, 'test' => $test]
+        );
+    }
     /**
      * Show informations for a specific question
-    **/
+     **/
     public function display(int $choosenId): string
     {
         $id = filter_var($choosenId, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
@@ -73,8 +96,10 @@ class QuestionController extends AbstractController
                 return null;
             }
 
-            return $this->twig->render('Admin/add.html.twig', ['questionsInfos' => $questionInfos,
-                                                                'errors' => $errors]);
+            return $this->twig->render('Admin/add.html.twig', [
+                'questionsInfos' => $questionInfos,
+                'errors' => $errors
+            ]);
         }
 
         return $this->twig->render('Admin/add.html.twig', ['errors' => $errors]);
