@@ -23,7 +23,7 @@ class AnswerManager extends AbstractManager
     }
 
     /**
-     *  NO USE YET Delete row form an ID
+     *  UPDATE the answers associated with a question : ok
      **/
     public function update(array $questionsPost, $questions)
     {

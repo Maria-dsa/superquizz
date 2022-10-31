@@ -25,7 +25,7 @@ class QuestionManager extends AbstractManager
     }
 
 
-    /* TODO */
+    /* SELECT all answwer associate with a question, used with update : ok */
     public function selectOneWithAnswerForUpdate(int $id): array|false
     {
         $answerManager = new AnswerManager();
@@ -59,7 +59,7 @@ class QuestionManager extends AbstractManager
         return $question;
     }
 
-    /* TODO */
+    /* UPDATE all question and answer associated : ok */
     public function update(array $questionsPost, $questions)
     {
         $answerManager = new AnswerManager();
