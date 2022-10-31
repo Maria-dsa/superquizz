@@ -1,4 +1,5 @@
 grumphp:
+    
     tasks:
         phpcs:
             standard: ./phpcs.xml
@@ -10,3 +11,6 @@ grumphp:
                 - 'src'
             ruleset:
                 - 'phpmd.xml'
+    fixer:
+        enabled: true
+        fix_by_default: true

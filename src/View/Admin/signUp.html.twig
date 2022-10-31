@@ -1,0 +1,25 @@
+{% extends 'register_layout.html.twig' %}
+
+
+
+{% block content %}
+
+<h2>Enregistrement</h2>
+<h3>Entrer le mot de passe de votre choix</h3>
+<form action="" method="POST">
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="username" name="username" placeholder="name@example.com">
+        <label for="username">Username</label>
+    </div>
+    <div>{{ errors.username }}</div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+    </div>
+    <div>{{ errors.password }}</div>
+    <div class="{{ display }}">Inscription réussie, connectez vous <a href="">ici</a></div>
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+{% endblock %}
+
