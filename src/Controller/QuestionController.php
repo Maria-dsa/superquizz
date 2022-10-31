@@ -28,7 +28,7 @@ class QuestionController extends AbstractController
     public function update()
     {
         $id = $_GET["id"];
-        $questionInfo = $this->questionManager->selectOneWithAnswer($id);
+        $questionInfo = $this->questionManager->selectOneWithAnswerForUpdate($id);
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data

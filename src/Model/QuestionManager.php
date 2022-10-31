@@ -26,7 +26,7 @@ class QuestionManager extends AbstractManager
 
 
     /* TODO */
-    public function selectOneWithAnswer(int $id): array|false
+    public function selectOneWithAnswerForUpdate(int $id): array|false
     {
         $answerManager = new AnswerManager();
         $question = $this->selectOneById($id);
@@ -40,6 +40,21 @@ class QuestionManager extends AbstractManager
         foreach ($answers as $answer) {
             $question['answers']['answer' . $index] = $answer;
             $index++;
+        }
+        return $question;
+    }
+
+    public function selectOneWithAnswer(int $id): array|false
+    {
+        $answerManager = new AnswerManager();
+        $question = $this->selectOneById($id);
+
+        if (!isset($question['id']) || empty($question['id'])) {
+            return $question;
+        }
+        $answers = $answerManager->selectAllByQuestionsId($question['id']);
+        foreach ($answers as $answer) {
+            $question['answers'][$answer['answer']] = $answer['isTrue'];
         }
         return $question;
     }
