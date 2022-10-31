@@ -10,22 +10,42 @@ class AdminController extends AbstractController
      * Display SignIn page
      */
 
-    public function login(): string
+    public function signIn(): string
     {
-
         session_start();
-        //$errors = [];
+        $errors = [];
+        $display = "d-none";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $loginInfos = array_map('trim', $_POST);
             $loginInfos = array_map('htmlspecialchars', $loginInfos);
+
+            // Vérification du couple username/password
+            $adminManager = new AdminManager();
+            $user = $adminManager->checkUserAndPassword($loginInfos);
+
+            $user ?: $errors['login'] = 'Username inconnu ou mot de passe incorrect, veuillez réessayer';
+
+
+            if (empty($errors)) {
+                $display = "d-block";
+                $_SESSION['username'] = $loginInfos['username'];
+                // page de vérif temporaire ensuite mettre header('Location:/admin/show')
+                //après merge us_7.3;
+                return $this->twig->render(
+                    'Admin/signIn.html.twig',
+                    ['display' => $display, 'loginInfos' => $_SESSION]
+                );
+            } else {
+                return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors, 'display' => $display]);
+            }
         }
-        return $this->twig->render('Admin/login.html.twig');
+
+        return $this->twig->render('Admin/signIn.html.twig', ['display' => $display]);
     }
 
     /**
      * Display SignUp page
      */
-
     public function signUp(): string
     {
 
@@ -37,8 +57,7 @@ class AdminController extends AbstractController
             $loginInfos = array_map('htmlspecialchars', $loginInfos);
 
 
-            //TODO Verif
-
+            // Vérification de l'appartenance du pseudo à la BDD
             $adminManager = new AdminManager();
             $user = $adminManager->checkUser($loginInfos['username']);
 
@@ -66,27 +85,6 @@ class AdminController extends AbstractController
                 return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors, 'display' => $display]);
             }
         }
-
-        // if (isset($_POST['username'])){
-        //     $username = stripslashes($_REQUEST['username']);
-        //     $username = mysqli_real_escape_string($conn, $username);
-        //     $password = stripslashes($_REQUEST['password']);
-        //     $password = mysqli_real_escape_string($conn, $password);
-        //         $query = "SELECT * FROM `users` WHERE username='$username' and
-        //password='".hash('sha256', $password)."'";
-        //     $result = mysqli_query($conn,$query) or die(mysql_error());
-        //     $rows = mysqli_num_rows($result);
-        // if($rows==1){
-        //     $_SESSION['username'] = $username;
-        //     header("Location: index.php");
-        // }else{
-        //     $message = "Le nom d'utilisateur ou le mot de passe est incorrect.";
-        // }
-        // }
-
-
-
-
 
 
         return $this->twig->render('Admin/signUp.html.twig', ['display' => $display]);
