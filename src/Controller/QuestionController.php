@@ -108,17 +108,6 @@ class QuestionController extends AbstractController
         return $this->twig->render('Admin/add.html.twig', ['errors' => $errors]);
     }
 
-    // private function isCompleted(string $adminInput) : bool
-    // {
-    //     return (!isset($adminInput) || empty($adminInput));
-
-    //                 // if ($this->isCompleted($adminInput)) {
-    //         //     $errors[$field] = 'Ce champ doit être complété';
-    //         // }
-    // }
-
-
-
     private function validate(array $questionInfos)
     {
         $errors = [];

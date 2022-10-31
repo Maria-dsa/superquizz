@@ -25,7 +25,9 @@ class QuestionManager extends AbstractManager
     }
 
 
-    /* SELECT all answwer associate with a question, used with update : ok */
+    /**
+     * SELECT a question and their answers with their id : ok
+     **/
     public function selectOneWithAnswerForUpdate(int $id): array|false
     {
         $answerManager = new AnswerManager();
@@ -44,6 +46,9 @@ class QuestionManager extends AbstractManager
         return $question;
     }
 
+    /**
+     * SELECT a question and their answers : ok
+     **/
     public function selectOneWithAnswer(int $id): array|false
     {
         $answerManager = new AnswerManager();
@@ -59,7 +64,9 @@ class QuestionManager extends AbstractManager
         return $question;
     }
 
-    /* UPDATE all question and answer associated : ok */
+    /**
+     * UPDATE all question and answer associated : ok
+     **/
     public function update(array $questionsPost, $questions)
     {
         $answerManager = new AnswerManager();
@@ -88,7 +95,7 @@ class QuestionManager extends AbstractManager
     }
 
     /**
-     * Inset question in BDD ok !
+     * Insert question in BDD ok !
      **/
     public function insert(array $questions): int
     {
