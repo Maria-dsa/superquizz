@@ -94,7 +94,6 @@ class QuestionController extends AbstractController
                 $answerManager = new AnswerManager();
                 $answerManager->insertAtId($questionInfos, $lastId);
 
-                echo 'le dernier index est ' . $lastId;
                 header('Location:/admin/show');
                 return null;
             }
