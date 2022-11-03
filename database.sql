@@ -32,7 +32,7 @@ CREATE TABLE `question` (
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `content` TEXT NOT NULL,
   `theme` VARCHAR(255),
-  `difficulty_level` INT
+  `difficulty_level` VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -109,9 +109,9 @@ REFERENCES answer(id);
 -- Contenu de la table `question`
 --
 
-INSERT INTO `question` (`content`, `theme`, `difficulty-level`) VALUES
-('Quelle est la couleur dune tomate mure ?','test',1),
-('Quelle est le meilleur langage de programmation ?','autre',2);
+INSERT INTO `question` (`content`, `theme`, `difficulty_level`) VALUES
+('Quelle est la couleur dune tomate mure ?','test','facile'),
+('Quelle est le meilleur langage de programmation ?','autre','difficile');
 
 --
 -- Contenu de la table `answer`
