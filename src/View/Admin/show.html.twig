@@ -1,26 +1,53 @@
 {% extends 'admin_layout.html.twig' %}
 
+{% set afficher = 'active' %}
+
+    {% block search %}
+        {% include './Admin/_searchform.html.twig' %}
+    {% endblock %}
+
 {% block content %}
 
-<h1>Voici la liste des questions :</h1>
+  <h1 class="showTitle">Liste des questions :</h1>
+  <div class="accordion">
 
-{% for question in questions %}
-        <h2>Question N° {{ question.id }} : {{ question.content }}</h2>
-        <p>Thème : {{question.theme}}</p>
-        <ul>
-            {% for ans, value in question.answers %}
-            <li>{{ ans }} : {{ value ? 'bonne' : 'fausse' }}</li>
-            {% endfor %}
-        </ul>
-        <div>
-            <button><a href="/admin/update?id={{ question.id }}">Edit</a></button>
-        </div>
-        <div>
-            <form action="/admin/delete" method="POST">
-                <input type="hidden" name="id" value="{{ question.id }}">
-                <button>Delete</button>
-            </form>
-        </div>
-{% endfor %}
+      {% for question in questions %}
+          <div class="accordion-item">
+
+              <h2 class="accordion-header" id="heading{{ loop.index }}">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                      Question N° {{ question.id }} : {{ question.content }}
+                      <p id="questionTheme">Thème : {{question.theme}}</p>
+                  </button>
+              </h2>
+
+              <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                      <ul class="answerList m-0 p-0">
+                          {% for ans, value in question.answers %}
+                              {% if value %}
+                                  <li class="badge text-bg-sucess bg-success">{{ ans }}</li>
+                              {% else %}
+                                  <li class="badge text-bg-secondary">{{ ans }}</li>
+                              {% endif %}
+                          {% endfor %}
+                      </ul>
+
+                      <div class="editIcons">
+                          <button class="btn edit"><a href="/items/edit?id={{ question.id }}"><span class="mdi mdi-pencil"></span></a></button>
+                          <form action="/admin/delete" method="POST">
+                              <input type="hidden" name="id" value="{{ question.id }}">
+                              <button class="btn delete"><span class="mdi mdi-close"></span></button>
+                          </form>
+                      </div>
+
+                  </div>
+              </div>
+
+          </div>     
+      {% endfor %}
+  </div>
+
 
 {% endblock %}
