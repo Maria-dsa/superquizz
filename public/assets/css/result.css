@@ -1,0 +1,52 @@
+.btn{
+    background-color: var(--bs-secondary);
+}
+
+.containers {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .podium__item {
+    width: 175px;
+  }
+
+  .podium__rank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 45px;
+    color: #fff;
+  }
+
+  .podium__city {
+    text-align: center;
+    padding: 0 .5rem;
+  }
+
+  .podium .first {
+    min-height: 150px;
+  }
+
+  .podium .second {
+    min-height: 100px;
+  }
+
+  .podium .third {
+    min-height: 70px;
+  }
+
+  .content-image-podium {
+    width: 125px;
+    height: 75px;
+  }
+
+  .img-podium{
+    width: 125px;
+    height: 75px;
+    object-fit: cover;
+  }
+
+  .row-question{
+    gap: 20px;
+  }
