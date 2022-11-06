@@ -1,0 +1,257 @@
+@import '_variables.css';
+
+/*##############################################"*/
+/*                     NAVBAR                    */
+/*##############################################"*/
+
+nav img {
+    width: 100px;
+    height: auto;
+}
+
+nav h1 {
+   font-size: 2.5rem;
+   padding-top: 1rem;
+   text-align: center;
+}
+
+nav ul li {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.info-admin {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--bs-white);
+    width:auto;
+}
+
+.info-admin img {
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.mdi {
+    margin-right: 0.5rem;
+}
+
+.submit-btn {
+    color: var(--bs-white);
+    font-weight: 600;
+    font-size: 1.5rem;
+    background-color: var(--bs-primary);
+    padding: 0.5rem 2rem;
+    margin-top: 2rem;
+    border: 2px solid var(--bs-white);
+}
+
+.addForm {
+    position: relative;
+}
+
+.submit-btn:hover {
+    background-color: #003b55;
+    color: var(--bs-white);
+    box-shadow: 0px 0px 20px 10px #0ff;
+}
+
+.submit-btn::before, 
+.submit-btn::after {
+    content: "";
+    width:0;
+    height: 4px;
+    position: absolute;
+    transition: all 0.3s linear;
+    background: #54e6e7;
+}
+
+.submit-btn span::before, 
+.submit-btn span::after {
+    content: "";
+    width:4px;
+    height: 0;
+    position: absolute;
+    transition: all 0.3s linear;
+    background: #54e6e7;
+}
+
+.submit-btn:hover::before, 
+.submit-btn:hover::after {
+    width: calc(100% + 4px);
+}
+
+.submit-btn:hover span::before, 
+.submit-btn:hover span::after {
+    height: calc(100% + 4px);
+}
+
+.submit-btn::after {
+    right: -2px;
+    bottom: -2px;
+    transition-duration: 0.4s;
+}
+
+.submit-btn span::after {
+    right: -2px;
+    bottom: -2px;
+    transition-duration: 0.4s;
+}
+
+.submit-btn::before {
+    left: -2px;
+    top: -2px;
+    transition-duration: 0.4s;
+}
+
+.submit-btn span::before {
+    left: -2px;
+    top: -2px;
+    transition-duration: 0.4s;
+}
+
+/*##############################################"*/
+/*                    MAIN-ADD                   */
+/*##############################################"*/
+
+main {
+    background-color: hsl(198,98%,14%);
+}
+
+.form {
+    background-color: hsl(198,98%,24%);
+}
+
+/*##############################################"*/
+/*                      SHOW                     */
+/*##############################################"*/
+
+.showTitle {
+    margin-top: -2rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-primary);
+}
+
+.accordion-button::after {
+    margin-left: 1rem;
+}
+
+#questionTheme {
+    margin: auto;
+    margin-right: 0;
+    text-align: right;
+}
+
+.accordion-body {
+    display: flex;
+    justify-content: space-between;
+}
+
+.badge.text-bg-sucess.bg-success, .badge.text-bg-secondary {
+    font-size: 1.5rem;
+}
+
+.editIcons {
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+}
+
+.editIcons a {
+    text-decoration: none;
+    color: white;
+}
+
+.editIcons .mdi {
+    margin: auto;
+}
+.editIcons .btn {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+}
+
+.btn.edit {
+    background-color: var(--bs-orange);
+}
+
+.btn.delete {
+    background-color: var(--bs-red);
+}
+
+.btn.delete, .btn.edit {
+    width: 45px;
+    height: 45px;
+    margin: auto;
+}
+
+
+
+
+/*##############################################"*/
+/*                   DASHBOARD                   */
+/*##############################################"*/
+
+.card-body {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 3fr;
+    column-gap: 10px;
+}
+
+.card-body .icon {
+    grid-row: span 2;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+}
+
+.card-body h4, .card-body p {
+    margin: auto;
+}
+
+.card-body h4 {
+    font-size: 2rem;
+}
+
+.card-body {
+    font-size: 1.2rem;
+}
+
+/*##############################################"*/
+/*                     SEARCH                    */
+/*##############################################"*/
+
+.search {
+    position: relative;
+    top: -3.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.search .field {
+    flex-basis: 33%;
+}
+
+.loupe {
+    position: relative;
+    left: 0.3rem;
+    z-index: 1;
+}
+
+.searchField {
+    margin-left: 2rem;
+}
+
+#floatingPassword {
+    padding-left: 3rem;
+}

@@ -13,6 +13,8 @@ return [
     'admin/add' => ['QuestionController', 'add',],
     'admin/show' => ['QuestionController', 'index',],
     'admin/delete' => ['QuestionController', 'delete',],
+    'admin/update' => ['QuestionController', 'update', ['id']],
+    'admin/display' => ['QuestionController', 'display', ['id']],
     'items' => ['ItemController', 'index',],
     'items/edit' => ['ItemController', 'edit', ['id']],
     'items/show' => ['ItemController', 'show', ['id']],

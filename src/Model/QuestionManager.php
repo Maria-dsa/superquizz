@@ -8,6 +8,9 @@ class QuestionManager extends AbstractManager
 {
     public const TABLE = 'question';
 
+    /**
+     * SELECT all question & associates answers : ok !
+     **/
     public function selectAllWithAnswer(string $orderBy = '', string $direction = 'ASC'): array
     {
         $answerManager = new AnswerManager();
@@ -22,30 +25,67 @@ class QuestionManager extends AbstractManager
     }
 
 
-
-    public function selectOneById(int $id): array|false
+    /**
+     * SELECT a question and their answers with their id : ok
+     **/
+    public function selectOneWithAnswerForUpdate(int $id): array|false
     {
-        // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM ' . self::TABLE . ' 
-            INNER JOIN answer ON question.id=answer.question_id' . WHERE question.id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
+        $answerManager = new AnswerManager();
+        $question = $this->selectOneById($id);
+
+        if (!isset($question['id']) || empty($question['id'])) {
+            return $question;
+        }
+        $answers = $answerManager->selectAllByQuestionsId($question['id']);
+
+        $index = 1;
+        foreach ($answers as $answer) {
+            $question['answers']['answer' . $index] = $answer;
+            $index++;
+        }
+        return $question;
+    }
+
+    /**
+     * SELECT a question and their answers : ok
+     **/
+    public function selectOneWithAnswer(int $id): array|false
+    {
+        $answerManager = new AnswerManager();
+        $question = $this->selectOneById($id);
+
+        if (!isset($question['id']) || empty($question['id'])) {
+            return $question;
+        }
+        $answers = $answerManager->selectAllByQuestionsId($question['id']);
+        foreach ($answers as $answer) {
+            $question['answers'][$answer['answer']] = $answer['isTrue'];
+        }
+        return $question;
+    }
+
+    /**
+     * UPDATE all question and answer associated : ok
+     **/
+    public function update(array $questionsPost, $questions)
+    {
+        $answerManager = new AnswerManager();
+
+        $statement = $this->pdo->prepare("UPDATE " . self::TABLE .
+            " SET `content` = :question, `theme` = :theme, difficulty_level = :level WHERE id=:id");
+        $statement->bindValue(':id', $questionsPost['id'], PDO::PARAM_INT);
+        $statement->bindValue(':question', $questionsPost['question'], PDO::PARAM_STR);
+        $statement->bindValue(':theme', $questionsPost['theme'], PDO::PARAM_STR);
+        $statement->bindValue(':level', $questionsPost['level'], PDO::PARAM_STR);
+
         $statement->execute();
 
-        return $statement->fetch();
+        return $answerManager->update($questionsPost, $questions);
     }
 
-    public function update(array $questions): bool
-    {
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `content` = :content WHERE id=:id");
-        $statement->bindValue(':id', $questions['id'], PDO::PARAM_INT);
-        $statement->bindValue(':content', $questions['content'], PDO::PARAM_STR);
-
-        return $statement->execute();
-    }
-
-        /**
-     * Delete row form an ID
-     */
+    /**
+     * Delete question from an ID : ok !
+     **/
     public function delete(int $id): void
     {
         // prepared request
@@ -54,16 +94,18 @@ class QuestionManager extends AbstractManager
         $statement->execute();
     }
 
+    /**
+     * Insert question in BDD ok !
+     **/
     public function insert(array $questions): int
     {
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE .
-            " (`content`, `theme`) VALUES (:content, :theme)");
-        $statement->bindValue(':content', $questions['content'], PDO::PARAM_STR);
+        $statement = $this->pdo->prepare('INSERT INTO ' . self::TABLE .
+            ' (`content`, `theme`, `difficulty_level`) VALUES (:content, :theme, :level)');
+        $statement->bindValue(':content', $questions['question'], PDO::PARAM_STR);
         $statement->bindValue(':theme', $questions['theme'], PDO::PARAM_STR);
+        $statement->bindValue(':level', $questions['level'], PDO::PARAM_STR);
 
-        $statementAnswer = $this->pdo->prepare("INSERT INTO answer (`content`, `theme`) VALUES (:content, :theme)");
-
-        $statementAnswer->execute();
+        $statement->execute();
         return (int)$this->pdo->lastInsertId();
     }
 }
