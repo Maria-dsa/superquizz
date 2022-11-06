@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Administration Dashboard</title>
+    <link rel="shortcut icon" href="/assets/images/home-quiz.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body class="d-flex flex-column flex-lg-row">
 
@@ -14,11 +15,19 @@
             {% include './Admin/_navbar.html.twig' %}
     {% endblock %}
 
+    <main class=" container-fluid text-light min-vh-100">
 
+        {% block dashboard %}
+            {% include './Admin/_dashboard.html.twig' %}
+        {% endblock %}
 
-    <main class=" container-fluid bg-info min-vh-100">
+        {% block search %}
+    
+        {% endblock %}
 
-        {% block content %}{% endblock %}
+        {% block content %}
+
+        {% endblock %}
 
     </main>
 

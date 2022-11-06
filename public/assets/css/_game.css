@@ -1,0 +1,49 @@
+.card {
+    max-width: 100vw;
+}
+
+.card img {
+    max-height: 20vh;
+}
+
+h3 {
+
+    font-family: var(--bs-heading-font-sans-serif);
+}
+
+h4 {
+
+    font-family: var(--bs-font-sans-serif);
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.answer-check input {
+    margin: 0.5rem;
+
+}
+
+@media screen and (max-width: 767px) {
+    .answer-display {
+        padding-left: 0px;
+        padding-right: 0px;
+        margin-left: 0px;
+        margin-right: 0px;
+
+    }
+
+    .row>* {
+        padding-right: 0px;
+        padding-left: 0px;
+
+    }
+
+    .answer-text {
+        text-align: center;
+
+    }
+
+}

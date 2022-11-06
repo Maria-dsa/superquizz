@@ -1,0 +1,58 @@
+{% extends 'layout.html.twig' %}
+
+{% block stylesheet %}
+	<link rel="stylesheet" href="/assets/css/_game.css">
+{% endblock %}
+
+{% block content %}
+	<div class="col-11 col-sm-10 mx-auto">
+		<div class="container-fluid mb-3 mx-auto mt-5 pt-1 text-center text-white">
+			<div class="col-8 mx-auto d-block ">
+				<h3 class="text-center bg-secondary rounded">Pseudo, voici ta question</h3>
+			</div>
+		</div>
+		<div class="card mb-3 mx-auto bg-white">
+			<div class="row g-1">
+				<div class="col-md-4 col-12">
+					<img src="https://picsum.photos/1800/650" class="img-fluid rounded-start d-block mx-auto" alt="nom de l'image">
+				</div>
+				<div class="col-md-6 col-12 ">
+					<div class="card-body">
+						<h4 class="card-text text-center text-secondary">Quelle est la couleur d'une tomate mûre ?
+						</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="answer-display container-fluid">
+			<div class="row ">
+				{% for i in 0..3 %}
+					<div class="col-sm-6 mx-auto col-12">
+						<div class="row border border-secondary rounded m-3 bg-white ">
+							<div class="answer-check col-md-2 d-block mx-auto bg-secondary rounded">
+								<input class="form-check-input" type="radio" name="q1" id="q1_r{{loop.index}}" value="r{{loop.index}}">
+							</div>
+
+							<div class="answer-text col-md-10 col-12 bg-white form-check rounded">
+								<label class="form-check-label" for="q1_r{{loop.index}}">
+									Lorem, ipsum dolor sit amet consectetur sit amet consectetur</label>
+
+
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
+
+	<div class="d-flex align-items-end flex-column m-2">
+		<div class="mt-auto p-2">
+			<button type="button" class="btn bg-secondary m-1 text-white">Question suivante >></button>
+		</div>
+	</div>
+
+
+{% endblock %}

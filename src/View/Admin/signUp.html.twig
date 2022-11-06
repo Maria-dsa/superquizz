@@ -1,25 +1,26 @@
 {% extends 'register_layout.html.twig' %}
 
 
+{% block title %}
+	Sign Up Page
+{% endblock %}
 
-{% block content %}
 
-<h2>Enregistrement</h2>
-<p>Entrer votre nom d'utilisateur vu avec votre administrateur puis le mot de passe de votre choix</p>
-<form action="" method="POST">
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="username" name="username" placeholder="name@example.com">
-        <label for="username">Username</label>
-    </div>
-    <div>{{ errors.username }}</div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-        <label for="floatingPassword">Password</label>
-    </div>
-    <div>{{ errors.password }}</div>
-    <div class="{{ display }}">Inscription réussie, connectez vous <a href="">ici</a></div>
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
-</form>
+{% block titleForm %}
+	<h2 class="mb-4">Enregistrement</h2>
+	<p>Entrer votre nom d'utilisateur vu avec votre administrateur puis le mot de passe de votre choix</p>
 
 {% endblock %}
 
+
+{% block endForm %}
+
+
+	<button class="btn btn-primary btn-lg btn-block mt-3" type="submit">Register</button>
+    <pre>
+    {{ dump(errors) }}
+    {{ dump(success) }}
+  </pre>
+
+
+{% endblock %}

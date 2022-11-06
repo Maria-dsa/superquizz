@@ -9,38 +9,47 @@ class AdminController extends AbstractController
     /**
      * Display SignIn page
      */
-
     public function signIn(): string
     {
-        session_start();
         $errors = [];
-        $display = "d-none";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $loginInfos = array_map('trim', $_POST);
-            $loginInfos = array_map('htmlspecialchars', $loginInfos);
-
-            // Vérification du couple username/password
-            $adminManager = new AdminManager();
-            $user = $adminManager->checkUserAndPassword($loginInfos);
-
-            $user ?: $errors['login'] = 'Username inconnu ou mot de passe incorrect, veuillez réessayer';
-
+            $loginInfos = $this->protection($_POST);
+            $errors = $this->validate($loginInfos);
 
             if (empty($errors)) {
-                $display = "d-block";
-                $_SESSION['username'] = $loginInfos['username'];
-                // page de vérif temporaire ensuite mettre header('Location:/admin/show')
-                //après merge us_7.3;
-                return $this->twig->render(
-                    'Admin/signIn.html.twig',
-                    ['display' => $display, 'loginInfos' => $_SESSION]
-                );
-            } else {
-                return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors, 'display' => $display]);
-            }
-        }
+                // Vérification du couple username/password
+                $adminManager = new AdminManager();
+                $user = $adminManager->selectOneByUsername($loginInfos['username']);
+                var_dump($user);
 
-        return $this->twig->render('Admin/signIn.html.twig', ['display' => $display]);
+                if ($user && password_verify($loginInfos['password'], $user['password'])) {
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['username'] = $user['username'];
+                    header('Location: /admin/show');
+                    exit();
+                }
+                $errors[] = 'Username et/ou mot de passe incorrect';
+                return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors]);
+            }
+            return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors]);
+        }
+        return $this->twig->render('Admin/signIn.html.twig');
+    }
+
+    public function validate(array $loginInfos): array
+    {
+        $errors = [];
+        foreach ($loginInfos as $field => $value) {
+            $value ?: $errors[$field] = 'Ce champ doit être complété';
+        }
+        return $errors;
+    }
+
+    public function protection(array $post): array
+    {
+        $loginInfos = array_map('trim', $post);
+        $loginInfos = array_map('htmlspecialchars', $loginInfos);
+        return $loginInfos;
     }
 
     /**
@@ -48,45 +57,44 @@ class AdminController extends AbstractController
      */
     public function signUp(): string
     {
-
-        session_start();
         $errors = [];
-        $display = "d-none";
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $loginInfos = array_map('trim', $_POST);
-            $loginInfos = array_map('htmlspecialchars', $loginInfos);
-
-
-            // Vérification de l'appartenance du pseudo à la BDD
-            $adminManager = new AdminManager();
-            $user = $adminManager->checkUser($loginInfos['username']);
-
-            $user ?: $errors['username'] = 'Username inconnu, veuillez vous rapprochez d\'un administrateur';
-
-
-            if (
-                !isset($loginInfos['password'])
-                || empty($loginInfos['password'])
-                || strlen($loginInfos['password']) < 8
-            ) {
-                $errors['password'] = 'Il faut rentrer un mot de passe de plus de 8 caractères';
-            }
-
+            $loginInfos = $this->protection($_POST);
+            $errors = $this->validate($loginInfos);
 
             if (empty($errors)) {
-                $display = "d-block";
-                $adminManager->addPasswordToUser($loginInfos);
-                return $this->twig->render('Admin/signUp.html.twig', ['display' => $display]);
+                 // Vérification de l'appartenance du pseudo à la BDD
+                $adminManager = new AdminManager();
+                $user = $adminManager->checkUser($loginInfos['username']);
 
-                // echo 'le dernier index est ' . $lastId;
-                // header('Location:/admin/show');
-                // return null;
-            } else {
-                return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors, 'display' => $display]);
+                $user ?: $errors['username'] = 'Username inconnu, veuillez vous rapprochez d\'un administrateur';
+
+                if (
+                    !isset($loginInfos['password'])
+                    || empty($loginInfos['password'])
+                    || strlen($loginInfos['password']) < 8
+                ) {
+                    $errors['password'] = 'Il faut rentrer un mot de passe de plus de 8 caractères';
+                }
+
+                if (empty($errors)) {
+                    $adminManager->addPasswordToAdmin($loginInfos);
+                    $success = "success";
+                    return $this->twig->render('Admin/signUp.html.twig', ['success' => $success]);
+                }
+                return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors]);
             }
+            return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors]);
         }
+        return $this->twig->render('Admin/signUp.html.twig');
+    }
 
-
-        return $this->twig->render('Admin/signUp.html.twig', ['display' => $display]);
+    public function logout()
+    {
+        // On supprime l'index ['user_id'] du tableau $_SESSION
+        unset($_SESSION['user_id']);
+        // puis on le redirige sur une autre page (page d'accueil ici)
+        header('Location: /');
+        exit();
     }
 }
