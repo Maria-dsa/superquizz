@@ -50,3 +50,18 @@
   .row-question{
     gap: 20px;
   }
+
+  .img-question-div{
+    width: 125px;
+    height: 75px;
+  }
+
+  .img-question{
+    width: 125px;
+    height: 75px;
+    object-fit: cover;
+  }
+
+  .color-podium{
+    background-color:cadetblue;
+  }
