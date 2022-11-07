@@ -9,6 +9,7 @@
 return [
     '' => ['HomeController', 'index',],
     'start-game' => ['GameController', 'startGame'],
+    'next-question' => ['GameController', 'userAnswer'],
     'admin/add' => ['QuestionController', 'add',],
     'admin/show' => ['QuestionController', 'index',],
     'admin/delete' => ['QuestionController', 'delete',],

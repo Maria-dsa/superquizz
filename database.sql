@@ -32,7 +32,8 @@ CREATE TABLE `question` (
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `content` TEXT NOT NULL,
   `theme` VARCHAR(255),
-  `difficulty_level` VARCHAR(50)
+  `difficulty_level` VARCHAR(50),
+  `image` VARCHAR(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -58,7 +59,8 @@ CREATE TABLE `answer` (
 CREATE TABLE `user` (
   `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `nickname` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(255) NOT NULL
+  `password` VARCHAR(255) NULL,
+  `avatar` VARCHAR(255) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

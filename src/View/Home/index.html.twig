@@ -30,4 +30,10 @@
 
 
 	</div>
+	{% for field, error in errors %}
+		{{field }}
+		:
+		{{ error }}
+		<br>
+	{% endfor %}
 {% endblock %}

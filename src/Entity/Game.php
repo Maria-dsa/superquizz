@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Model\QuestionManager;
+use App\Model\UserManager;
 
 class Game
 {
@@ -12,17 +13,18 @@ class Game
     private string $createdAt;
     private string|null $endedAt;
     private int $userId;
+    private int $score = 0; //@todo getter et setter
 
-    private int $current = 0;
+    private int $currentQuestion = 0;
 
     private array $questions;
-    private QuestionManager $questionManager;
 
-    public function __construct()
-    {
-        $this->questionManager = new QuestionManager();
-    }
+    // private QuestionManager $questionManager;
 
+    // public function __construct()
+    // {
+    //     $this->questionManager = new QuestionManager();
+    // }
 
     /**
      * Get the value of id
@@ -60,7 +62,6 @@ class Game
     public function setType($type)
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -80,7 +81,6 @@ class Game
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
@@ -100,7 +100,6 @@ class Game
     public function setEndedAt($endedAt)
     {
         $this->endedAt = $endedAt;
-
         return $this;
     }
 
@@ -120,17 +119,31 @@ class Game
     public function setUserId($userId)
     {
         $this->userId = $userId;
-
         return $this;
     }
 
     public function getCurrentQuestion()
     {
-        return $this->questions[0];
+        return $this->currentQuestion;
+    }
+
+    public function setCurrentQuestion(int $nb)
+    {
+        $this->currentQuestion = $nb;
+    }
+
+    public function incrementCurrentQuestion()
+    {
+        $this->currentQuestion++;
     }
 
     public function setQuestions(array $questions)
     {
         $this->questions = $questions;
+    }
+
+    public function selectOneQuestion(int $number): array
+    {
+        return $this->questions[$number];
     }
 }

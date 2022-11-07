@@ -4,95 +4,87 @@ namespace App\Controller;
 
 use App\Entity\Game;
 use App\Model\GameManager;
+use App\Model\QuestionManager;
+use App\Model\UserManager;
 
 class GameController extends AbstractController
 {
     private array $arrayAllQuestionId;
     private QuestionManager $questionManager;
-    private array $questionsWithAnswerGame1;
-    private int $numberQuestion = 0;
-
 
 
 
     public function startGame()
     {
-        $newGame = $_POST; // champ type de jeu + nickname
-        //@todo sécurisation
-        // $newGame['type'] vaut 1;
-        // $newGame['nickname'] vaut nickname choisit;
-        $userManager = new UserManager();
-        $newGame['userId'] = $userManager->insert($newGame['nickname']);
+        $errors = [];
 
-        // @todo
-        // $userManager = new UserManager();
-        // $user = $userManager->selectOneByNickname($newGame['nickname']);
-        // $newGame['user_id'] = $user['id'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $newGame = array_map('trim', $_POST); // champ type de jeu + nickname
+            $newGame = array_map('htmlspecialchars', $newGame);
+            $newGame['type'] = 1;
 
-        //$newGame['user_id'] vaut 1 pour le 1er user de la base;
-        $gameManager = new GameManager();
-        $gameId = $gameManager->insert($newGame);
+            foreach ($newGame as $field => $input) {
+                $input ?: $errors[$field] = 'Ce champ doit être complété';
+            }
+            // $newGame['nickname'] vaut nickname choisit;
 
+            if (strlen($newGame['nickname']) > 45) {
+                $errors['nickname'] = 'Le pseudo doit faire moins de 45 caractères';
+            }
 
-        $game = $gameManager->selectOneGameById($gameId);
-        $game->setQuestions($this->questionManager->selectAllId());
+            if (empty($errors)) {
+                $userManager = new UserManager();
+                $newGame['userId'] = $userManager->insert($newGame['nickname']);
 
-        $_SESSION['game'] = $game;
-        header('Location: /game');
+                $gameManager = new GameManager();
+                // Insère en BDD un nouveau game et récupère son ID
+                $gameId = $gameManager->insert($newGame);
+                // Retourne un objet de type Game avec clé valeur correspondants à la table
+                $game = $gameManager->selectOneGameById($gameId);
+
+                $this->questionManager = new QuestionManager();
+                $game->setQuestions($this->questionManager->selectQuestionsWithAnswer());
+
+                $_SESSION['game'] = $game;
+                //var_dump($_SESSION);
+                return $this->displayQuestion($_SESSION['game']);
+
+                //header('Location: /game');
+                //return $this->twig->render('Game/index.html.twig');
+            }
+        }
+        return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
     }
 
     public function userAnswer()
     {
-        $answerId = $_POST['answerId'];
         $game = $_SESSION['game'];
-        $game->setAnswer($answerId)->setCurrentQuestion()//+1;
+        $game->incrementCurrentQuestion();
+
+        return $this->displayQuestion($_SESSION['game']);
+
+
+        //$currentQuestion = $game->getCurrentQuestion();
+        //$question = $game->selectOneQuestion($currentQuestion);
+
+        //return $this->twig->render('Game/index.html.twig', ['question' => $question]);
+
+        //$answerId = $_POST['answerId'];
+        //$game = $_SESSION['game'];
+        //$game->setAnswer($answerId)->setCurrentQuestion(); //+1;
         // header('Location: /game');
+
+
+
     }
 
-    public function displayQuestion()
+    public function displayQuestion(Game $game)
     {
-
-    }
-
-
-
-    public function getArrayAllQuestionId(): array
-    {
-        return $this->arrayAllQuestionId;
-    }
-
-    public function setArrayAllQuestionId(int $number): self
-    {
-        $this->arrayAllQuestionId = $this->questionManager->selectAllId();
-        //shuffle($this->arrayAllQuestionId);
-        return $this;
-    }
-
-    public function getQuestionsWithAnswerGame1(): array
-    {
-        return $this->questionsWithAnswerGame1;
-    }
-
-    public function setquestionsWithAnswerGame1(): self
-    {
-        $ids =  array_slice($this->arrayAllQuestionId, 0, $number);
-        foreach ($ids as $id) {
-            $this->questionsWithAnswerGame1[] = $this->questionManager->selectOneWithAnswer($id);
-        }
-        return $this;
-    }
+        $currentQuestion = $game->getCurrentQuestion();
+        $question = $game->selectOneQuestion($currentQuestion);
 
 
-    public function startGame1()
-    {
-        if (!count($this->arrayAllQuestionId) >= 15) {
-            header('Location : /');
-            exit();
-        }
-        // $question = $this
 
-        // var_dump($questions);
-
-        return $this->twig->render('Game/index.html.twig');
+        return $this->twig->render('Game/index.html.twig', ['question' => $question]);
     }
 }
