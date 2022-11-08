@@ -58,9 +58,10 @@ CREATE TABLE `answer` (
 
 CREATE TABLE `user` (
   `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `nickname` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(255) NULL,
-  `avatar` VARCHAR(255) NULL
+  `username` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `picture` VARCHAR(255),
+  `role` VARCHAR(5)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -282,12 +283,12 @@ INSERT INTO `answer` (`content`, `is_correct`, `question_id`) VALUES
 --
 -- contenu de la table `user`
 --
-INSERT INTO `user` (`nickname`, `password`) VALUES
-('florent', 'florent'),
-('nicolas', 'nicolas'),
-('maria', 'maria'),
-('magali', 'magali'),
-('JF', 'JF');
+INSERT INTO `user` (`username`, `role`) VALUES
+('florent', 'admin'),
+('nicolas', 'admin'),
+('maria', 'admin'),
+('magali', 'admin'),
+('JF', 'admin');
 
 --
 -- Contenu de la table `game`

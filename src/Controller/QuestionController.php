@@ -21,12 +21,22 @@ class QuestionController extends AbstractController
      */
     public function index(): string
     {
+        if (!$this->admin) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 401 Unauthorized');
+            exit();
+        }
         $questions = $this->questionManager->selectAllWithAnswer();
         return $this->twig->render('Admin/show.html.twig', ['questions' => $questions]);
     }
 
     public function update()
     {
+        if (!$this->admin) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 401 Unauthorized');
+            exit();
+        }
         $id = $_GET["id"];
         $questionInfo = $this->questionManager->selectOneWithAnswerForUpdate($id);
         $errors = [];
@@ -56,6 +66,11 @@ class QuestionController extends AbstractController
      **/
     public function display(int $choosenId): string
     {
+        if (!$this->admin) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 401 Unauthorized');
+            exit();
+        }
         $id = filter_var($choosenId, FILTER_VALIDATE_INT, ["options" => ["min_range" => 1]]);
         if (!$id) {
             header("Location: /");
@@ -79,6 +94,11 @@ class QuestionController extends AbstractController
      */
     public function add(): ?string
     {
+        if (!$this->admin) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 401 Unauthorized');
+            exit();
+        }
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
@@ -143,6 +163,11 @@ class QuestionController extends AbstractController
      */
     public function delete(): void
     {
+        if (!$this->admin) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 401 Unauthorized');
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = trim($_POST['id']);
             $id = htmlentities($id);
