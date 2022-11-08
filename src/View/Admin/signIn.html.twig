@@ -12,6 +12,9 @@
 
 
 {% block endForm %}
+  {% for error in errors %}
+        <p>{{ error }}</p>
+  {% endfor %}
 	<!-- Checkbox -->
 	<div class="form-check d-flex justify-content-start my-4 gap-2">
 		<input class="form-check-input" type="checkbox" value="" id="form1Example3"/>
@@ -34,9 +37,5 @@
 			<i class="fa-brands fa-linkedin"></i>
 		</button>
 	</div>
-  <pre>
-    {{ dump(errors) }}
-  </pre>
-
 
 {% endblock %}

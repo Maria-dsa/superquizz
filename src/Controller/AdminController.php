@@ -20,7 +20,6 @@ class AdminController extends AbstractController
                 // Vérification du couple username/password
                 $adminManager = new AdminManager();
                 $user = $adminManager->selectOneByUsername($loginInfos['username']);
-                var_dump($user);
 
                 if ($user && password_verify($loginInfos['password'], $user['password'])) {
                     $_SESSION['user_id'] = $user['id'];
