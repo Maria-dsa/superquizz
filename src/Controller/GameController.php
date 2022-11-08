@@ -45,6 +45,8 @@ class GameController extends AbstractController
                 $game->setQuestions($this->questionManager->selectQuestionsWithAnswer());
 
                 $_SESSION['game'] = $game;
+                $_SESSION['nickname'] = $newGame['nickname'];
+
                 //var_dump($_SESSION);
                 return $this->displayQuestion($_SESSION['game']);
 
@@ -57,10 +59,58 @@ class GameController extends AbstractController
 
     public function userAnswer()
     {
-        $game = $_SESSION['game'];
-        $game->incrementCurrentQuestion();
+        var_dump($_POST);
+        $errors = [];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userAnswer = array_map('trim', $_POST);
+            $userAnswer = array_map('htmlspecialchars', $userAnswer);
 
-        return $this->displayQuestion($_SESSION['game']);
+            $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
+
+            $game = $_SESSION['game'];
+            $questions = $game->getQuestions();
+            $index = $game->getCurrentQuestion();
+            // On récupère les ID des réponses associées à la question
+            $answerId = [];
+            foreach ($questions[$index]['answers'] as $answer) {
+                $answerId[$answer['id']] = $answer['isTrue'];
+            }
+
+            // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
+            if (!array_key_exists($userAnswer['answer'], $answerId)) {
+                $errors[] = "Réponse invalide";
+            }
+
+            if (empty($errors)) {
+                //origine
+                if ($answerId[$userAnswer['answer']]) {
+                    $rep = "bonne réponse";
+                    // faire requete pour enregistrer la réponses en 
+                } else {
+                    $rep = "mauvaise rep";
+                }
+
+                var_dump($rep);
+                // ou alors
+                //écrire requete de stockage en BDD réponse serait $answerId[$userAnswer['answer']] = 0 ou 1
+
+                $game->incrementCurrentQuestion();
+
+                return $this->displayQuestion($_SESSION['game']);
+            }
+
+            header('Location : /');
+            exit();
+        }
+
+
+
+
+
+
+
+
+
 
 
         //$currentQuestion = $game->getCurrentQuestion();
@@ -82,6 +132,6 @@ class GameController extends AbstractController
 
 
 
-        return $this->twig->render('Game/index.html.twig', ['question' => $question]);
+        return $this->twig->render('Game/index.html.twig', ['question' => $question, 'session' => $_SESSION]);
     }
 }

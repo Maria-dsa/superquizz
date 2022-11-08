@@ -88,7 +88,9 @@ CREATE TABLE `game_has_question` (
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
   `game_id` INT NOT NULL,
   `question_id` INT NOT NULL,
-  `answer_id` INT NOT NULL
+  `answer_id` INT NOT NULL,
+  `is_true` BOOLEAN NOT NULL,
+  `time` INT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 

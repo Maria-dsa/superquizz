@@ -142,8 +142,19 @@ class Game
         $this->questions = $questions;
     }
 
+
+
+
     public function selectOneQuestion(int $number): array
     {
         return $this->questions[$number];
+    }
+
+    /**
+     * Get the value of questions
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
     }
 }
