@@ -30,5 +30,6 @@ abstract class AbstractController
         $adminManager = new AdminManager();
         $this->admin = isset($_SESSION['user_id']) ? $adminManager->selectOneById($_SESSION['user_id']) : false;
         $this->twig->addGlobal('admin', $this->admin);
+        $this->twig->addGlobal('session', $_SESSION);
     }
 }

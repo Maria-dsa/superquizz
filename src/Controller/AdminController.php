@@ -23,16 +23,13 @@ class AdminController extends AbstractController
 
                 if ($user && password_verify($loginInfos['password'], $user['password'])) {
                     $_SESSION['user_id'] = $user['id'];
-                    $_SESSION['username'] = $user['username'];
                     header('Location: /admin/show');
                     exit();
                 }
                 $errors[] = 'Username et/ou mot de passe incorrect';
-                return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors]);
             }
-            return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors]);
         }
-        return $this->twig->render('Admin/signIn.html.twig');
+        return $this->twig->render('Admin/signIn.html.twig', ['errors' => $errors]);
     }
 
     public function validate(array $loginInfos): array
@@ -78,14 +75,11 @@ class AdminController extends AbstractController
 
                 if (empty($errors)) {
                     $adminManager->addPasswordToAdmin($loginInfos);
-                    $success = "success";
-                    return $this->twig->render('Admin/signUp.html.twig', ['success' => $success]);
+                    return $this->signIn();
                 }
-                return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors]);
             }
-            return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors]);
         }
-        return $this->twig->render('Admin/signUp.html.twig');
+        return $this->twig->render('Admin/signUp.html.twig', ['errors' => $errors]);
     }
 
     public function logout()
