@@ -114,7 +114,6 @@ REFERENCES answer(id);
 INSERT INTO `question` (`content`, `theme`, `difficulty_level`) VALUES
 ('Quelle est la couleur dune tomate mure ?','test','facile'),
 ('Quelle est le meilleur langage de programmation ?','autre','difficile');
-
 --
 -- Contenu de la table `answer`
 --
