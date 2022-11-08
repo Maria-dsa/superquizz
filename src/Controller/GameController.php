@@ -9,7 +9,6 @@ use App\Model\UserManager;
 
 class GameController extends AbstractController
 {
-    private array $arrayAllQuestionId;
     private QuestionManager $questionManager;
 
 
@@ -73,15 +72,13 @@ class GameController extends AbstractController
         //$game = $_SESSION['game'];
         //$game->setAnswer($answerId)->setCurrentQuestion(); //+1;
         // header('Location: /game');
-
-
-
     }
 
     public function displayQuestion(Game $game)
     {
         $currentQuestion = $game->getCurrentQuestion();
         $question = $game->selectOneQuestion($currentQuestion);
+        shuffle($question['answers']);
 
 
 
