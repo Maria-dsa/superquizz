@@ -24,6 +24,20 @@ class QuestionManager extends AbstractManager
         return $questions;
     }
 
+    public function selectQuestionsWithAnswer(int $number = 15): array
+    {
+        $query = 'SELECT * FROM ' . self::TABLE .  ' ORDER BY RAND() LIMIT :number';
+
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':number', $number, PDO::PARAM_INT);
+        $statement->execute();
+        $questions = $statement->fetchAll();
+        $answerManager = new AnswerManager();
+        foreach ($questions as &$question) {
+            $question['answers'] = $answerManager->selectAllByQuestionsId($question['id']);
+        }
+        return $questions;
+    }
 
     /**
      * SELECT a question and their answers with their id : ok
