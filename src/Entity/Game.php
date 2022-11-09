@@ -13,18 +13,11 @@ class Game
     private string $createdAt;
     private string|null $endedAt;
     private int $userId;
-    private int $score = 0; //@todo getter et setter
+    //private int $score = 0; //@todo getter et setter
 
     private int $currentQuestion = 0;
 
     private array $questions;
-
-    // private QuestionManager $questionManager;
-
-    // public function __construct()
-    // {
-    //     $this->questionManager = new QuestionManager();
-    // }
 
     /**
      * Get the value of id
@@ -122,14 +115,14 @@ class Game
         return $this;
     }
 
-    public function getCurrentQuestion()
+    public function getCurrentQuestion(): int
     {
         return $this->currentQuestion;
     }
 
-    public function setCurrentQuestion(int $nb)
+    public function setCurrentQuestion(int $currentQuestion)
     {
-        $this->currentQuestion = $nb;
+        $this->currentQuestion = $currentQuestion;
     }
 
     public function incrementCurrentQuestion()
@@ -153,7 +146,7 @@ class Game
     /**
      * Get the value of questions
      */
-    public function getQuestions()
+    public function getQuestions(): array
     {
         return $this->questions;
     }

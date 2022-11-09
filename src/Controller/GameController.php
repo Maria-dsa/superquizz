@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Model\GameHasQuestionManager;
 use App\Model\GameManager;
 use App\Model\QuestionManager;
 use App\Model\UserManager;
+use DateTime;
 
 class GameController extends AbstractController
 {
     private QuestionManager $questionManager;
-
-
 
     public function startGame()
     {
@@ -25,8 +25,8 @@ class GameController extends AbstractController
             foreach ($newGame as $field => $input) {
                 $input ?: $errors[$field] = 'Ce champ doit être complété';
             }
-            // $newGame['nickname'] vaut nickname choisit;
 
+            // $newGame['nickname'] vaut nickname choisit;
             if (strlen($newGame['nickname']) > 45) {
                 $errors['nickname'] = 'Le pseudo doit faire moins de 45 caractères';
             }
@@ -47,11 +47,7 @@ class GameController extends AbstractController
                 $_SESSION['game'] = $game;
                 $_SESSION['nickname'] = $newGame['nickname'];
 
-                //var_dump($_SESSION);
                 return $this->displayQuestion($_SESSION['game']);
-
-                //header('Location: /game');
-                //return $this->twig->render('Game/index.html.twig');
             }
         }
         return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
@@ -59,7 +55,6 @@ class GameController extends AbstractController
 
     public function userAnswer()
     {
-        var_dump($_POST);
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userAnswer = array_map('trim', $_POST);
@@ -82,46 +77,26 @@ class GameController extends AbstractController
             }
 
             if (empty($errors)) {
-                //origine
-                if ($answerId[$userAnswer['answer']]) {
-                    $rep = "bonne réponse";
-                    // faire requete pour enregistrer la réponses en 
-                } else {
-                    $rep = "mauvaise rep";
-                }
-
-                var_dump($rep);
-                // ou alors
+                $gameQuestionManager = new GameHasQuestionManager();
                 //écrire requete de stockage en BDD réponse serait $answerId[$userAnswer['answer']] = 0 ou 1
-
-                $game->incrementCurrentQuestion();
-
-                return $this->displayQuestion($_SESSION['game']);
+                $gameQuestionManager->insert(
+                    $game->getId(),
+                    $game->getQuestions()[$game->getCurrentQuestion()]['id'],
+                    intval($userAnswer['answer']),
+                    $answerId[$userAnswer['answer']]
+                );
+                if ($game->getCurrentQuestion() <= 13) {
+                    $game->incrementCurrentQuestion();
+                    return $this->displayQuestion($_SESSION['game']);
+                }
+                return $this->twig->render('Game/fin.html.twig', ['session' => $_SESSION]);
             }
 
+            unset($_SESSION['game']);
+            unset($_SESSION['nickname']);
             header('Location : /');
             exit();
         }
-
-
-
-
-
-
-
-
-
-
-
-        //$currentQuestion = $game->getCurrentQuestion();
-        //$question = $game->selectOneQuestion($currentQuestion);
-
-        //return $this->twig->render('Game/index.html.twig', ['question' => $question]);
-
-        //$answerId = $_POST['answerId'];
-        //$game = $_SESSION['game'];
-        //$game->setAnswer($answerId)->setCurrentQuestion(); //+1;
-        // header('Location: /game');
     }
 
     public function displayQuestion(Game $game)
@@ -130,8 +105,14 @@ class GameController extends AbstractController
         $question = $game->selectOneQuestion($currentQuestion);
         shuffle($question['answers']);
 
-
-
         return $this->twig->render('Game/index.html.twig', ['question' => $question, 'session' => $_SESSION]);
     }
+
+    // public function displayScore(Game $game)
+    // {
+    // }
+
+    // public function calculateQuestionDuration(DateTime $start, DateTime $end): void //int
+    // {
+    // }
 }
