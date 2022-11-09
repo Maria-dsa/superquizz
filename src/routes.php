@@ -10,6 +10,7 @@ return [
     '' => ['HomeController', 'index',],
     'admin/signin' => ['AdminController', 'signIn',],
     'admin/signup' => ['AdminController', 'signUp',],
+    'result' => ['HomeController', 'result',],
     'game' => ['GameController', 'index'],
     'admin/add' => ['QuestionController', 'add',],
     'admin/show' => ['QuestionController', 'index',],
