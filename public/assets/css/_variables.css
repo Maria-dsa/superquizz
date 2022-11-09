@@ -14,8 +14,4 @@
     --bs-dark-rgb: 23, 28, 32;
     --bs-dark: rgb(var(--bs-dark-rgb));
     /*anthracite*/
-
-    --bs-font-sans-serif: Open Sans, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --bs-heading-font-sans-serif: Gluten, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-
 }

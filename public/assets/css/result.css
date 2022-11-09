@@ -8,14 +8,14 @@
   }
 
 .podium__item {
-    width: 175px;
+    width: 10.9375rem;
   }
 
   .podium__rank {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 45px;
+    font-size: 2.8125rem;
     color: #fff;
   }
 
@@ -25,70 +25,70 @@
   }
 
   .podium .first {
-    min-height: 150px;
+    min-height: 9.375rem;
   }
 
   .podium .second {
-    min-height: 100px;
+    min-height: 6.25rem;
   }
 
   .podium .third {
-    min-height: 70px;
+    min-height: 4.375rem;
   }
 
   .content-image-podium {
-    width: 125px;
-    height: 75px;
+    width: 7.8125rem;
+    height: 4.6875rem;
   }
 
   .img-podium{
-    width: 125px;
-    height: 75px;
+    width: 7.8125rem;
+    height: 4.6875rem;
     object-fit: cover;
   }
 
     @media screen and (max-width: 650px){
     .podium__item{
-        width: 125px;
+        width: 7.8125rem;
     }
 
     .podium .first{
-        min-height: 95px;
+        min-height: 5.9375rem;
     }
 
     .podium .second {
-        min-height: 65px;
+        min-height: 4.0625rem;
       }
 
     .podium .third {
-        min-height: 50px;
-        max-height: 50px;
+        min-height: 3.125rem;
+        max-height: 3.125rem;
     }
 
     .content-image-podium {
-        width: 100px;
-        height: 60px;
+        width: 6.25rem;
+        height: 3.75rem;
       }
 
       .img-podium{
-        width: 100px;
-        height: 60px;
+        width: 6.25rem;
+        height: 3.75rem;
         object-fit: cover;
       }
   }
 
   .row-question{
-    gap: 20px;
+    gap: 1.25rem;
   }
 
   .img-question-div{
-    width: 125px;
-    height: 75px;
+    width: 7.8125rem;
+    height: 4.6875rem;
   }
 
   .img-question{
-    width: 125px;
-    height: 75px;
+    width: 7.8125rem;
+    height: 4.6875rem;
     object-fit: cover;
   }
 
@@ -98,7 +98,7 @@
 
   .true-false{
     position: relative;
-    top:5px
+    top:0.3125rem
   }
 
   .btn:hover{
@@ -106,12 +106,12 @@
   }
 
   .progress {
-    width: 150px;
-    height: 150px !important;
+    width: 9.375rem;
+    height: 9.375rem !important;
     float: left;
-    line-height: 150px;
+    line-height: 9.375rem;
     background: none;
-    margin: 20px;
+    margin: 1.25rem;
     box-shadow: none;
     position: relative;
   }
@@ -120,7 +120,7 @@
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 12px solid #fff;
+    border: 0.75rem solid #fff;
     position: absolute;
     top: 0;
     left: 0;
@@ -140,15 +140,15 @@
     width: 100%;
     height: 100%;
     background: none;
-    border-width: 12px;
+    border-width: 0.75rem;
     border-style: solid;
     position: absolute;
     top: 0;
   }
   .progress .progress-left .progress-bar {
     left: 100%;
-    border-top-right-radius: 80px;
-    border-bottom-right-radius: 80px;
+    border-top-right-radius: 5rem;
+    border-bottom-right-radius: 5rem;
     border-left: 0;
     -webkit-transform-origin: center left;
     transform-origin: center left;
@@ -158,8 +158,8 @@
   }
   .progress .progress-right .progress-bar {
     left: -100%;
-    border-top-left-radius: 80px;
-    border-bottom-left-radius: 80px;
+    border-top-left-radius: 5rem;
+    border-bottom-left-radius: 5rem;
     border-right: 0;
     -webkit-transform-origin: center right;
     transform-origin: center right;
@@ -170,9 +170,9 @@
     height: 90%;
     border-radius: 50%;
     background: #000;
-    font-size: 24px;
+    font-size: 1.5rem;
     color: #fff;
-    line-height: 135px;
+    line-height: 8.4375rem;
     text-align: center;
     position: absolute;
     top: 5%;
