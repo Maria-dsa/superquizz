@@ -1,0 +1,28 @@
+{% extends 'register_layout.html.twig' %}
+
+
+{% block title %}
+	Sign Up Page
+{% endblock %}
+
+
+{% block titleForm %}
+	<h2 class="mb-4">Enregistrement</h2>
+	<p>Entrer votre nom d'utilisateur vu avec votre administrateur puis le mot de passe de votre choix</p>
+
+{% endblock %}
+
+
+{% block endForm %}
+
+
+	<button class="btn btn-primary btn-lg btn-block mt-3" type="submit">Register</button>
+  {% for error in errors %}
+        <p>{{ error }}</p>
+  {% endfor %}
+
+  <p>{{ success }}</p>
+
+
+
+{% endblock %}

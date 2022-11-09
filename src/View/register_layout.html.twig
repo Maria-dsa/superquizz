@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}{% endblock %}
+		</title>
+		<link rel="shortcut icon" href="/assets/images/home-quiz.png" type="image/x-icon">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.2/css/all.css"/>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+		<link rel="stylesheet" href="/assets/css/sign.css">
+
+	</head>
+	<body>
+		<div class="login-card">
+
+
+			{% block content %}
+
+				<section class="vh-100">
+					<div class="container py-5 h-100">
+						<div class="row d-flex justify-content-center align-items-center h-100">
+							<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+								<div class="card shadow-2-strong" style="border-radius: 1rem;">
+									<form action="" method="POST">
+										<div class="card-body p-5 text-center">
+											{% block titleForm %}{% endblock %}
+
+											<div class="form-floating mb-3">
+												<input type="text" class="form-control" id="username" name="username" placeholder="name@example.com">
+												<label for="username">Username</label>
+											</div>
+											<div class="form-floating">
+												<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+												<label for="floatingPassword">Password</label>
+											</div>
+											{% block endForm %}{% endblock %}
+
+
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+
+			{% endblock %}
+
+		</div>
+
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+	</body>
+</html>
