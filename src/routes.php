@@ -9,7 +9,7 @@
 return [
     '' => ['HomeController', 'index',],
     'start-game' => ['GameController', 'startGame'],
-    'next-question' => ['GameController', 'userAnswer'],
+    'question' => ['GameController', 'question'],
     'admin/signin' => ['AdminController', 'signIn',],
     'admin/signup' => ['AdminController', 'signUp',],
     'game' => ['GameController', 'index'],

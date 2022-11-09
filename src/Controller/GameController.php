@@ -47,20 +47,18 @@ class GameController extends AbstractController
                 $_SESSION['game'] = $game;
                 $_SESSION['nickname'] = $newGame['nickname'];
 
-                return $this->displayQuestion($_SESSION['game']);
+                header('Location: /question');
             }
         }
         return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
     }
 
-    public function userAnswer()
+    public function question()
     {
         $errors = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userAnswer = array_map('trim', $_POST);
             $userAnswer = array_map('htmlspecialchars', $userAnswer);
-
-            $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
 
             $game = $_SESSION['game'];
             $questions = $game->getQuestions();
@@ -71,9 +69,14 @@ class GameController extends AbstractController
                 $answerId[$answer['id']] = $answer['isTrue'];
             }
 
-            // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
-            if (!array_key_exists($userAnswer['answer'], $answerId)) {
-                $errors[] = "Réponse invalide";
+            if (!array_key_exists('answer', $userAnswer)) {
+                $errors[] = 'Invalid Answer';
+            } else {
+                $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
+                // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
+                if (!array_key_exists($userAnswer['answer'], $answerId)) {
+                    $errors[] = 'Invalid Answer';
+                }
             }
 
             if (empty($errors)) {
@@ -87,16 +90,17 @@ class GameController extends AbstractController
                 );
                 if ($game->getCurrentQuestion() <= 13) {
                     $game->incrementCurrentQuestion();
-                    return $this->displayQuestion($_SESSION['game']);
+                    header('Location: /question');
                 }
                 return $this->twig->render('Game/fin.html.twig', ['session' => $_SESSION]);
             }
 
             unset($_SESSION['game']);
             unset($_SESSION['nickname']);
-            header('Location : /');
+            header('Location: /');
             exit();
         }
+        return $this->displayQuestion($_SESSION['game']);
     }
 
     public function displayQuestion(Game $game)

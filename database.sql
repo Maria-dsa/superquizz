@@ -16,10 +16,6 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 
-DROP DATABASE IF EXISTS superquizz;
-CREATE DATABASE superquizz;
-USE superquizz;
-
 --
 -- Base de données :  `super-quizz`
 --
