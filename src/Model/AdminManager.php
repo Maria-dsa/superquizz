@@ -9,7 +9,8 @@ class AdminManager extends AbstractManager
     public function checkUser(string $username)
     {
         // prepared request
-        $statement = $this->pdo->prepare('SELECT * FROM ' . self::TABLE . ' WHERE username=:username AND role="admin"');
+        $statement = $this->pdo->prepare('SELECT * FROM ' . self::TABLE .
+            ' WHERE username=:username AND role="admin" AND password IS NULL');
         $statement->bindValue('username', $username, \PDO::PARAM_STR);
         $statement->execute();
         return $statement->fetch();

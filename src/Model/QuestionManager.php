@@ -52,10 +52,8 @@ class QuestionManager extends AbstractManager
         }
         $answers = $answerManager->selectAllByQuestionsId($question['id']);
 
-        $index = 1;
         foreach ($answers as $answer) {
-            $question['answers']['answer' . $index] = $answer;
-            $index++;
+            $question['answers'][] = $answer['answer'];
         }
         return $question;
     }
@@ -81,20 +79,15 @@ class QuestionManager extends AbstractManager
     /**
      * UPDATE all question and answer associated : ok
      **/
-    public function update(array $questionsPost, $questions)
+    public function update(array $questionInfos)
     {
-        $answerManager = new AnswerManager();
-
         $statement = $this->pdo->prepare("UPDATE " . self::TABLE .
             " SET `content` = :question, `theme` = :theme, difficulty_level = :level WHERE id=:id");
-        $statement->bindValue(':id', $questionsPost['id'], PDO::PARAM_INT);
-        $statement->bindValue(':question', $questionsPost['question'], PDO::PARAM_STR);
-        $statement->bindValue(':theme', $questionsPost['theme'], PDO::PARAM_STR);
-        $statement->bindValue(':level', $questionsPost['level'], PDO::PARAM_STR);
-
+        $statement->bindValue(':id', $questionInfos['id'], PDO::PARAM_INT);
+        $statement->bindValue(':question', $questionInfos['question'], PDO::PARAM_STR);
+        $statement->bindValue(':theme', $questionInfos['theme'], PDO::PARAM_STR);
+        $statement->bindValue(':level', $questionInfos['level'], PDO::PARAM_STR);
         $statement->execute();
-
-        return $answerManager->update($questionsPost, $questions);
     }
 
     /**
@@ -121,5 +114,13 @@ class QuestionManager extends AbstractManager
 
         $statement->execute();
         return (int)$this->pdo->lastInsertId();
+    }
+
+    public function updatePicture(string $path, int $id)
+    {
+        $statement = $this->pdo->prepare('UPDATE ' . self::TABLE . ' SET image=:image WHERE id=:id');
+        $statement->bindValue(':image', $path, PDO::PARAM_STR);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
     }
 }
