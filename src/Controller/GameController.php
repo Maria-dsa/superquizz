@@ -6,6 +6,7 @@ use App\Entity\Game;
 use App\Model\GameHasQuestionManager;
 use App\Model\GameManager;
 use App\Model\QuestionManager;
+use App\Model\ResultManager;
 use App\Model\UserManager;
 use DateTime;
 
@@ -66,6 +67,7 @@ class GameController extends AbstractController
             $index = $game->getCurrentQuestion();
             // On récupère les ID des réponses associées à la question
             $answerId = [];
+
             foreach ($questions[$index]['answers'] as $answer) {
                 $answerId[$answer['id']] = $answer['isTrue'];
             }
@@ -119,6 +121,7 @@ class GameController extends AbstractController
 
     public function result(): string
     {
+        $resultmanager = new ResultManager();
         $game =  $_SESSION['game'];
         if (!(count($game->getScore()) === $this->maxQuestion)) {
             unset($_SESSION['game']);
@@ -128,12 +131,15 @@ class GameController extends AbstractController
         }
         $nbGoodAnswer = array_sum($game->getScore());
         $game->setGameDuration();
+        $nbQuestions = count($game->getQuestions());
+        $percentGoodAnswers = $resultmanager->answerIntoPercent($nbGoodAnswer, $nbQuestions);
 
         // Calcul de la durée de la partie en seconde
 
 
         return $this->twig->render('Game/result.html.twig', [
-            'nbGoodAnswer' => $nbGoodAnswer,
+            'nbGoodAnswer' => $nbGoodAnswer, 'nbQuestions' => $nbQuestions,
+            'percentGoodAnswers' => $percentGoodAnswers,
         ]);
     }
 }
