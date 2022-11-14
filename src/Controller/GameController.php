@@ -13,7 +13,7 @@ use DateTime;
 class GameController extends AbstractController
 {
     private QuestionManager $questionManager;
-    private int $maxQuestion = 2;
+    private int $maxQuestion = 15;
 
     public function startGame()
     {
