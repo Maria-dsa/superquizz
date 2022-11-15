@@ -12,7 +12,7 @@ return [
     'question' => ['GameController', 'question'],
     'admin/signin' => ['AdminController', 'signIn',],
     'admin/signup' => ['AdminController', 'signUp',],
-    'result' => ['HomeController', 'result',],
+    'result' => ['GameController', 'result',],
     'game' => ['GameController', 'index'],
     'admin/add' => ['QuestionController', 'add',],
     'admin/show' => ['QuestionController', 'index',],
