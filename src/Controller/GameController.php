@@ -8,7 +8,6 @@ use App\Model\GameManager;
 use App\Model\QuestionManager;
 use App\Model\ResultManager;
 use App\Model\UserManager;
-use App\Model\ResultManager; //US 5.3.1
 use DateTime;
 
 class GameController extends AbstractController
