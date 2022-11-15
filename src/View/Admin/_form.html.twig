@@ -37,13 +37,6 @@
 				<span>{{ errors.level }}</span>
 			</div>
 
-
-			{# <div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
-				<input type="text" class="form-control" id="level" name="level" placeholder="Réponse correcte" value="{{ questionsInfos.level ?? questionsInfos.difficulty_level}}">
-				<label for="level">Niveau de difficulté : Facile, Moyen, Difficile ?</label>
-				<span>{{ errors.level }}</span>
-			</div> #}
-
 			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
 				<input type="text" class="form-control" id="goodAnswer" name="goodAnswer" placeholder="Réponse correcte" value="{{ questionsInfos.goodAnswer ?? questionsInfos.answers.0 }}">
 				<label for="goodAnswer">Réponse correcte</label>

@@ -13,6 +13,16 @@ class QuestionController extends AbstractController
     private array $allTheme = [];
 
     public const LEVEL = ['Débutant', 'Confirmé', 'Expert'];
+    public const FILE_UPLOAD_ERROR = [
+        0 => 'There is no error, the file uploaded with success',
+        1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+        2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+        3 => 'The uploaded file was only partially uploaded',
+        4 => 'No file was uploaded',
+        6 => 'Missing a temporary folder',
+        7 => 'Failed to write file to disk.',
+        8 => 'A PHP extension stopped the file upload.',
+    ];
 
     public function __construct()
     {
@@ -66,11 +76,11 @@ class QuestionController extends AbstractController
             $questionInfos = array_map('trim', $_POST);
             $errors = $this->validate($questionInfos);
 
-            if ($_FILES['picture']['error'] != 4) {
+            $uploadError = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
+            if ($uploadError != self::FILE_UPLOAD_ERROR[4]) {
                 $errorsFiles = $this->validateImg();
                 empty($errorsFiles) ?: $errors['file'] = [...$errorsFiles];
             }
-
 
             // if validation is ok, update and redirection
             if (empty($errors)) {
@@ -173,17 +183,6 @@ class QuestionController extends AbstractController
     private function validateImg(): array
     {
         $errors = [];
-        $phpFileUploadErrors = array(
-            0 => 'There is no error, the file uploaded with success',
-            1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-            2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
-            3 => 'The uploaded file was only partially uploaded',
-            4 => 'No file was uploaded',
-            6 => 'Missing a temporary folder',
-            7 => 'Failed to write file to disk.',
-            8 => 'A PHP extension stopped the file upload.',
-        );
-
         if (!$_FILES['picture']['error']) {
             // Je sécurise et effectue mes tests
             // Je récupère l'extension du fichier
@@ -205,7 +204,7 @@ class QuestionController extends AbstractController
                 $errors[] = "Votre fichier doit faire moins de 2M !";
             }
         } else {
-            $errors[] = $phpFileUploadErrors[$_FILES['picture']['error']];
+            $errors[] = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
         }
 
         if (empty($errors)) {
