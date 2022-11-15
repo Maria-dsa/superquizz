@@ -93,7 +93,7 @@ class ResultManager extends AbstractManager
     return $statement->fetch();
   }
 
-  // US 5.3.1 : % de reussite par question : x% des joueurs ont bien répondu 
+  // US 5.3.1 : % de reussite par question : x % des joueurs ont bien répondu
   //(quand il y a eu au moins une bonne réponse), même pour les parties interrompues
 
   public function selectAllQuestionSuccess(): array

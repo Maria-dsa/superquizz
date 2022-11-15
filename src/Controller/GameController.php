@@ -133,7 +133,7 @@ class GameController extends AbstractController
         // Calcul de la durée de la partie en seconde
 
 
-        //US.5.3.1 : Affichage scores sur page result
+        //US.5.3.1 : Affichage scores/stats sur page results
         $resultManager = new ResultManager();
         $allUsersRanks = $resultManager->selectAllByRank();
         $podium = $resultManager->selectPodium();

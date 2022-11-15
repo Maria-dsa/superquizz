@@ -18,7 +18,7 @@
 --
 -- Table structure for table `answer`
 --
-SET GLOBAL time_zone = "+00:00";
+
 DROP TABLE IF EXISTS `answer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -59,7 +59,7 @@ CREATE TABLE `game` (
   PRIMARY KEY (`id`),
   KEY `game_user` (`userId`),
   CONSTRAINT `game_user` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,7 @@ CREATE TABLE `game` (
 
 LOCK TABLES `game` WRITE;
 /*!40000 ALTER TABLE `game` DISABLE KEYS */;
-INSERT INTO `game` VALUES (1,1,'2022-11-10 10:39:43','2022-11-10 10:40:19',6),(2,1,'2022-11-10 10:40:37','2022-11-10 10:41:15',7),(3,1,'2022-11-10 10:41:38','2022-11-10 10:42:07',8),(4,1,'2022-11-10 10:42:29','2022-11-10 10:43:05',9),(5,1,'2022-11-10 10:43:32',NULL,10),(6,1,'2022-11-10 10:44:46','2022-11-10 10:45:16',11),(7,1,'2022-11-10 10:45:47',NULL,12),(8,1,'2022-11-10 10:46:59',NULL,13);
+INSERT INTO `game` VALUES (1,1,'2022-11-10 10:39:43','2022-11-10 10:40:19',6),(2,1,'2022-11-10 10:40:37','2022-11-10 10:41:15',7),(3,1,'2022-11-10 10:41:38','2022-11-10 10:42:07',8),(4,1,'2022-11-10 10:42:29','2022-11-10 10:43:05',9),(5,1,'2022-11-10 10:43:32',NULL,10),(6,1,'2022-11-10 10:44:46','2022-11-10 10:45:16',11),(7,1,'2022-11-10 10:45:47',NULL,12),(8,1,'2022-11-10 10:46:59',NULL,13),(9,1,'2022-11-10 14:26:53','2022-11-10 14:26:58',14),(10,1,'2022-11-10 15:19:07','2022-11-10 15:19:12',15),(11,1,'2022-11-13 19:15:16',NULL,16),(12,1,'2022-11-13 19:16:09','2022-11-13 18:16:14',17),(13,1,'2022-11-13 21:25:45','2022-11-13 20:25:51',18);
 /*!40000 ALTER TABLE `game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `game_has_question` (
   CONSTRAINT `fk_game_has_question_answer` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`id`),
   CONSTRAINT `fk_game_has_question_game` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`),
   CONSTRAINT `fk_game_has_question_question` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,9 +102,27 @@ CREATE TABLE `game_has_question` (
 
 LOCK TABLES `game_has_question` WRITE;
 /*!40000 ALTER TABLE `game_has_question` DISABLE KEYS */;
-INSERT INTO `game_has_question` VALUES (1,1,13,49,1,NULL),(2,1,30,118,0,NULL),(3,1,22,86,0,NULL),(4,1,26,104,0,NULL),(5,1,23,92,0,NULL),(6,1,6,24,0,NULL),(7,1,2,5,1,NULL),(8,1,12,46,0,NULL),(9,1,28,110,0,NULL),(10,1,15,59,0,NULL),(11,1,5,19,0,NULL),(12,1,31,122,0,NULL),(13,1,29,113,1,NULL),(14,1,19,76,0,NULL),(15,1,32,125,1,NULL),(16,2,22,86,0,NULL),(17,2,14,53,1,NULL),(18,2,27,105,1,NULL),(19,2,10,37,1,NULL),(20,2,7,26,0,NULL),(21,2,1,3,0,NULL),(22,2,9,33,1,NULL),(23,2,5,18,0,NULL),(24,2,18,69,1,NULL),(25,2,29,115,0,NULL),(26,2,26,101,1,NULL),(27,2,17,65,1,NULL),(28,2,8,30,0,NULL),(29,2,12,47,0,NULL),(30,2,20,80,0,NULL),(31,3,23,92,0,NULL),(32,3,28,110,0,NULL),(33,3,18,70,0,NULL),(34,3,6,24,0,NULL),(35,3,19,73,1,NULL),(36,3,16,61,1,NULL),(37,3,29,114,0,NULL),(38,3,8,31,0,NULL),(39,3,30,119,0,NULL),(40,3,2,7,0,NULL),(41,3,9,36,0,NULL),(42,3,20,79,0,NULL),(43,3,11,42,0,NULL),(44,3,5,20,0,NULL),(45,3,32,127,0,NULL),(46,4,1,3,0,NULL),(47,4,3,11,0,NULL),(48,4,17,66,0,NULL),(49,4,21,81,1,NULL),(50,4,25,98,0,NULL),(51,4,26,104,0,NULL),(52,4,11,41,1,NULL),(53,4,24,93,1,NULL),(54,4,4,13,1,NULL),(55,4,23,91,0,NULL),(56,4,8,32,0,NULL),(57,4,19,74,0,NULL),(58,4,27,108,0,NULL),(59,4,18,70,0,NULL),(60,4,12,45,1,NULL),(61,5,11,42,0,NULL),(62,5,10,37,1,NULL),(63,5,5,19,0,NULL),(64,5,26,102,0,NULL),(65,5,1,2,1,NULL),(66,5,32,127,0,NULL),(67,5,25,98,0,NULL),(68,5,28,112,0,NULL),(69,5,4,16,0,NULL),(70,5,18,71,0,NULL),(71,5,30,119,0,NULL),(72,5,19,76,0,NULL),(73,5,23,92,0,NULL),(74,6,31,123,0,NULL),(75,6,18,69,1,NULL),(76,6,22,87,0,NULL),(77,6,24,93,1,NULL),(78,6,7,27,0,NULL),(79,6,13,49,1,NULL),(80,6,27,105,1,NULL),(81,6,10,39,0,NULL),(82,6,20,79,0,NULL),(83,6,14,56,0,NULL),(84,6,12,47,0,NULL),(85,6,32,128,0,NULL),(86,6,4,15,0,NULL),(87,6,30,117,1,NULL),(88,6,17,67,0,NULL),(89,7,18,70,0,NULL),(90,7,1,1,0,NULL),(91,7,29,116,0,NULL),(92,7,20,79,0,NULL),(93,7,10,40,0,NULL),(94,7,7,27,0,NULL),(95,7,17,67,0,NULL),(96,7,21,84,0,NULL),(97,8,28,111,0,NULL),(98,8,18,72,0,NULL),(99,8,21,81,1,NULL),(100,8,8,30,0,NULL),(101,8,13,49,1,NULL),(102,8,5,17,1,NULL);
+INSERT INTO `game_has_question` VALUES (1,1,13,49,1,NULL),(2,1,30,118,0,NULL),(3,1,22,86,0,NULL),(4,1,26,104,0,NULL),(5,1,23,92,0,NULL),(6,1,6,24,0,NULL),(7,1,2,5,1,NULL),(8,1,12,46,0,NULL),(9,1,28,110,0,NULL),(10,1,15,59,0,NULL),(11,1,5,19,0,NULL),(12,1,31,122,0,NULL),(13,1,29,113,1,NULL),(14,1,19,76,0,NULL),(15,1,32,125,1,NULL),(16,2,22,86,0,NULL),(17,2,14,53,1,NULL),(18,2,27,105,1,NULL),(19,2,10,37,1,NULL),(20,2,7,26,0,NULL),(21,2,1,3,0,NULL),(22,2,9,33,1,NULL),(23,2,5,18,0,NULL),(24,2,18,69,1,NULL),(25,2,29,115,0,NULL),(26,2,26,101,1,NULL),(27,2,17,65,1,NULL),(28,2,8,30,0,NULL),(29,2,12,47,0,NULL),(30,2,20,80,0,NULL),(31,3,23,92,0,NULL),(32,3,28,110,0,NULL),(33,3,18,70,0,NULL),(34,3,6,24,0,NULL),(35,3,19,73,1,NULL),(36,3,16,61,1,NULL),(37,3,29,114,0,NULL),(38,3,8,31,0,NULL),(39,3,30,119,0,NULL),(40,3,2,7,0,NULL),(41,3,9,36,0,NULL),(42,3,20,79,0,NULL),(43,3,11,42,0,NULL),(44,3,5,20,0,NULL),(45,3,32,127,0,NULL),(46,4,1,3,0,NULL),(47,4,3,11,0,NULL),(48,4,17,66,0,NULL),(49,4,21,81,1,NULL),(50,4,25,98,0,NULL),(51,4,26,104,0,NULL),(52,4,11,41,1,NULL),(53,4,24,93,1,NULL),(54,4,4,13,1,NULL),(55,4,23,91,0,NULL),(56,4,8,32,0,NULL),(57,4,19,74,0,NULL),(58,4,27,108,0,NULL),(59,4,18,70,0,NULL),(60,4,12,45,1,NULL),(61,5,11,42,0,NULL),(62,5,10,37,1,NULL),(63,5,5,19,0,NULL),(64,5,26,102,0,NULL),(65,5,1,2,1,NULL),(66,5,32,127,0,NULL),(67,5,25,98,0,NULL),(68,5,28,112,0,NULL),(69,5,4,16,0,NULL),(70,5,18,71,0,NULL),(71,5,30,119,0,NULL),(72,5,19,76,0,NULL),(73,5,23,92,0,NULL),(74,6,31,123,0,NULL),(75,6,18,69,1,NULL),(76,6,22,87,0,NULL),(77,6,24,93,1,NULL),(78,6,7,27,0,NULL),(79,6,13,49,1,NULL),(80,6,27,105,1,NULL),(81,6,10,39,0,NULL),(82,6,20,79,0,NULL),(83,6,14,56,0,NULL),(84,6,12,47,0,NULL),(85,6,32,128,0,NULL),(86,6,4,15,0,NULL),(87,6,30,117,1,NULL),(88,6,17,67,0,NULL),(89,7,18,70,0,NULL),(90,7,1,1,0,NULL),(91,7,29,116,0,NULL),(92,7,20,79,0,NULL),(93,7,10,40,0,NULL),(94,7,7,27,0,NULL),(95,7,17,67,0,NULL),(96,7,21,84,0,NULL),(97,8,28,111,0,NULL),(98,8,18,72,0,NULL),(99,8,21,81,1,NULL),(100,8,8,30,0,NULL),(101,8,13,49,1,NULL),(102,8,5,17,1,NULL),(103,9,5,20,0,NULL),(104,9,29,114,0,NULL),(105,10,13,50,0,NULL),(106,10,1,3,0,NULL),(107,12,32,127,0,NULL),(108,12,23,90,0,NULL),(109,13,20,78,0,NULL),(110,13,4,14,0,NULL);
 /*!40000 ALTER TABLE `game_has_question` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary view structure for view `gamerank`
+--
+
+DROP TABLE IF EXISTS `gamerank`;
+/*!50001 DROP VIEW IF EXISTS `gamerank`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `gamerank` AS SELECT 
+ 1 AS `user_id`,
+ 1 AS `username`,
+ 1 AS `game_type`,
+ 1 AS `rang`,
+ 1 AS `nb_parties`,
+ 1 AS `score_moyen`,
+ 1 AS `temps_moyen`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `question`
@@ -134,6 +152,19 @@ INSERT INTO `question` VALUES (1,'Quelle est la couleur d\'une tomate mure ?','t
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `questionsuccess`
+--
+
+DROP TABLE IF EXISTS `questionsuccess`;
+/*!50001 DROP VIEW IF EXISTS `questionsuccess`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `questionsuccess` AS SELECT 
+ 1 AS `question_id`,
+ 1 AS `pourcentage_reussite`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `user`
 --
 
@@ -147,7 +178,7 @@ CREATE TABLE `user` (
   `picture` varchar(255) DEFAULT NULL,
   `role` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,9 +187,45 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'florent',NULL,NULL,'admin'),(2,'nicolas',NULL,NULL,'admin'),(3,'maria',NULL,NULL,'admin'),(4,'magali',NULL,NULL,'admin'),(5,'JF',NULL,NULL,'admin'),(6,'maria',NULL,NULL,NULL),(7,'newplayer',NULL,NULL,NULL),(8,'Florent',NULL,NULL,NULL),(9,'Magali',NULL,NULL,NULL),(10,'Nicolas',NULL,NULL,NULL),(11,'Victor',NULL,NULL,NULL),(12,'Hugo',NULL,NULL,NULL),(13,'Max',NULL,NULL,NULL);
+INSERT INTO `user` VALUES (1,'florent',NULL,NULL,'admin'),(2,'nicolas',NULL,NULL,'admin'),(3,'maria',NULL,NULL,'admin'),(4,'magali',NULL,NULL,'admin'),(5,'JF',NULL,NULL,'admin'),(6,'maria',NULL,NULL,NULL),(7,'newplayer',NULL,NULL,NULL),(8,'Florent',NULL,NULL,NULL),(9,'Magali',NULL,NULL,NULL),(10,'Nicolas',NULL,NULL,NULL),(11,'Victor',NULL,NULL,NULL),(12,'Hugo',NULL,NULL,NULL),(13,'Max',NULL,NULL,NULL),(14,'maria',NULL,NULL,NULL),(15,'maria',NULL,NULL,NULL),(16,'maria',NULL,NULL,NULL),(17,'maria',NULL,NULL,NULL),(18,'nouveaujoueur',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `gamerank`
+--
+
+/*!50001 DROP VIEW IF EXISTS `gamerank`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = cp850 */;
+/*!50001 SET character_set_results     = cp850 */;
+/*!50001 SET collation_connection      = cp850_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `gamerank` AS select `sq1`.`user_id` AS `user_id`,`sq1`.`username` AS `username`,`sq1`.`game_type` AS `game_type`,rank() OVER (PARTITION BY `sq1`.`game_type` ORDER BY `sq1`.`score_moyen` desc,`sq1`.`temps_moyen` )  AS `rang`,`sq1`.`nb_parties` AS `nb_parties`,`sq1`.`score_moyen` AS `score_moyen`,`sq1`.`temps_moyen` AS `temps_moyen` from (select `user`.`id` AS `user_id`,`user`.`username` AS `username`,`game`.`type` AS `game_type`,count(distinct `game`.`id`) AS `nb_parties`,round((sum(`game_has_question`.`is_true`) / count(distinct `game`.`id`)),2) AS `score_moyen`,round((sum(`game_has_question`.`time`) / count(distinct `game`.`id`)),2) AS `temps_moyen` from ((`game_has_question` join `game` on((`game`.`id` = `game_has_question`.`game_id`))) join `user` on((`user`.`id` = `game`.`userId`))) where (`game`.`endedAt` is not null) group by `user`.`id`,`user`.`username`,`game`.`type` order by `score_moyen` desc,`temps_moyen`) `sq1` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `questionsuccess`
+--
+
+/*!50001 DROP VIEW IF EXISTS `questionsuccess`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = cp850 */;
+/*!50001 SET character_set_results     = cp850 */;
+/*!50001 SET collation_connection      = cp850_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `questionsuccess` AS select `game_has_question`.`question_id` AS `question_id`,(sum(`game_has_question`.`is_true`) / count(`game_has_question`.`id`)) AS `pourcentage_reussite` from ((`game_has_question` join `game` on((`game`.`id` = `game_has_question`.`game_id`))) join `user` on((`user`.`id` = `game`.`userId`))) group by `game_has_question`.`question_id` order by `game_has_question`.`question_id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -169,4 +236,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-10 11:07:13
+-- Dump completed on 2022-11-13 22:12:23
