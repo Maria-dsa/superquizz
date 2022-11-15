@@ -4,17 +4,30 @@ namespace App\Controller;
 
 use App\Model\AnswerManager;
 use App\Model\QuestionManager;
+use App\Model\ThemeManager;
 
 class QuestionController extends AbstractController
 {
     private QuestionManager $questionManager;
-    public const THEME = ['Culture Générale', 'Sciences', 'Sport'];
-    public const LEVEL = ['facile', 'moyen', 'difficile'];
+    private ThemeManager $themeManager;
+    private array $allTheme = [];
+
+    public const LEVEL = ['Débutant', 'Confirmé', 'Expert'];
 
     public function __construct()
     {
         parent::__construct();
         $this->questionManager = new QuestionManager();
+        $this->themeManager = new ThemeManager();
+        $this->setAllTheme();
+    }
+
+    public function setAllTheme()
+    {
+        $results = $this->themeManager->selectAll();
+        foreach ($results as $result) {
+            $this->allTheme[] = $result['content'];
+        }
     }
     /**
      * List items
@@ -72,10 +85,13 @@ class QuestionController extends AbstractController
             }
         }
 
-        return $this->twig->render(
-            'Admin/update.html.twig',
-            ['questionsInfos' => $questionInfos, 'errors' => $errors, 'id' => $id,]
-        );
+        return $this->twig->render('Admin/update.html.twig', [
+            'questionsInfos' => $questionInfos,
+            'errors' => $errors,
+            'id' => $id,
+            'themes' => $this->allTheme,
+            'levels' => self::LEVEL,
+        ]);
     }
     /**
      * Show informations for a specific question
@@ -121,6 +137,8 @@ class QuestionController extends AbstractController
             $questionInfos = array_map('trim', $_POST);
             $errors = $this->validate($questionInfos);
 
+
+
             if ($_FILES['picture']['error'] != 4) {
                 $errorsFiles = $this->validateImg();
                 empty($errorsFiles) ?: $errors['file'] = [...$errorsFiles];
@@ -139,11 +157,17 @@ class QuestionController extends AbstractController
 
             return $this->twig->render('Admin/add.html.twig', [
                 'questionsInfos' => $questionInfos,
-                'errors' => $errors
+                'errors' => $errors,
+                'themes' => $this->allTheme,
+                'levels' => self::LEVEL,
             ]);
         }
 
-        return $this->twig->render('Admin/add.html.twig', ['errors' => $errors]);
+        return $this->twig->render('Admin/add.html.twig', [
+            'errors' => $errors,
+            'themes' => $this->allTheme,
+            'levels' => self::LEVEL,
+        ]);
     }
 
     private function validateImg(): array
@@ -211,7 +235,7 @@ class QuestionController extends AbstractController
             $adminInput ?: $errors[$field] = 'Ce champ doit être complété';
         }
 
-        if (!in_array($questionInfos['theme'], self::THEME)) {
+        if (!in_array($questionInfos['theme'], $this->allTheme)) {
             $errors['theme'] = 'Le thème choisit doit être dans la liste';
         }
 
@@ -219,8 +243,8 @@ class QuestionController extends AbstractController
             $errors['question'] = 'La question doit faire moins de 500 charactères';
         }
 
-        if (!in_array(strtolower($questionInfos['level']), self::LEVEL)) {
-            $errors['level'] = 'Le niveau choisit doit être facile, moyen ou difficile';
+        if (!in_array($questionInfos['level'], self::LEVEL)) {
+            $errors['level'] = 'Le niveau choisit doit être Débutant, Confirmé ou Expert';
         }
 
         if (strlen($questionInfos['goodAnswer']) > 255) {
