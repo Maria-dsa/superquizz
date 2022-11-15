@@ -7,6 +7,7 @@ use App\Model\GameHasQuestionManager;
 use App\Model\GameManager;
 use App\Model\QuestionManager;
 use App\Model\UserManager;
+use App\Model\ResultManager; //US 5.3.1
 use DateTime;
 
 class GameController extends AbstractController
@@ -132,8 +133,27 @@ class GameController extends AbstractController
         // Calcul de la durée de la partie en seconde
 
 
+        //US.5.3.1 : Affichage scores sur page result
+        $resultManager = new ResultManager();
+        $allUsersRanks = $resultManager->selectAllByRank();
+        $podium = $resultManager->selectPodium();
+        $id = $game->getUserId();
+        $userRank = $resultManager->selectOneRankById($id);
+        $questionSuccess = $resultManager->selectAllQuestionSuccess();
+
+        $arrayResult = [];
+        foreach ($game->getQuestions() as $question) {
+            $result = $resultManager->selectQuestionSuccessById($question['id']);
+            $arrayResult[$result['question_id']] = $result['pourcentage_reussite'];
+        }
+
         return $this->twig->render('Game/result.html.twig', [
             'nbGoodAnswer' => $nbGoodAnswer,
+            'allUsersRanks' => $allUsersRanks,
+            'userRank' => $userRank,
+            'podium' => $podium,
+            'questionSuccess' => $questionSuccess,
+            'arrayResult' => $arrayResult,
         ]);
     }
 }
