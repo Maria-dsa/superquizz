@@ -2,22 +2,49 @@
 
 namespace App\Entity;
 
-use App\Model\QuestionManager;
+use App\Model\GameManager;
 use App\Model\UserManager;
+use App\Model\QuestionManager;
+use DateTime;
 
 class Game
 {
     // on doit avoir ici les mêmes propriétés que les champs de la table game
     private int $id;
     private int $type;
-    private string $createdAt;
-    private string|null $endedAt;
+    private DateTime|string $createdAt;
+    private DateTime|null|string $endedAt;
     private int $userId;
-    //private int $score = 0; //@todo getter et setter
+    private array $score = [];
 
     private int $currentQuestion = 0;
+    private string $gameDuration;
 
     private array $questions;
+
+
+
+
+
+    /**
+     * Get the value of id
+     */
+    public function getScore(): array
+    {
+        return $this->score;
+    }
+
+    /**
+     * Set the value of id
+     */
+    public function setScore($userAnswer): void
+    {
+        $this->score[] = $userAnswer;
+    }
+
+
+
+
 
     /**
      * Get the value of id
@@ -90,11 +117,14 @@ class Game
      *
      * @return  self
      */
-    public function setEndedAt($endedAt)
+    public function setEndedAt(DateTime $endedAt)
     {
         $this->endedAt = $endedAt;
+        $gameManager = new GameManager();
+        $gameManager->updateEndedAt($this->id, $endedAt);
         return $this;
     }
+
 
     /**
      * Get the value of user_id
@@ -149,5 +179,35 @@ class Game
     public function getQuestions(): array
     {
         return $this->questions;
+    }
+
+    /**
+     * Get the value of gameDuration
+     */
+    public function getGameDuration(): string
+    {
+        return $this->gameDuration;
+    }
+
+    /**
+     * Set the value of gameDuration
+     *
+     * @return  self
+     */
+    public function setGameDuration()
+    {
+        $this->gameDuration = $this->calculateGameDuration($this->createdAt, $this->endedAt);
+        return $this;
+    }
+
+    public function calculateGameDuration(string $start, DateTime $end): string
+    {
+        $start = new DateTime($start);
+        $interval = $end->diff($start);
+        $test = floatval($interval->format('%a')) * 86400
+            + floatval($interval->format('%h')) * 3600
+            + floatval($interval->format('%m')) * 60
+            + floatval($interval->format('%s'));
+        return strval($test);
     }
 }

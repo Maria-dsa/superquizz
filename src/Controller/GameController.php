@@ -6,12 +6,14 @@ use App\Entity\Game;
 use App\Model\GameHasQuestionManager;
 use App\Model\GameManager;
 use App\Model\QuestionManager;
+use App\Model\ResultManager;
 use App\Model\UserManager;
 use DateTime;
 
 class GameController extends AbstractController
 {
     private QuestionManager $questionManager;
+    private int $maxQuestion = 15;
 
     public function startGame()
     {
@@ -65,6 +67,7 @@ class GameController extends AbstractController
             $index = $game->getCurrentQuestion();
             // On récupère les ID des réponses associées à la question
             $answerId = [];
+
             foreach ($questions[$index]['answers'] as $answer) {
                 $answerId[$answer['id']] = $answer['isTrue'];
             }
@@ -88,11 +91,15 @@ class GameController extends AbstractController
                     intval($userAnswer['answer']),
                     $answerId[$userAnswer['answer']]
                 );
-                if ($game->getCurrentQuestion() <= 13) {
+                $game->setScore($answerId[$userAnswer['answer']]);
+                if ($game->getCurrentQuestion() <= $this->maxQuestion - 2) {
                     $game->incrementCurrentQuestion();
                     header('Location: /question');
+                    exit();
                 }
-                return $this->twig->render('Game/fin.html.twig', ['session' => $_SESSION]);
+                $game->setEndedAt(new DateTime());
+                header('Location: /result');
+                exit();
             }
 
             unset($_SESSION['game']);
@@ -112,11 +119,27 @@ class GameController extends AbstractController
         return $this->twig->render('Game/index.html.twig', ['question' => $question, 'session' => $_SESSION]);
     }
 
-    // public function displayScore(Game $game)
-    // {
-    // }
+    public function result(): string
+    {
+        $resultmanager = new ResultManager();
+        $game =  $_SESSION['game'];
+        if (!(count($game->getScore()) === $this->maxQuestion)) {
+            unset($_SESSION['game']);
+            unset($_SESSION['nickname']);
+            header('Location: /');
+            exit();
+        }
+        $nbGoodAnswer = array_sum($game->getScore());
+        $game->setGameDuration();
+        $nbQuestions = count($game->getQuestions());
+        $percentGoodAnswers = $resultmanager->answerIntoPercent($nbGoodAnswer, $nbQuestions);
 
-    // public function calculateQuestionDuration(DateTime $start, DateTime $end): void //int
-    // {
-    // }
+        // Calcul de la durée de la partie en seconde
+
+
+        return $this->twig->render('Game/result.html.twig', [
+            'nbGoodAnswer' => $nbGoodAnswer, 'nbQuestions' => $nbQuestions,
+            'percentGoodAnswers' => $percentGoodAnswers,
+        ]);
+    }
 }
