@@ -162,6 +162,8 @@ class Game
 
     public function setQuestions(array $questions)
     {
+        //$questions['createdAt'] = '';
+        //$questions['endedAt'] = '';
         $this->questions = $questions;
     }
 

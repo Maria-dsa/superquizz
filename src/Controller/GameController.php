@@ -15,23 +15,33 @@ class GameController extends AbstractController
     private QuestionManager $questionManager;
     private int $maxQuestion = 15;
 
+    public const GAME_TYPES = ['1', '2'];
+    public const FILE_UPLOAD_ERROR = [
+        0 => 'There is no error, the file uploaded with success',
+        1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
+        2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form',
+        3 => 'The uploaded file was only partially uploaded',
+        4 => 'No file was uploaded',
+        6 => 'Missing a temporary folder',
+        7 => 'Failed to write file to disk.',
+        8 => 'A PHP extension stopped the file upload.',
+    ];
+
     public function startGame()
     {
         $errors = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newGame = array_map('trim', $_POST); // champ type de jeu + nickname
-            $newGame = array_map('htmlspecialchars', $newGame);
-            $newGame['type'] = 1;
+            //$newGame['type'] = 1;
+            $errors = $this->validate($newGame);
 
-            foreach ($newGame as $field => $input) {
-                $input ?: $errors[$field] = 'Ce champ doit être complété';
+            $uploadError = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
+            if ($uploadError != self::FILE_UPLOAD_ERROR[4]) {
+                $errorsFiles = $this->validateImg();
+                empty($errorsFiles) ?: $errors['file'] = [...$errorsFiles];
             }
 
-            // $newGame['nickname'] vaut nickname choisit;
-            if (strlen($newGame['nickname']) > 45) {
-                $errors['nickname'] = 'Le pseudo doit faire moins de 45 caractères';
-            }
 
             if (empty($errors)) {
                 $userManager = new UserManager();
@@ -44,7 +54,12 @@ class GameController extends AbstractController
                 $game = $gameManager->selectOneGameById($gameId);
 
                 $this->questionManager = new QuestionManager();
-                $game->setQuestions($this->questionManager->selectQuestionsWithAnswer());
+
+                if ($newGame['gameType'] === self::GAME_TYPES[0]) {
+                    $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(2, $newGame['theme']));
+                } else {
+                    $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(20));
+                }
 
                 $_SESSION['game'] = $game;
                 $_SESSION['nickname'] = $newGame['nickname'];
@@ -54,6 +69,81 @@ class GameController extends AbstractController
         }
         return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
     }
+
+    public function validate(array $newGame): array
+    {
+        $errors = [];
+        foreach ($newGame as $field => $userInput) {
+            $userInput ?: $errors[$field] = 'Ce champ doit être complété';
+        }
+
+        // $newGame['nickname'] vaut nickname choisit;
+        if (strlen($newGame['nickname']) > 45) {
+            $errors['nickname'] = 'Le pseudo doit faire moins de 45 caractères';
+        }
+
+        $questionController = new QuestionController();
+        $allThemes = $questionController->getAllTheme();
+        $allThemes[] = 'all';
+
+        if (!in_array($newGame['theme'], $allThemes)) {
+            $errors['theme'] = 'Le thème choisit doit être dans la liste';
+        }
+
+        if (!in_array($newGame['gameType'], self::GAME_TYPES)) {
+            $errors['gameType'] = 'Le jeu choisit est invalide';
+        }
+
+        return $errors;
+    }
+
+    private function validateImg(): array
+    {
+        $errors = [];
+        if (!$_FILES['picture']['error']) {
+            // Je sécurise et effectue mes tests
+            // Je récupère l'extension du fichier
+            $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
+            // Les extensions autorisées
+            $authorizedExtensions = ['jpg', 'JPG','jpeg','png', 'gif', 'webp'];
+            // Le poids max géré en octet
+            $maxFileSize = 2000000;
+
+            /****** Si l'extension est autorisée *************/
+            if ((!in_array($extension, $authorizedExtensions))) {
+                $errors[] = 'Veuillez sélectionner une image de type jpg, jpeg, png, gif ou webp !';
+            }
+            /****** On vérifie si l'image existe et si le poids est autorisé en octets *************/
+            if (
+                file_exists($_FILES['picture']['tmp_name'])
+                    && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
+            ) {
+                $errors[] = "Votre fichier doit faire moins de 2M !";
+            }
+        } else {
+            $errors[] = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
+        }
+
+        if (empty($errors)) {
+            // ON récupère l'extension
+            $fileExtension = pathinfo($_FILES['picture']['full_path'])['extension'];
+            //ON donne un nom unique au fichier avec son extension
+            $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
+            // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
+            //(attention ce dossier doit être accessible en écriture)
+            $uploadDir = 'images/';
+            // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur
+            //le poste du client (mais d'autre stratégies de nommage sont possibles)
+            $uploadFile = $uploadDir . basename($_FILES['picture']['name']);
+            //pour récupérer le type MIME
+            //var_dump(mime_content_type($_FILES['picture']['tmp_name']));
+            // on déplace le fichier temporaire vers le nouvel emplacement sur le serveur.
+            //Ça y est, le fichier est uploadé
+            move_uploaded_file($_FILES['picture']['tmp_name'], $uploadFile);
+        }
+        return $errors;
+    }
+
 
     public function question()
     {

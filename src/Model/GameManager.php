@@ -14,7 +14,7 @@ class GameManager extends AbstractManager
     {
         $query = 'INSERT INTO game (`type`, `createdAt`, `userId`) VALUES (:type, NOW(), :userId)';
         $statement = $this->pdo->prepare($query);
-        $statement->bindValue('type', $game['type']);
+        $statement->bindValue('type', intval($game['gameType']));
         $statement->bindValue('userId', $game['userId']);
         $statement->execute();
         return $this->pdo->lastInsertId();
