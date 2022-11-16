@@ -137,7 +137,27 @@ class GameController extends AbstractController
         // Calcul de la durée de la partie en seconde
 
 
+        //US.5.3.1 : Affichage scores/stats sur page results
+        $resultManager = new ResultManager();
+        $allUsersRanks = $resultManager->selectAllByRank();
+        $podium = $resultManager->selectPodium();
+        $id = $game->getUserId();
+        $userRank = $resultManager->selectOneRankById($id);
+        $questionSuccess = $resultManager->selectAllQuestionSuccess();
+
+        $arrayResult = [];
+        foreach ($game->getQuestions() as $question) {
+            $result = $resultManager->selectQuestionSuccessById($question['id']);
+            $arrayResult[$result['question_id']] = $result['pourcentage_reussite'];
+        }
+
         return $this->twig->render('Game/result.html.twig', [
+
+            'allUsersRanks' => $allUsersRanks,
+            'userRank' => $userRank,
+            'podium' => $podium,
+            'questionSuccess' => $questionSuccess,
+            'arrayResult' => $arrayResult,
             'nbGoodAnswer' => $nbGoodAnswer, 'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
         ]);
