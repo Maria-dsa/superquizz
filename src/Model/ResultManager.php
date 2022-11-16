@@ -12,14 +12,14 @@ class ResultManager extends AbstractManager
     public function selectAllByRank(): array
     {
       // prepared request
-        $query = "SELECT user_id, username, game_type, rank() 
+        $query = "SELECT user_id, username, game_type, rank()
     OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
-    , nb_parties, score_moyen, temps_moyen 
-    FROM 
+    , nb_parties, score_moyen, temps_moyen
+    FROM
     (
-    SELECT 
-    user.id as user_id, 
-    user.username, 
+    SELECT
+    user.id as user_id,
+    user.username,
     game.type as game_type,
     COUNT(DISTINCT game.id) as nb_parties,
     ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
@@ -37,14 +37,14 @@ class ResultManager extends AbstractManager
     public function selectPodium(): array
     {
       // prepared request
-        $query = "SELECT user_id, username, game_type, rank() 
+        $query = "SELECT user_id, username, game_type, rank()
     OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
-    , nb_parties, score_moyen, temps_moyen 
-    FROM 
+    , nb_parties, score_moyen, temps_moyen
+    FROM
     (
-    SELECT 
-    user.id as user_id, 
-    user.username, 
+    SELECT
+    user.id as user_id,
+    user.username,
     game.type as game_type,
     COUNT(DISTINCT game.id) as nb_parties,
     ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
@@ -64,16 +64,16 @@ class ResultManager extends AbstractManager
     {
       // prepared request
         $query = "SELECT user_id, username, game_type, rang, nb_parties, score_moyen, temps_moyen
-    FROM 
+    FROM
     (
-    SELECT user_id, username, game_type, rank() 
+    SELECT user_id, username, game_type, rank()
     OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
-    , nb_parties, score_moyen, temps_moyen 
-    FROM 
+    , nb_parties, score_moyen, temps_moyen
+    FROM
     (
-    SELECT 
-    user.id as user_id, 
-    user.username, 
+    SELECT
+    user.id as user_id,
+    user.username,
     game.type as game_type,
     COUNT(DISTINCT game.id) as nb_parties,
     ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
@@ -98,7 +98,7 @@ class ResultManager extends AbstractManager
 
     public function selectAllQuestionSuccess(): array
     {
-        $query = "SELECT game_has_question.question_id, 
+        $query = "SELECT /*game_has_question.question_id, */
     ROUND((sum(game_has_question.is_true)/COUNT(game_has_question.id))*100,2)
     as pourcentage_reussite
     FROM game_has_question
@@ -113,8 +113,8 @@ class ResultManager extends AbstractManager
 
     public function selectQuestionSuccessById($id): array
     {
-        $query = "SELECT game_has_question.question_id, 
-    ROUND((sum(game_has_question.is_true)/COUNT(game_has_question.id))*100,2)
+        $query = "SELECT game_has_question.question_id,
+    ROUND((sum(game_has_question.is_true)/COUNT(game_has_question.id))*100)
     as pourcentage_reussite
     FROM game_has_question
     INNER JOIN game ON game.id = game_has_question.game_id INNER JOIN user ON user.id = game.userId

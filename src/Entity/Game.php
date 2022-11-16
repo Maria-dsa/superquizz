@@ -204,10 +204,10 @@ class Game
     {
         $start = new DateTime($start);
         $interval = $end->diff($start);
-        $test = floatval($interval->format('%a')) * 86400
+        $duration = floatval($interval->format('%a')) * 86400
             + floatval($interval->format('%h')) * 3600
             + floatval($interval->format('%m')) * 60
             + floatval($interval->format('%s'));
-        return strval($test);
+        return strval($duration);
     }
 }
