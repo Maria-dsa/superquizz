@@ -1,0 +1,295 @@
+@import '_variables.css';
+
+/*##############################################"*/
+/*                     NAVBAR                    */
+/*##############################################"*/
+
+nav img {
+    width: 100px;
+    height: auto;
+}
+
+nav h1 {
+   font-size: var(--font-size-title);
+   padding-top: var(--spacing-2);
+   text-align: center;
+}
+
+nav ul li {
+    font-size: calc(var(--font-size-text)*1.5);
+    text-align: center;
+}
+
+.info-admin {
+    position: absolute;
+    bottom: var(--spacing-4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--bs-white);
+    width:auto;
+}
+
+.info-admin img {
+    border-radius: 50%;
+    margin-bottom: var(--spacing-2);
+}
+
+.mdi {
+    margin-right: var(--spacing-1);
+}
+
+.submit-btn {
+    color: var(--bs-white);
+    font-weight: 600;
+    font-size: calc(var(--font-size-text)*1.5);
+    background-color: var(--bs-primary);
+    padding: var(--spacing-1) var(--spacing-4);
+    margin-top: var(--spacing-4);
+    border: 2px solid var(--bs-white);
+}
+
+.addForm {
+    position: relative;
+}
+
+.submit-btn:hover {
+    background-color: #003b55;
+    color: var(--bs-white);
+    box-shadow: 0px 0px 20px 10px #0ff;
+}
+
+.submit-btn::before, 
+.submit-btn::after {
+    content: "";
+    width:0;
+    height: 4px;
+    position: absolute;
+    transition: all 0.3s linear;
+    background: #54e6e7;
+}
+
+.submit-btn span::before, 
+.submit-btn span::after {
+    content: "";
+    width:4px;
+    height: 0;
+    position: absolute;
+    transition: all 0.3s linear;
+    background: #54e6e7;
+}
+
+.submit-btn:hover::before, 
+.submit-btn:hover::after {
+    width: calc(100% + 4px);
+}
+
+.submit-btn:hover span::before, 
+.submit-btn:hover span::after {
+    height: calc(100% + 4px);
+}
+
+.submit-btn::after {
+    right: -2px;
+    bottom: -2px;
+    transition-duration: 0.4s;
+}
+
+.submit-btn span::after {
+    right: -2px;
+    bottom: -2px;
+    transition-duration: 0.4s;
+}
+
+.submit-btn::before {
+    left: -2px;
+    top: -2px;
+    transition-duration: 0.4s;
+}
+
+.submit-btn span::before {
+    left: -2px;
+    top: -2px;
+    transition-duration: 0.4s;
+}
+
+/*##############################################"*/
+/*                    MAIN-ADD                   */
+/*##############################################"*/
+
+main {
+    background-color: hsl(198,98%,14%);
+}
+
+.form {
+    background-color: hsl(198,98%,24%);
+}
+
+/*##############################################"*/
+/*                      SHOW                     */
+/*##############################################"*/
+
+.showTitle {
+    margin-top: -2rem;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-primary);
+}
+
+.accordion-button::after {
+    margin-left: var(--spacing-2);
+}
+
+#questionTheme {
+    margin: auto;
+    margin-right: 0;
+    text-align: right;
+}
+
+.accordion-body {
+    display: flex;
+    align-items: center;
+    //gap: var(--spacing-2);
+}
+
+.accordion-body img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.answerList {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    row-gap: var(--spacing-2);
+}
+
+@media screen and (max-width:768px) {
+    .answerList {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.answer {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    color: var(--bs-white);
+    font-weight: 600;
+    border-radius: 10px;
+    padding: var(--spacing-2);
+    font-size: calc(var(--font-size-text)*1.2);
+}
+
+.answer.bad {
+    background-color: var(--bad-answer);
+}
+
+.answer.good {
+    background-color: var(--good-answer);
+}
+
+
+.editIcons {
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.editIcons a {
+    text-decoration: none;
+    color: white;
+}
+
+.editIcons .mdi {
+    margin: auto;
+}
+.editIcons .btn {
+    font-size: 1rem;
+    font-weight: 500;
+    color: white;
+}
+
+.btn.edit {
+    background-color: var(--bs-orange);
+}
+
+.btn.delete {
+    background-color: var(--bs-red);
+}
+
+.btn.delete, .btn.edit {
+    width: 45px;
+    height: 45px;
+}
+
+
+/*##############################################"*/
+/*                   DASHBOARD                   */
+/*##############################################"*/
+
+.card-body {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 3fr;
+    column-gap: 10px;
+}
+
+.card-body .icon {
+    grid-row: span 2;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+}
+
+.card-body h4, .card-body p {
+    margin: auto;
+}
+
+.card-body h4 {
+    font-size: 2rem;
+}
+
+.card-body {
+    font-size: 1.2rem;
+}
+
+/*##############################################"*/
+/*                     SEARCH                    */
+/*##############################################"*/
+
+.search {
+    position: relative;
+    top: -3.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.search .field {
+    flex-basis: 33%;
+}
+
+.loupe {
+    position: relative;
+    left: 0.3rem;
+    z-index: 1;
+}
+
+.searchField {
+    margin-left: 2rem;
+}
+
+#floatingPassword {
+    padding-left: 3rem;
+}

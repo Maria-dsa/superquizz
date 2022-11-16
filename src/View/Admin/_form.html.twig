@@ -1,0 +1,78 @@
+{% extends 'admin_layout.html.twig' %}
+
+{% block content %}
+
+	<div class="m-auto container-md">
+		{% block title %}{% endblock %}
+
+		<form form method="post" enctype="multipart/form-data">
+
+			{% block hiddenInput %}{% endblock %}
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<select class="form-select" aria-label="Default select example" name="theme" id="theme">
+					<option selected value="">Choississez le thème de la question</option>
+					{% for theme in themes %}
+						<option value="{{theme}}">{{theme}}</option>
+					{% endfor %}
+				</select>
+				<label for="theme">Thème</label>
+				<span>{{ errors.theme }}</span>
+			</div>
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<textarea class="form-control" placeholder="Leave a comment here" id="question" name="question">{{ questionsInfos.question ?? questionsInfos.content }}</textarea>
+				<label for="question">Question</label>
+				<span>{{ errors.question }}</span>
+			</div>
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<select class="form-select" aria-label="Default select example" name="level" id="level">
+					<option selected value="">Choississez la difficulté de la question</option>
+					{% for level in levels %}
+						<option value="{{level}}">{{level}}</option>
+					{% endfor %}
+				</select>
+				<label for="level">Niveau de difficulté</label>
+				<span>{{ errors.level }}</span>
+			</div>
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<input type="text" class="form-control" id="goodAnswer" name="goodAnswer" placeholder="Réponse correcte" value="{{ questionsInfos.goodAnswer ?? questionsInfos.answers.0 }}">
+				<label for="goodAnswer">Réponse correcte</label>
+				<span>{{ errors.goodAnswer }}</span>
+			</div>
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<input type="text" class="form-control" id="badAnswer1" name="badAnswer1" placeholder="Mauvaise Réponse N°1" value="{{ questionsInfos.badAnswer1 ?? questionsInfos.answers.1 }}">
+				<label for="badAnswer1">Mauvaise Réponse N°1</label>
+				<span>{{ errors.badAnswer1 }}</span>
+			</div>
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<input type="text" class="form-control" id="badAnswer2" name="badAnswer2" placeholder="Mauvaise Réponse N°2" value="{{ questionsInfos.badAnswer2 ?? questionsInfos.answers.2 }}">
+				<label for="badAnswer2">Mauvaise Réponse N°2</label>
+				<span>{{ errors.badAnswer2 }}</span>
+			</div>
+
+			<div class="form-floating mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<input type="text" class="form-control" id="badAnswer3" name="badAnswer3" placeholder="Mauvaise Réponse N°3" value="{{ questionsInfos.badAnswer3 ?? questionsInfos.answers.3 }}">
+				<label for="badAnswer3">Mauvaise Réponse N°3</label>
+				<span>{{ errors.badAnswer3 }}</span>
+			</div>
+
+
+			<div class="mb-3 offset-lg-1 col-lg-10 offset-xl-2 col-xl-8 text-dark">
+				<label class="d-none" for="picture">Uploader une image</label>
+				<input type="file" class="form-control form-control" id="picture" name="picture" placeholder="Insérer votre image ici" accept="image/*">
+			</div>
+
+
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+
+	</div>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+.navbar-toggler {
+    border-color: #eef1f6;
+    color: #eef1f6;
+
+}
+
+h2 {
+    font-family: var(--bs-heading-font-sans-serif);
+}
+
+.navbar-toggler-icon {
+    background-image: url(./../images/menu-bg.png);
+
+}

@@ -1,0 +1,12 @@
+html,
+body {
+    min-height: 100vh;
+}
+
+body {
+    padding-top: 1rem;
+}
+
+h1 {
+    font-family: var(--bs-heading-font-sans-serif);
+}
