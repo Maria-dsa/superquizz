@@ -10,19 +10,19 @@ nav img {
 }
 
 nav h1 {
-   font-size: 2.5rem;
-   padding-top: 1rem;
+   font-size: var(--font-size-title);
+   padding-top: var(--spacing-2);
    text-align: center;
 }
 
 nav ul li {
-    font-size: 1.5rem;
+    font-size: calc(var(--font-size-text)*1.5);
     text-align: center;
 }
 
 .info-admin {
     position: absolute;
-    bottom: 30px;
+    bottom: var(--spacing-4);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,20 +32,20 @@ nav ul li {
 
 .info-admin img {
     border-radius: 50%;
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-2);
 }
 
 .mdi {
-    margin-right: 0.5rem;
+    margin-right: var(--spacing-1);
 }
 
 .submit-btn {
     color: var(--bs-white);
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: calc(var(--font-size-text)*1.5);
     background-color: var(--bs-primary);
-    padding: 0.5rem 2rem;
-    margin-top: 2rem;
+    padding: var(--spacing-1) var(--spacing-4);
+    margin-top: var(--spacing-4);
     border: 2px solid var(--bs-white);
 }
 
@@ -138,7 +138,7 @@ main {
 }
 
 .accordion-button::after {
-    margin-left: 1rem;
+    margin-left: var(--spacing-2);
 }
 
 #questionTheme {
@@ -149,16 +149,57 @@ main {
 
 .accordion-body {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    //gap: var(--spacing-2);
 }
 
-.badge.text-bg-sucess.bg-success, .badge.text-bg-secondary {
-    font-size: 1.5rem;
+.accordion-body img {
+    max-width: 150px;
+    max-height: 150px;
 }
+
+.answerList {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    row-gap: var(--spacing-2);
+}
+
+@media screen and (max-width:768px) {
+    .answerList {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.answer {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    color: var(--bs-white);
+    font-weight: 600;
+    border-radius: 10px;
+    padding: var(--spacing-2);
+    font-size: calc(var(--font-size-text)*1.2);
+}
+
+.answer.bad {
+    background-color: var(--bad-answer);
+}
+
+.answer.good {
+    background-color: var(--good-answer);
+}
+
 
 .editIcons {
+    width: 50px;
     display: flex;
-    align-items: stretch;
+    flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -187,10 +228,7 @@ main {
 .btn.delete, .btn.edit {
     width: 45px;
     height: 45px;
-    margin: auto;
 }
-
-
 
 
 /*##############################################"*/

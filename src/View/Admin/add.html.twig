@@ -1,10 +1,8 @@
-{% extends 'admin_layout.html.twig' %}
-
+{% extends '/Admin/_form.html.twig' %}
 
 {% set ajouter = 'active' %}
 
 
-
-{% block content %}
-    {% include 'Admin/_form.html.twig' %}
+{% block title %}
+	<h1 class="text-center mt-4">Ajouter une question :</h1>
 {% endblock %}

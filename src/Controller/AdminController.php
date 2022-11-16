@@ -63,7 +63,8 @@ class AdminController extends AbstractController
                 $adminManager = new AdminManager();
                 $user = $adminManager->checkUser($loginInfos['username']);
 
-                $user ?: $errors['username'] = 'Username inconnu, veuillez vous rapprochez d\'un administrateur';
+                $user ?: $errors['username'] = 'Utilisateur inconnu ou déjà enregistré, veuillez vous rapprochez 
+                                            d\'un administrateur';
 
                 if (
                     !isset($loginInfos['password'])

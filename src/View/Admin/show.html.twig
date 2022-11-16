@@ -16,10 +16,12 @@
 			{% for question in questions %}
 				<div class="accordion-item">
 
+					
+
 					<h2 class="accordion-header" id="heading{{ loop.index }}">
 						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
 							Question N°
-							{{ question.id }}
+							{{ loop.index }}
 							:
 							{{ question.content }}
 							<p id="questionTheme">Thème :
@@ -28,21 +30,27 @@
 					</h2>
 
 					<div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}" data-bs-parent="#accordionExample">
+
+						
 						<div class="accordion-body">
+
+							{% if question.image %}
+								<img src="/images/{{question.image}}" alt="Description de la question">
+							{% endif %}
 
 							<ul class="answerList m-0 p-0">
 								{% for ans, value in question.answers %}
 									{% if value %}
-										<li class="badge text-bg-sucess bg-success">{{ ans }}</li>
+										<li class="answer good">{{ ans|capitalize }}</li>
 									{% else %}
-										<li class="badge text-bg-secondary">{{ ans }}</li>
+										<li class="answer bad">{{ ans|capitalize }}</li>
 									{% endif %}
 								{% endfor %}
 							</ul>
 
 							<div class="editIcons">
 								<button class="btn edit">
-									<a href="/items/edit?id={{ question.id }}">
+									<a href="/admin/update?id={{ question.id }}">
 										<span class="mdi mdi-pencil"></span>
 									</a>
 								</button>
