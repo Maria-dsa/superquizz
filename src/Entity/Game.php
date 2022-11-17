@@ -12,17 +12,18 @@ class Game
     // on doit avoir ici les mêmes propriétés que les champs de la table game
     private int $id;
     private int $type;
-    private DateTime|string $createdAt;
-    private DateTime|null|string $endedAt;
+    private string $createdAt;
+    private null|string $endedAt;
     private int $userId;
     private array $score = [];
 
+    private DateTime $questionStartedAt;
+    private array $questionsDuration = [];
+
     private int $currentQuestion = 0;
-    private string $gameDuration;
+    private float $gameDuration;
 
     private array $questions;
-
-
 
 
 
@@ -41,9 +42,6 @@ class Game
     {
         $this->score[] = $userAnswer;
     }
-
-
-
 
 
     /**
@@ -117,14 +115,13 @@ class Game
      *
      * @return  self
      */
-    public function setEndedAt(DateTime $endedAt)
+    public function setEndedAt()
     {
-        $this->endedAt = $endedAt;
         $gameManager = new GameManager();
-        $gameManager->updateEndedAt($this->id, $endedAt);
+        $gameManager->updateEndedAt($this->id);
+        $this->endedAt = $gameManager->selectEndedAtById($this->id);
         return $this;
     }
-
 
     /**
      * Get the value of user_id
@@ -162,12 +159,8 @@ class Game
 
     public function setQuestions(array $questions)
     {
-        //$questions['createdAt'] = '';
-        //$questions['endedAt'] = '';
         $this->questions = $questions;
     }
-
-
 
 
     public function selectOneQuestion(int $number): array
@@ -186,7 +179,7 @@ class Game
     /**
      * Get the value of gameDuration
      */
-    public function getGameDuration(): string
+    public function getGameDuration(): float
     {
         return $this->gameDuration;
     }
@@ -198,18 +191,44 @@ class Game
      */
     public function setGameDuration()
     {
-        $this->gameDuration = $this->calculateGameDuration($this->createdAt, $this->endedAt);
+        $start = new DateTime($this->createdAt);
+        $end = new DateTime($this->endedAt);
+        $this->gameDuration = $this->calculateGameDuration($start, $end);
         return $this;
     }
 
-    public function calculateGameDuration(string $start, DateTime $end): string
+    public function calculateGameDuration(DateTime $start, DateTime $end): float
     {
-        $start = new DateTime($start);
         $interval = $end->diff($start);
-        $test = floatval($interval->format('%a')) * 86400
+        $duration = floatval($interval->format('%a')) * 86400
             + floatval($interval->format('%h')) * 3600
-            + floatval($interval->format('%m')) * 60
+            + floatval($interval->format('%i')) * 60
             + floatval($interval->format('%s'));
-        return strval($test);
+        return $duration;
+    }
+
+    public function getQuestionStartedAt(): DateTime
+    {
+        return $this->questionStartedAt;
+    }
+
+    public function setQuestionStartedAt()
+    {
+        $this->questionStartedAt = new DateTime();
+
+        return $this;
+    }
+
+    public function getQuestionsDuration(): array
+    {
+        return $this->questionsDuration;
+    }
+
+    public function setQuestionsDuration(): float
+    {
+        $duration = $this->calculateGameDuration($this->questionStartedAt, new DateTime());
+        $this->questionsDuration[] = $duration;
+
+        return $duration;
     }
 }

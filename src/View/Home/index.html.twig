@@ -14,22 +14,22 @@
 
 		</div>
 		<div class="row">
-			<div class="col-lg-6 col-md-8 col-sm-9 col-11 mx-auto mt-4 d-block bg-secondary shadow p-3 mb-5 rounded">
+			<div class="col-lg-6 col-md-9 col-sm-10 col-11 mx-auto mt-4 d-block bg-secondary shadow p-3 mb-5 rounded">
 				<h1 class="text-white text-center font-weight-bold">À toi de jouer !</h1>
 				<form class="form" method="post" action="/start-game" enctype="multipart/form-data">
 
 					<div class="form-floating mb-2 text-dark">
 						<input type="text" class="form-control" id="nickname" name="nickname" placeholder="Réponse correcte" value="{{ questionsInfos.goodAnswer ?? questionsInfos.answers.0 }}">
-						<label for="nickname">Choisis ton pseudo....</label>
+						<label for="nickname">Choisi ton pseudo....</label>
 						<span>{{ errors.nickname }}</span>
 					</div>
 
-					<div class="mb-3 text-dark picture d-flex flex-column align-items-center">
+					<div class="mb-4 text-dark picture d-flex flex-column align-items-center">
 						<label for="picture">Charger votre avatar</label>
 						<input type="file" class="form-control form-control-lg" id="picture" name="picture" title="Insérer votre image ici" accept="image/*">
 					</div>
 
-					<div class="form-floating mb-3 text-dark">
+					<div class="form-floating mb-4 text-dark">
 						<select class="form-select" aria-label="Default select example" name="theme" id="theme">
 							<option selected value="">Choississez le thème des questions</option>
 							<option value="all">Melting Quizz</option>

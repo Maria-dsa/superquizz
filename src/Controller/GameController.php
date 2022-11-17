@@ -13,7 +13,7 @@ use DateTime;
 class GameController extends AbstractController
 {
     private QuestionManager $questionManager;
-    private int $maxQuestion = 15;
+    private int $maxQuestion = 3;
 
     public const GAME_TYPES = ['1', '2'];
     public const FILE_UPLOAD_ERROR = [
@@ -33,7 +33,7 @@ class GameController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newGame = array_map('trim', $_POST); // champ type de jeu + nickname
-            //$newGame['type'] = 1;
+
             $errors = $this->validate($newGame);
 
             $uploadError = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
@@ -42,24 +42,26 @@ class GameController extends AbstractController
                 empty($errorsFiles) ?: $errors['file'] = [...$errorsFiles];
             }
 
-
             if (empty($errors)) {
                 $userManager = new UserManager();
-                $newGame['userId'] = $userManager->insert($newGame['nickname']);
+                $newGame['userId'] = $userManager->insert($newGame['nickname'], basename($_FILES['picture']['name']));
 
                 $gameManager = new GameManager();
                 // Insère en BDD un nouveau game et récupère son ID
                 $gameId = $gameManager->insert($newGame);
-                // Retourne un objet de type Game avec clé valeur correspondants à la table
+                // Retourne un objet de type Game avec clé valeur correspondants aux champs de la table
                 $game = $gameManager->selectOneGameById($gameId);
 
                 $this->questionManager = new QuestionManager();
 
-                if ($newGame['gameType'] === self::GAME_TYPES[0]) {
-                    $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(2, $newGame['theme']));
-                } else {
-                    $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(20));
+                if ($newGame['gameType'] === self::GAME_TYPES[1]) {
+                    // Valeur 100
+                    $this->maxQuestion = 5;
                 }
+                $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(
+                    $this->maxQuestion,
+                    $newGame['theme']
+                ));
 
                 $_SESSION['game'] = $game;
                 $_SESSION['nickname'] = $newGame['nickname'];
@@ -70,7 +72,7 @@ class GameController extends AbstractController
         return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
     }
 
-    public function validate(array $newGame): array
+    public function validate(array &$newGame): array
     {
         $errors = [];
         foreach ($newGame as $field => $userInput) {
@@ -174,12 +176,15 @@ class GameController extends AbstractController
 
             if (empty($errors)) {
                 $gameQuestionManager = new GameHasQuestionManager();
-                //écrire requete de stockage en BDD réponse serait $answerId[$userAnswer['answer']] = 0 ou 1
+                $time = $game->setQuestionsDuration();
+
+                //écriture requete de stockage en BDD réponse serait $answerId[$userAnswer['answer']] = 0 ou 1
                 $gameQuestionManager->insert(
                     $game->getId(),
                     $game->getQuestions()[$game->getCurrentQuestion()]['id'],
                     intval($userAnswer['answer']),
-                    $answerId[$userAnswer['answer']]
+                    $answerId[$userAnswer['answer']],
+                    $time
                 );
                 $game->setScore($answerId[$userAnswer['answer']]);
                 if ($game->getCurrentQuestion() <= $this->maxQuestion - 2) {
@@ -187,7 +192,7 @@ class GameController extends AbstractController
                     header('Location: /question');
                     exit();
                 }
-                $game->setEndedAt(new DateTime());
+                $game->setEndedAt();
                 header('Location: /result');
                 exit();
             }
@@ -203,6 +208,7 @@ class GameController extends AbstractController
     public function displayQuestion(Game $game)
     {
         $currentQuestion = $game->getCurrentQuestion();
+        $game->setQuestionStartedAt();
         $question = $game->selectOneQuestion($currentQuestion);
         shuffle($question['answers']);
 
@@ -242,6 +248,8 @@ class GameController extends AbstractController
         }
 
         return $this->twig->render('Game/result.html.twig', [
+            'session' => $_SESSION,
+
 
             'allUsersRanks' => $allUsersRanks,
             'userRank' => $userRank,

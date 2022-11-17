@@ -20,14 +20,21 @@ class GameManager extends AbstractManager
         return $this->pdo->lastInsertId();
     }
 
-    public function updateEndedAt(int $id, DateTime $endedAt)
+    public function updateEndedAt(int $id)
     {
-        $query = 'UPDATE ' . self::TABLE . ' SET endedAt = :endedAt WHERE id = :id';
+        $query = 'UPDATE ' . self::TABLE . ' SET endedAt = NOW() WHERE id = :id';
         $statement = $this->pdo->prepare($query);
         $statement->bindValue('id', $id);
-        $endedAt = $endedAt->format('Y-m-d H:i:s');
-        $statement->bindValue('endedAt', $endedAt);
         $statement->execute();
+    }
+
+    public function selectEndedAtById(int $id)
+    {
+        $statement = $this->pdo->prepare("SELECT endedAt FROM " . self::TABLE . " WHERE id=:id");
+        $statement->bindValue('id', $id);
+        $statement->execute();
+        $result = $statement->fetch();
+        return $result['endedAt'];
     }
 
     /**
@@ -36,7 +43,7 @@ class GameManager extends AbstractManager
     public function selectOneGameById(int $id): Game|false
     {
         // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM " . static::TABLE . " WHERE id=:id");
+        $statement = $this->pdo->prepare("SELECT * FROM " . self::TABLE . " WHERE id=:id");
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetchObject('App\Entity\Game');
