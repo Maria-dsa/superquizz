@@ -36,8 +36,13 @@ class QuestionController extends AbstractController
     {
         $results = $this->themeManager->selectAll();
         foreach ($results as $result) {
-            $this->allTheme[] = $result['content'];
+            $this->allTheme[] = $result['theme'];
         }
+    }
+
+    public function getAllTheme(): array
+    {
+        return $this->allTheme;
     }
     /**
      * List items

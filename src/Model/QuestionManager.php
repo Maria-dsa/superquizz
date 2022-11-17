@@ -24,12 +24,19 @@ class QuestionManager extends AbstractManager
         return $questions;
     }
 
-    public function selectQuestionsWithAnswer(int $number = 15): array
+    public function selectQuestionsWithAnswer(int $number = 15, string $theme = ''): array
     {
-        $query = 'SELECT * FROM ' . self::TABLE .  ' ORDER BY RAND() LIMIT :number';
+        $query = 'SELECT * FROM ' . self::TABLE;
+        if ($theme && $theme != 'all') {
+            $query .= ' WHERE theme=:theme';
+        }
+        $query .= ' ORDER BY RAND() LIMIT :number';
 
         $statement = $this->pdo->prepare($query);
         $statement->bindValue(':number', $number, PDO::PARAM_INT);
+        if ($theme && $theme != 'all') {
+            $statement->bindValue(':theme', $theme, PDO::PARAM_STR);
+        }
         $statement->execute();
         $questions = $statement->fetchAll();
         $answerManager = new AnswerManager();
