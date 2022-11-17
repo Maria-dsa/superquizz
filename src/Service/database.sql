@@ -91,7 +91,7 @@ CREATE TABLE `game_has_question` (
   KEY `fk_game_has_question_question` (`question_id`),
   KEY `fk_game_has_question_answer` (`answer_id`),
   CONSTRAINT `fk_game_has_question_answer` FOREIGN KEY (`answer_id`) REFERENCES `answer` (`id`),
-  CONSTRAINT `fk_game_has_question_game` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_game_has_question_game` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`),
   CONSTRAINT `fk_game_has_question_question` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -159,12 +159,12 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'florent',NULL,NULL,'admin'),(2,'nicolas',NULL,NULL,'admin'),(3,'maria',NULL,NULL,'admin'),(4,'magali',NULL,NULL,'admin'),(5,'JF',NULL,NULL,'admin'),(6,'maria',NULL,NULL,NULL),(7,'newplayer',NULL,NULL,NULL),(8,'Florent',NULL,NULL,NULL),(9,'Magali',NULL,NULL,NULL),(10,'Nicolas',NULL,NULL,NULL),(11,'Victor',NULL,NULL,NULL),(12,'Hugo',NULL,NULL,NULL),(13,'Max',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 
 CREATE TABLE `theme` (
   `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  `theme` VARCHAR(255) NOT NULL
+  `content` VARCHAR(255) NOT NULL
 );
 
 INSERT INTO `theme` VALUES (1, 'Humour'), (2, 'Sciences'), (3, 'Logique'), (4, 'Géographie'), (5, 'Culture Générale');
@@ -172,7 +172,7 @@ INSERT INTO `theme` VALUES (1, 'Humour'), (2, 'Sciences'), (3, 'Logique'), (4, '
 
 
 
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
