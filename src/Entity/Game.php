@@ -22,9 +22,13 @@ class Game
 
     private array $questions;
 
-
-
-
+    public function setCookie(): void
+    {
+        setcookie('score', strval(json_encode($this->score)), [
+            'expires' => strtotime('+30 days'),
+            'path' => '/'
+        ]);
+    }
 
     /**
      * Get the value of id
@@ -32,6 +36,11 @@ class Game
     public function getScore(): array
     {
         return $this->score;
+    }
+
+    public function getScoreById($id): int
+    {
+        return $this->score[$id];
     }
 
     /**

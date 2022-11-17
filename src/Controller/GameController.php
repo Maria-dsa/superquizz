@@ -115,8 +115,44 @@ class GameController extends AbstractController
         $currentQuestion = $game->getCurrentQuestion();
         $question = $game->selectOneQuestion($currentQuestion);
         shuffle($question['answers']);
+        $nbQuestions = count($game->getQuestions());
+        // $game->setCookie();
+        // var_dump(json_decode($_COOKIE["score"]));
 
-        return $this->twig->render('Game/index.html.twig', ['question' => $question, 'session' => $_SESSION]);
+        $styles = [];
+        for ($i = 0; $i < $nbQuestions; $i++) {
+            $styles[] = "gray";
+        }
+
+        // if (!empty($game->getScore())) {
+        // // if ($game->getScoreById($currentQuestion - 1) == 1) {
+        // //     $style = "green";
+        // // } elseif ($game->getScoreById($currentQuestion - 1) == 0) {
+        // //     $style = "red";
+        // // } else {
+        // //     $style = "gray";
+        // // }
+
+        //     for ($i = 0; $i < $nbQuestions; $i++) {
+        //         if ($game->getScoreById($currentQuestion - 1) == 1) {
+        //             array_push($styles, "green");
+        //         } elseif ($game->getScoreById($currentQuestion - 1) == 0) {
+        //             array_push($styles, "red");
+        //         }
+        //         var_dump($i);
+        //     }
+        //     var_dump($styles);
+        // }
+
+            return $this->twig->render(
+                'Game/index.html.twig',
+                [
+                    'question' => $question,
+                    'session' => $_SESSION,
+                    'nbQuestions' => $nbQuestions,
+                    'styles' => $styles
+                ]
+            );
     }
 
     public function result(): string
@@ -158,7 +194,8 @@ class GameController extends AbstractController
             'podium' => $podium,
             'questionSuccess' => $questionSuccess,
             'arrayResult' => $arrayResult,
-            'nbGoodAnswer' => $nbGoodAnswer, 'nbQuestions' => $nbQuestions,
+            'nbGoodAnswer' => $nbGoodAnswer,
+            'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
         ]);
     }
