@@ -22,14 +22,6 @@ class Game
 
     private array $questions;
 
-    public function setCookie(): void
-    {
-        setcookie('test', $this->gameDuration, [
-            'expires' => strtotime('+30 days'),
-            'path' => '/'
-        ]);
-    }
-
     /**
      * Get the value of id
      */
