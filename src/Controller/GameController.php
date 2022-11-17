@@ -244,9 +244,13 @@ class GameController extends AbstractController
         $arrayResult = [];
         foreach ($game->getQuestions() as $question) {
             $result = $resultManager->selectQuestionSuccessById($question['id']);
-            $arrayResult[$result['question_id']] = $result['pourcentage_reussite'];
+            $arrayResult[] = $result['pourcentage_reussite'];
         }
 
+        $game->setCookie();
+
+        $gameHasQuestion = new GameHasQuestionManager();
+        $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
         return $this->twig->render('Game/result.html.twig', [
             'session' => $_SESSION,
 
@@ -256,8 +260,10 @@ class GameController extends AbstractController
             'podium' => $podium,
             'questionSuccess' => $questionSuccess,
             'arrayResult' => $arrayResult,
-            'nbGoodAnswer' => $nbGoodAnswer, 'nbQuestions' => $nbQuestions,
+            'nbGoodAnswer' => $nbGoodAnswer,
+            'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
+            'userAnswer' => $userAnswer,
         ]);
     }
 }
