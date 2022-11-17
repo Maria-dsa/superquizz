@@ -9,15 +9,6 @@
 {% set score = session.game.score %}
 {% set gameDuration = session.game.gameDuration %}
 {% set i = 0 %}
-<pre>
-    {{ dump(allUsersRanks) }}
-    {{ dump(userRank)}}
-    {{ dump(podium)}}
-    {{ dump(arrayResult)}}
-    {{ dump(session.game.questions.0.answers)}}
-    {{ dump(userAnswer)}}
-    {{ dump(questionSuccess)}}
-</pre>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-7 col-md-10 col-12 mx-auto mt-4 d-block bg-white">
@@ -25,46 +16,46 @@
                 <div class="row">
                     <div class="col text-center presentation-color p-0 m-3">
                         <div>
-                            <h4>Nombre de bonnes réponses</h4>
+                            <h4 class="text-secondary font-weight-bold mt-2 mx-3">Nombre de bonnes réponses</h4>
                         </div>
                         <div>
                             <h1 class="mt-4 size-presentation">{{nbGoodAnswer}}</h1>
                         </div>
                     </div>
-                    <div class="col text-center presentation-color p-0 m-3 me-5">
+                    <div class="col text-center presentation-color p-0 m-3">
                         <div>
-                        <h4>Taux de réussite</h4>
+                            <h4 class="text-secondary font-weight-bold mt-2 mx-3">Taux de réussite</h4>
                         </div>
-                    <div>
-                        <div class="circle-container">
-                            <div class="percent" style="--num:{{percentGoodAnswers}};">
-                                <svg>
-                                    <circle cx="70" cy="70" r="70"></circle>
-                                    <circle cx="70" cy="70" r="70"></circle>
-                                </svg>
-                                <div class="number-circle">
-                                    <h3 class="fs-2">{{percentGoodAnswers}}%</h3>
+                        <div>
+                            <div class="circle-container">
+                                <div class="percent" style="--num:{{percentGoodAnswers}};">
+                                    <svg>
+                                        <circle cx="70" cy="70" r="70"></circle>
+                                        <circle cx="70" cy="70" r="70"></circle>
+                                    </svg>
+                                    <div class="number-circle">
+                                        <h3 class="fs-2">{{percentGoodAnswers}}%</h3>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                </div>
-            </div>
-                <div class="row">
-                    <div class="col text-center presentation-color p-0 m-3">
+                    </div>
+                <div class="row row-color">
+                    <div class="col text-center presentation-color p-0 m-3 ">
                         <div>
-                            <h4>Classement</h4>
+                            <h4 class="text-secondary font-weight-bold ">Classement</h4>
                         </div>
                         <div>
                             <h1 class="d-inline-block ms-3 size-presentation">{% if userRank.rang == 1 %}{{userRank.rang}}er{% else %}
                                 {{userRank.rang}}ème {% endif %}</h1>
                         </div>
                     </div>
-                    <div class="col text-center presentation-color p-0 m-3">
+                    <div class="col text-center presentation-color p-0 m-3 ">
                         <div>
-                            <h4>Temps (sec.)</h4>
+                            <h4 class="text-secondary font-weight-bold">Temps (sec.)</h4>
                         </div>
                         <div>
-                            <h1 class="d-inline-block ms-3 fs-1">{{gameDuration}}</h1>
+                            <h1 class="d-inline-block ms-3 size-presentation">{{gameDuration}}</h1>
                         </div>
                     </div>
                 </div>
@@ -101,87 +92,87 @@
                 </div>
                 </div> #}
                 <div class="d-flex justify-content-center mt-4">
-                <div class="containers podium">
-                    <div class="podium__item">
-                        <div class="d-flex justify-content-center content-image-podium mx-auto">
-                            <img src="https://picsum.photos/125/75" alt="" class="img-podium">
+                    <div class="containers podium">
+                        <div class="podium__item">
+                            <div class="d-flex justify-content-center content-image-podium mx-auto">
+                                <img src="https://picsum.photos/125/75" alt="" class="img-podium">
+                            </div>
+                            <p class="podium__city">{{podium.1.username}}</p>
+                            <div class="podium__rank second color-podium">2</div>
                         </div>
-                      <p class="podium__city">{{podium.1.username}}</p>
-                      <div class="podium__rank second color-podium">2</div>
-                    </div>
-                    <div class="podium__item">
-                        <div class="d-flex justify-content-center content-image-podium mx-auto">
-                            <img src="https://picsum.photos/125/75" alt="" class="img-podium">
+                        <div class="podium__item">
+                            <div class="d-flex justify-content-center content-image-podium mx-auto">
+                                <img src="https://picsum.photos/125/75" alt="" class="img-podium">
+                            </div>
+                            <p class="podium__city">{{podium.0.username}}</p>
+                            <div class="podium__rank first color-podium">1</div>
                         </div>
-                      <p class="podium__city">{{podium.0.username}}</p>
-                      <div class="podium__rank first color-podium">1</div>
-                  </div>
-                    <div class="podium__item">
-                        <div class="d-flex justify-content-center content-image-podium mx-auto">
-                            <img src="https://picsum.photos/125/75" alt="" class="img-podium">
+                        <div class="podium__item">
+                            <div class="d-flex justify-content-center content-image-podium mx-auto">
+                                <img src="https://picsum.photos/125/75" alt="" class="img-podium">
+                            </div>
+                            <p class="podium__city">{{podium.2.username}}</p>
+                            <div class="podium__rank third color-podium">3</div>
                         </div>
-                      <p class="podium__city">{{podium.2.username}}</p>
-                      <div class="podium__rank third color-podium">3</div>
                     </div>
                 </div>
-            </div>
 
                 <div class="text-center">
                     <a href="/" class="btn btn-neutral btn-round my-3 w-25">rejouer</a>
                 </div>
 
                 {% for question in questions %}
-                <div class="accordion" id="accordionExample{{i}}">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="heading{{i}}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{i}}" aria-expanded="false" aria-controls="collapse{{i}}">
-                            <div class="d-flex justify-start align-items-center w-100">
-                                <p class="mb-0 true-false"> {% if score[i] == 1 %} ✅ {% else %} ❌ {% endif %}</p>
-                               <h3 class="mb-0 ms-5">question {{i + 1}}</h3>
-                               <h3 class="ms-auto me-2 mb-0">5s</h3>
-                            </div>
-                        </button>
-                      </h2>
-                      <div id="collapse{{i}}" class="accordion-collapse collapse" aria-labelledby="heading{{i}}" data-bs-parent="#accordionExample{{i}}">
-                        <div class="accordion-body">
-                           <div class="d-flex justify-content-between align-items-center">
-                               <div class="img-question-div">
-                                  <img src="https://picsum.photos/125/75" alt="" class="img-question">
-                               </div>
-                               <div>
-                                <div class="mx-auto d-flex justify-content-center">
-                                <h5 class="question-type bg-primary rounded text-white d-inline-block p-1"> thème: {{question.theme}} - difficulté: {{question.difficulty_level}}</h5>
-                            </div>
-                               <h5 class="mx-4 lh-base">{{question.content}}</h5>
-                            </div>
-                               <div>
-                               <h3><div class="percent-2" style="--num:{{arrayResult[i]}};">
-                                <svg>
-                                    <circle cx="35" cy="35" r="35"></circle>
-                                    <circle cx="35" cy="35" r="35"></circle>
-                                </svg>
-                                <div class="number-circle">
-                                    <h3 class="fs-4">{{arrayResult[i]}}%</h3>
+                    <div class="accordion" id="accordionExample{{i}}">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading{{i}}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{i}}" aria-expanded="false" aria-controls="collapse{{i}}">
+                                    <div class="d-flex justify-start align-items-center w-100">
+                                        <p class="mb-0 true-false"> {% if score[i] == 1 %} ✅ {% else %} ❌ {% endif %}</p>
+                                        <h3 class="mb-0 ms-5">question {{i + 1}}</h3>
+                                        <h3 class="ms-auto me-2 mb-0">5s</h3>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse{{i}}" class="accordion-collapse collapse" aria-labelledby="heading{{i}}" data-bs-parent="#accordionExample{{i}}">
+                                <div class="accordion-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="img-question-div">
+                                            <img src="https://picsum.photos/125/75" alt="" class="img-question">
+                                        </div>
+                                        <div>
+                                            <div class="mx-auto d-flex justify-content-center">
+                                                <h5 class="question-type bg-primary rounded text-white d-inline-block p-1"> thème: {{question.theme}} - difficulté: {{question.difficulty_level}}</h5>
+                                            </div>
+                                            <h5 class="mx-4 lh-base">{{question.content}}</h5>
+                                        </div>
+                                        <div>
+                                            <h3><div class="percent-2" style="--num:{{arrayResult[i]}};">
+                                                <svg>
+                                                    <circle cx="35" cy="35" r="35"></circle>
+                                                    <circle cx="35" cy="35" r="35"></circle>
+                                                </svg>
+                                                <div class="number-circle">
+                                                    <h3 class="fs-4">{{arrayResult[i]}}%</h3>
+                                                </div>
+                                            </div></h3>
+                                            <h3 class="circle-text-size">Réussite globale</h3>
+                                        </div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="row mt-4 row-question">
+                                            <div class="col border border-3">{{question.answers.0.answer}}</div>
+                                            <div class="col border border-3">{{question.answers.1.answer}}</div>
+                                        </div>
+                                        <div class="row mt-3 row-question">
+                                            <div class="col border border-3">{{question.answers.2.answer}}</div>
+                                            <div class="col border border-3">{{question.answers.3.answer}}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div></h3>
-                            <h3 class="circle-text-size">Réussite globale</h3>
+                            </div>
                         </div>
-                           </div>
-                           <div class="container">
-                            <div class="row mt-4 row-question">
-                                <div class="col border border-3">{{question.answers.0.answer}}</div>
-                                <div class="col border border-3">{{question.answers.1.answer}}</div>
-                            </div>
-                            <div class="row mt-3 row-question">
-                                <div class="col border border-3">{{question.answers.2.answer}}</div>
-                                <div class="col border border-3">{{question.answers.3.answer}}</div>
-                            </div>
-                            </div>
-                           </div>
-                        </div>
-                      </div>
                     </div>
                     {% set i = i + 1 %}
                 {% endfor %}
 {% endblock %}
-{% block javascript %} <script> src="/assets/javascript/result.js"</script> {% endblock %}
+{% block javascript %} <script src="/assets/javascript/result.js"></script> {% endblock %}
