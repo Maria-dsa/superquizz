@@ -7,55 +7,65 @@ use App\Entity\Game;
 
 class ResultManager extends AbstractManager
 {
-  //US-5.3.1 : Classement général avec rang;
+  //US-5.3.1 : Classement général des 20 premiers par type de jeu avec rang;
 
     public function selectAllByRank(): array
     {
       // prepared request
-        $query = "SELECT user_id, username, game_type, rank() 
-    OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
-    , nb_parties, score_moyen, temps_moyen 
-    FROM 
-    (
-    SELECT 
-    user.id as user_id, 
-    user.username, 
-    game.type as game_type,
-    COUNT(DISTINCT game.id) as nb_parties,
-    ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
-    ROUND((SUM(game_has_question.time)/COUNT(DISTINCT game.id)),2) as temps_moyen
-    FROM game_has_question INNER JOIN game ON game.id = game_has_question.game_id
-    INNER JOIN user ON user.id = game.userId
-    WHERE game.endedAt IS NOT NULL GROUP BY user.id, user.username, game.type
-    ORDER BY score_moyen DESC, temps_moyen ASC
-    ) sq1;";
+        $query = " SELECT * FROM (
+        SELECT user_id, username, game_type, rank()
+        OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
+        , nb_parties, score_moyen, temps_moyen
+        FROM
+        (
+        SELECT
+        user.id as user_id,
+        user.username,
+        game.type as game_type,
+        COUNT(DISTINCT game.id) as nb_parties,
+        ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
+        ROUND((SUM(game_has_question.time)/COUNT(DISTINCT game.id)),2) as temps_moyen
+        FROM game_has_question INNER JOIN game ON game.id = game_has_question.game_id
+        INNER JOIN user ON user.id = game.userId
+        WHERE game.endedAt IS NOT NULL GROUP BY user.id, user.username, game.type
+        ORDER BY score_moyen DESC, temps_moyen ASC
+        ) sq1
+      ) sq2
+      WHERE rang<=20;";
 
         return $this->pdo->query($query)->fetchAll();
     }
-  //US-5.3.1 : Podium
+  //US-5.3.1 : Podium en fonction du type de jeu
 
-    public function selectPodium(): array
+    public function selectPodium($type): array
     {
       // prepared request
-        $query = "SELECT user_id, username, game_type, rank() 
-    OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
-    , nb_parties, score_moyen, temps_moyen 
-    FROM 
-    (
-    SELECT 
-    user.id as user_id, 
-    user.username, 
-    game.type as game_type,
-    COUNT(DISTINCT game.id) as nb_parties,
-    ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
-    ROUND((SUM(game_has_question.time)/COUNT(DISTINCT game.id)),2) as temps_moyen
-      FROM game_has_question INNER JOIN game ON game.id = game_has_question.game_id
-      INNER JOIN user ON user.id = game.userId
-      WHERE game.endedAt IS NOT NULL GROUP BY user.id, user.username, game.type
-      ORDER BY score_moyen DESC, temps_moyen ASC
-      ) sq1 LIMIT 3;";
+        $query = "SELECT * FROM (
+        SELECT user_id, username, game_type, rank()
+        OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
+        , nb_parties, score_moyen, temps_moyen
+        FROM
+        (
+        SELECT
+        user.id as user_id,
+        user.username,
+        game.type as game_type,
+        COUNT(DISTINCT game.id) as nb_parties,
+        ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
+        ROUND((SUM(game_has_question.time)/COUNT(DISTINCT game.id)),2) as temps_moyen
+          FROM game_has_question INNER JOIN game ON game.id = game_has_question.game_id
+          INNER JOIN user ON user.id = game.userId
+          WHERE game.endedAt IS NOT NULL GROUP BY user.id, user.username, game.type
+          ORDER BY score_moyen DESC, temps_moyen ASC
+          ) sq1
+        ) sq2
+        WHERE game_type = :type AND rang <=3;";
 
-        return $this->pdo->query($query)->fetchAll();
+          $statement = $this->pdo->prepare($query);
+          $statement->bindValue('type', $type, \PDO::PARAM_INT);
+          $statement->execute();
+
+          return $statement->fetchAll();
     }
 
   // US-5.3.1 : RANG D'UN JOUEUR AU CLASSEMENT GENERAL AVEC SON id en paramètre
@@ -64,16 +74,16 @@ class ResultManager extends AbstractManager
     {
       // prepared request
         $query = "SELECT user_id, username, game_type, rang, nb_parties, score_moyen, temps_moyen
-    FROM 
+    FROM
     (
-    SELECT user_id, username, game_type, rank() 
+    SELECT user_id, username, game_type, rank()
     OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
-    , nb_parties, score_moyen, temps_moyen 
-    FROM 
+    , nb_parties, score_moyen, temps_moyen
+    FROM
     (
-    SELECT 
-    user.id as user_id, 
-    user.username, 
+    SELECT
+    user.id as user_id,
+    user.username,
     game.type as game_type,
     COUNT(DISTINCT game.id) as nb_parties,
     ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
@@ -98,7 +108,7 @@ class ResultManager extends AbstractManager
 
     public function selectAllQuestionSuccess(): array
     {
-        $query = "SELECT game_has_question.question_id, 
+        $query = "SELECT /*game_has_question.question_id, */
     ROUND((sum(game_has_question.is_true)/COUNT(game_has_question.id))*100,2)
     as pourcentage_reussite
     FROM game_has_question
@@ -113,8 +123,8 @@ class ResultManager extends AbstractManager
 
     public function selectQuestionSuccessById($id): array
     {
-        $query = "SELECT game_has_question.question_id, 
-    ROUND((sum(game_has_question.is_true)/COUNT(game_has_question.id))*100,2)
+        $query = "SELECT game_has_question.question_id,
+    ROUND((sum(game_has_question.is_true)/COUNT(game_has_question.id))*100)
     as pourcentage_reussite
     FROM game_has_question
     INNER JOIN game ON game.id = game_has_question.game_id INNER JOIN user ON user.id = game.userId
