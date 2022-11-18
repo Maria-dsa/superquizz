@@ -33,6 +33,11 @@ class Game
         return $this->score;
     }
 
+    public function getScoreById($id): int
+    {
+        return $this->score[$id];
+    }
+
     /**
      * Set the value of id
      */
@@ -202,7 +207,6 @@ class Game
             + floatval($interval->format('%h')) * 3600
             + floatval($interval->format('%i')) * 60
             + floatval($interval->format('%s'));
-            
         return $duration;
     }
 
