@@ -207,7 +207,6 @@ class Game
             + floatval($interval->format('%h')) * 3600
             + floatval($interval->format('%i')) * 60
             + floatval($interval->format('%s'));
-            
         return $duration;
     }
 
