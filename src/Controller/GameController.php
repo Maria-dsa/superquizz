@@ -211,8 +211,25 @@ class GameController extends AbstractController
         $game->setQuestionStartedAt();
         $question = $game->selectOneQuestion($currentQuestion);
         shuffle($question['answers']);
+        $nbQuestions = count($game->getQuestions());
 
-        return $this->twig->render('Game/index.html.twig', ['question' => $question, 'session' => $_SESSION]);
+        $temporaryScore = [];
+        if (!empty($game->getScore())) {
+            for ($i = 0; $i < $nbQuestions; $i++) {
+                $temporaryScore[] = $game->getScoreById($game->getCurrentQuestion() - 1);
+            }
+        }
+
+            return $this->twig->render(
+                'Game/index.html.twig',
+                [
+                    'question' => $question,
+                    'session' => $_SESSION,
+                    'nbQuestions' => $nbQuestions,
+                    'temporaryScore' => $temporaryScore,
+                    'score' => $game->getScore()
+                ]
+            );
     }
 
     public function result(): string
@@ -248,7 +265,6 @@ class GameController extends AbstractController
         }
 
         $questionTimer = $game->getQuestionsDuration();
-
         $gameHasQuestion = new GameHasQuestionManager();
         $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
         return $this->twig->render('Game/result.html.twig', [
