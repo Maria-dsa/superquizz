@@ -213,11 +213,6 @@ class GameController extends AbstractController
         shuffle($question['answers']);
         $nbQuestions = count($game->getQuestions());
 
-        $styles = [];
-        for ($i = 0; $i < $nbQuestions; $i++) {
-            $styles[] = "gray";
-        }
-
         $temporaryScore = [];
         if (!empty($game->getScore())) {
             for ($i = 0; $i < $nbQuestions; $i++) {
@@ -268,8 +263,6 @@ class GameController extends AbstractController
             $result = $resultManager->selectQuestionSuccessById($question['id']);
             $arrayResult[] = $result['pourcentage_reussite'];
         }
-
-        $game->setCookie();
 
         $gameHasQuestion = new GameHasQuestionManager();
         $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
