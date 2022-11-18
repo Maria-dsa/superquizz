@@ -247,8 +247,10 @@ class GameController extends AbstractController
             $arrayResult[] = $result['pourcentage_reussite'];
         }
 
+
         $gameHasQuestion = new GameHasQuestionManager();
-        $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
+        $userAnswers = $gameHasQuestion->selectAllUserAnswer($game->getId());
+
         return $this->twig->render('Game/result.html.twig', [
             'session' => $_SESSION,
 
@@ -261,7 +263,7 @@ class GameController extends AbstractController
             'nbGoodAnswer' => $nbGoodAnswer,
             'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
-            'userAnswer' => $userAnswer,
+            'userAnswers' => $userAnswers,
         ]);
     }
 }
