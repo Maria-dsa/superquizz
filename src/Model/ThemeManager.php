@@ -15,4 +15,13 @@ class ThemeManager extends AbstractManager
         $statement->bindValue(':theme', $theme, PDO::PARAM_STR);
         $statement->execute();
     }
+
+    public function selectBytheme(string $theme)
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM ' . self::TABLE .
+            ' WHERE theme=:theme');
+        $statement->bindValue(':theme', $theme, PDO::PARAM_STR);
+        $statement->execute();
+        return $statement->fetch();
+    }
 }
