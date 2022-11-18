@@ -1,4 +1,9 @@
+
 -- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
+
+-- SQLBook: Code
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+
 --
 -- Host: localhost    Database: superquizz
 -- ------------------------------------------------------
@@ -183,6 +188,7 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'florent','$2y$10$IFqHOwYG2mhTqcmQ4F.3oeviPTj/LxLA8x2IEdHTLbwp.jwwmTgHu',NULL,'admin'),(2,'nicolas',NULL,NULL,'admin'),(3,'maria',NULL,NULL,'admin'),(4,'magali',NULL,NULL,'admin'),(5,'JF',NULL,NULL,'admin'),(6,'maria',NULL,NULL,NULL),(7,'newplayer',NULL,NULL,NULL),(8,'Florent','$2y$10$IFqHOwYG2mhTqcmQ4F.3oeviPTj/LxLA8x2IEdHTLbwp.jwwmTgHu',NULL,NULL),(9,'Magali',NULL,NULL,NULL),(10,'Nicolas',NULL,NULL,NULL),(11,'Victor',NULL,NULL,NULL),(12,'Hugo',NULL,NULL,NULL),(13,'Max',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -194,3 +200,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-11-18 16:07:52
+
