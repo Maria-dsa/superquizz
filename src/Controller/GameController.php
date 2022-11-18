@@ -13,7 +13,7 @@ use DateTime;
 class GameController extends AbstractController
 {
     private QuestionManager $questionManager;
-    private int $maxQuestion = 3;
+    private int $maxQuestion = 15;
 
     public const GAME_TYPES = ['1', '2'];
     public const FILE_UPLOAD_ERROR = [
@@ -236,7 +236,7 @@ class GameController extends AbstractController
         //US.5.3.1 : Affichage scores/stats sur page results
         $resultManager = new ResultManager();
         $allUsersRanks = $resultManager->selectAllByRank();
-        $podium = $resultManager->selectPodium();
+        $podium = $resultManager->selectPodium($game->getType());
         $id = $game->getUserId();
         $userRank = $resultManager->selectOneRankById($id);
         $questionSuccess = $resultManager->selectAllQuestionSuccess();
@@ -247,7 +247,7 @@ class GameController extends AbstractController
             $arrayResult[] = $result['pourcentage_reussite'];
         }
 
-        $game->setCookie();
+        $questionTimer = $game->getQuestionsDuration();
 
         $gameHasQuestion = new GameHasQuestionManager();
         $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
@@ -264,6 +264,7 @@ class GameController extends AbstractController
             'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
             'userAnswer' => $userAnswer,
+            'questionsTimer' => $questionTimer
         ]);
     }
 }
