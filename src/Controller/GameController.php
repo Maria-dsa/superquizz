@@ -247,8 +247,6 @@ class GameController extends AbstractController
             $arrayResult[] = $result['pourcentage_reussite'];
         }
 
-        $game->setCookie();
-
         $gameHasQuestion = new GameHasQuestionManager();
         $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
         return $this->twig->render('Game/result.html.twig', [

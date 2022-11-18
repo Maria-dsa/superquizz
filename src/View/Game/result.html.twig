@@ -9,6 +9,10 @@
 {% set score = session.game.score %}
 {% set gameDuration = session.game.gameDuration %}
 {% set i = 0 %}
+<pre>
+    {{ dump(userAnswer) }}
+    {{ dump(questions.0.answers)}}
+</pre>
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-7 col-md-10 col-12 mx-auto mt-4 d-block bg-white">
