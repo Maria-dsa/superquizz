@@ -116,33 +116,18 @@ class GameController extends AbstractController
         $question = $game->selectOneQuestion($currentQuestion);
         shuffle($question['answers']);
         $nbQuestions = count($game->getQuestions());
-        // $game->setCookie();
-        // var_dump(json_decode($_COOKIE["score"]));
 
         $styles = [];
         for ($i = 0; $i < $nbQuestions; $i++) {
             $styles[] = "gray";
         }
 
-        // if (!empty($game->getScore())) {
-        // // if ($game->getScoreById($currentQuestion - 1) == 1) {
-        // //     $style = "green";
-        // // } elseif ($game->getScoreById($currentQuestion - 1) == 0) {
-        // //     $style = "red";
-        // // } else {
-        // //     $style = "gray";
-        // // }
-
-        //     for ($i = 0; $i < $nbQuestions; $i++) {
-        //         if ($game->getScoreById($currentQuestion - 1) == 1) {
-        //             array_push($styles, "green");
-        //         } elseif ($game->getScoreById($currentQuestion - 1) == 0) {
-        //             array_push($styles, "red");
-        //         }
-        //         var_dump($i);
-        //     }
-        //     var_dump($styles);
-        // }
+        $temporaryScore = [];
+        if (!empty($game->getScore())) {
+            for ($i = 0; $i < $nbQuestions; $i++) {
+                $temporaryScore[] = $game->getScoreById($game->getCurrentQuestion() - 1);
+            }
+        }
 
             return $this->twig->render(
                 'Game/index.html.twig',
@@ -150,7 +135,8 @@ class GameController extends AbstractController
                     'question' => $question,
                     'session' => $_SESSION,
                     'nbQuestions' => $nbQuestions,
-                    'styles' => $styles
+                    'temporaryScore' => $temporaryScore,
+                    'score' => $game->getScore()
                 ]
             );
     }
