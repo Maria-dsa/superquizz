@@ -26,6 +26,35 @@ h4 {
 
 }
 
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+    background-color: var(--bs-secondary) !important;
+    color: var(--bs-white) !important;
+    border-color: var(--bs-secondary) !important;
+}
+
+.btn-outline-success,
+.btn-outline-success:hover {
+    color: var(--bs-secondary) !important;
+    border-color: var(--bs-secondary) !important;
+}
+
+.true {
+    fill:var(--good-answer);
+
+}
+
+.false {
+    fill:var(--bad-answer);
+}
+
+.neutral {
+    fill: gray;
+}
+
 @media screen and (max-width: 767px) {
     .answer-display {
         padding-left: 0px;

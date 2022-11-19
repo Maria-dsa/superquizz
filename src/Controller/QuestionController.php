@@ -39,6 +39,11 @@ class QuestionController extends AbstractController
             $this->allTheme[] = $result['theme'];
         }
     }
+
+    public function getAllTheme(): array
+    {
+        return $this->allTheme;
+    }
     /**
      * List items
      */

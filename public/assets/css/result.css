@@ -144,3 +144,60 @@
   .number-circle h3{
     transform: rotate(-270deg);
   }
+
+  .answerGood{
+    background-color: var(--good-answer);
+  }
+
+  .circle-text-size{
+    font-size: 0.75rem;
+  }
+
+  .percent-2{
+    transform: rotate(270deg);
+    position: relative;
+    width: 6.25rem;
+    height: 6.25rem;
+  }
+
+  .percent-2 svg circle{
+    width: 100%;
+    height: 100%;
+    fill: transparent;
+    stroke-width: 5;
+    stroke: black;
+    transform: translate(0.3125rem,0.3125rem);
+  }
+
+  .percent-2 svg circle:nth-child(2){
+    stroke: cadetblue;
+    stroke-dasharray: 220;
+    stroke-dashoffset: calc(220 - (220 * var(--num)) / 100);
+  }
+
+  .question-type{
+    font-size: 0.75rem;
+  }
+
+  .percent-2 .number-circle h3{
+    position: relative;
+    bottom: 0.3125rem;
+    right: 0.625rem;
+  }
+
+  .size-presentation{
+    font-size: 4rem;
+  }
+
+  .presentation-color{
+    background-color: rgb(197, 209, 212);
+
+    width: 40%;
+  }
+
+  .row-color{
+    background-color: rgb(197, 209, 212);
+    margin-left: 0px;
+  }
+
+
