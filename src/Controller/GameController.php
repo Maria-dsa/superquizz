@@ -27,6 +27,8 @@ class GameController extends AbstractController
         8 => 'A PHP extension stopped the file upload.',
     ];
 
+    public const ID_AVATAR = [];
+
     public function startGame()
     {
         $errors = [];
@@ -44,7 +46,9 @@ class GameController extends AbstractController
 
             if (empty($errors)) {
                 $userManager = new UserManager();
-                $newGame['userId'] = $userManager->insert($newGame['nickname'], basename($_FILES['picture']['name']));
+                //$picture = basename($_FILES['picture']['name']) ?? 'avatar_default_' . rand(1,19);
+                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19);
+                $newGame['userId'] = $userManager->insert($newGame['nickname'], $picture);
 
                 $gameManager = new GameManager();
                 // Insère en BDD un nouveau game et récupère son ID
@@ -133,7 +137,7 @@ class GameController extends AbstractController
             $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
-            $uploadDir = 'images/';
+            $uploadDir = 'upload/avatar/';
             // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur
             //le poste du client (mais d'autre stratégies de nommage sont possibles)
             $uploadFile = $uploadDir . basename($_FILES['picture']['name']);
