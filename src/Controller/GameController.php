@@ -107,7 +107,7 @@ class GameController extends AbstractController
             // Je récupère l'extension du fichier
             $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
             // Les extensions autorisées
-            $authorizedExtensions = ['jpg', 'JPG','jpeg','png', 'gif', 'webp'];
+            $authorizedExtensions = ['jpg', 'JPG', 'jpeg', 'png', 'gif', 'webp'];
             // Le poids max géré en octet
             $maxFileSize = 2000000;
 
@@ -118,7 +118,7 @@ class GameController extends AbstractController
             /****** On vérifie si l'image existe et si le poids est autorisé en octets *************/
             if (
                 file_exists($_FILES['picture']['tmp_name'])
-                    && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
+                && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
             ) {
                 $errors[] = "Votre fichier doit faire moins de 2M !";
             }
@@ -220,16 +220,16 @@ class GameController extends AbstractController
             }
         }
 
-            return $this->twig->render(
-                'Game/index.html.twig',
-                [
-                    'question' => $question,
-                    'session' => $_SESSION,
-                    'nbQuestions' => $nbQuestions,
-                    'temporaryScore' => $temporaryScore,
-                    'score' => $game->getScore()
-                ]
-            );
+        return $this->twig->render(
+            'Game/index.html.twig',
+            [
+                'question' => $question,
+                'session' => $_SESSION,
+                'nbQuestions' => $nbQuestions,
+                'temporaryScore' => $temporaryScore,
+                'score' => $game->getScore()
+            ]
+        );
     }
 
     public function result(): string
@@ -281,6 +281,16 @@ class GameController extends AbstractController
             'percentGoodAnswers' => $percentGoodAnswers,
             'userAnswer' => $userAnswer,
             'questionsTimer' => $questionTimer
+        ]);
+    }
+
+    public function rank(): string
+    {
+        $resultmanager = new ResultManager();
+        $ranks = $resultmanager->selectAllByRank();
+
+        return $this->twig->render('Game/rank.html.twig', [
+            'ranks' => $ranks,
         ]);
     }
 }

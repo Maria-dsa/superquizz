@@ -1,0 +1,80 @@
+{% extends "layout.html.twig" %}
+
+
+{% block content %}
+	<h1 class="container-fluid text-center text-white bg-secondary p-2 w-50 justify-content-center mt-5 rounded-pill">
+		Top 20 des meilleurs joueurs</h1>
+	<div class="row align-items-center custom-line mt-1 m-5">
+
+		<div class="col bg-white m-5">
+
+			<h1 class="text-center text-secondary pt-1">Game Play 1</h1>
+
+
+			<table class="table table-striped ">
+
+				<thead>
+					<tr>
+						<th>Rang</th>
+						<th>Pseudo</th>
+						<th>Score Moyen</th>
+						<th>Temps Moyen(sec.)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for rank in ranks %}
+						{% if rank.game_type == "1" %}
+							<tr>
+								<td>{{rank.rang}}
+								</td>
+								<td>{{rank.username}}
+								</td>
+								<td>{{rank.score_moyen|round}}
+								</td>
+								<td>{{rank.temps_moyen}}
+								</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="col bg-white m-5">
+
+			<h1 class="text-center text-secondary pt-1">Time Attack</h1>
+
+
+			<table class="table table-striped ">
+
+				<thead>
+					<tr>
+						<th>Rang</th>
+						<th>Pseudo</th>
+						<th>Score Moyen</th>
+						<th>Temps Moyen(sec.)</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for rank in ranks %}
+						{% if rank.game_type == "2" %}
+
+							<tr>
+								<td>{{rank.rang}}
+								</td>
+								<td>{{rank.username}}
+								</td>
+								<td>{{rank.score_moyen|round}}
+								</td>
+								<td>{{rank.temps_moyen}}
+								</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+
+
+	{% endblock %}
