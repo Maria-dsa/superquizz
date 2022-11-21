@@ -57,6 +57,7 @@ nav ul li {
     background-color: #003b55;
     color: var(--bs-white);
     box-shadow: 0px 0px 20px 10px #0ff;
+    border: none;
 }
 
 .submit-btn::before, 
@@ -81,35 +82,35 @@ nav ul li {
 
 .submit-btn:hover::before, 
 .submit-btn:hover::after {
-    width: calc(100% + 4px);
+    width: calc(100%);
 }
 
 .submit-btn:hover span::before, 
 .submit-btn:hover span::after {
-    height: calc(100% + 4px);
+    height: calc(100%);
 }
 
 .submit-btn::after {
-    right: -2px;
-    bottom: -2px;
+    right: 0px;
+    bottom: 0px;
     transition-duration: 0.4s;
 }
 
 .submit-btn span::after {
-    right: -2px;
-    bottom: -2px;
+    right: 0px;
+    bottom: 0px;
     transition-duration: 0.4s;
 }
 
 .submit-btn::before {
-    left: -2px;
-    top: -2px;
+    left: 0px;
+    top: 0px;
     transition-duration: 0.4s;
 }
 
 .submit-btn span::before {
-    left: -2px;
-    top: -2px;
+    left: 0px;
+    top: 0px;
     transition-duration: 0.4s;
 }
 
@@ -154,8 +155,14 @@ main {
 }
 
 .accordion-body img {
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 200px;
+    max-height: 200px;
+}
+
+@media screen and (max-width:576px) {
+    .accordion-body img {
+        display: none;
+    }
 }
 
 .answerList {
@@ -290,6 +297,6 @@ main {
     margin-left: 2rem;
 }
 
-#floatingPassword {
+#searchInput {
     padding-left: 3rem;
 }

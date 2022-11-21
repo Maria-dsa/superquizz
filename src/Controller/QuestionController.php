@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Model\GameManager;
+use App\Model\UserManager;
+use App\Model\ThemeManager;
 use App\Model\AnswerManager;
 use App\Model\QuestionManager;
-use App\Model\ThemeManager;
 
 class QuestionController extends AbstractController
 {
@@ -22,6 +24,18 @@ class QuestionController extends AbstractController
         6 => 'Missing a temporary folder',
         7 => 'Failed to write file to disk.',
         8 => 'A PHP extension stopped the file upload.',
+    ];
+    public const SORTING = [
+        1 => ['content', 'ASC'],
+        2 => ['content', 'DESC'],
+        3 => ['difficulty_level', 'ASC'],
+        4 => ['difficulty_level', 'DESC'],
+    ];
+
+    public const FILTER_DEFAULT = [
+        'theme' => 'Culture Générale',
+        'include' => '',
+        'sort' => self::SORTING[1],
     ];
 
     public function __construct()
@@ -54,8 +68,42 @@ class QuestionController extends AbstractController
             header('HTTP/1.1 401 Unauthorized');
             exit();
         }
-        $questions = $this->questionManager->selectAllWithAnswer();
-        return $this->twig->render('Admin/show.html.twig', ['questions' => $questions]);
+
+        $searchInfos = '';
+        $filter = self::FILTER_DEFAULT;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // clean $_POST data
+            $searchInfos = array_map('trim', $_POST);
+            $valideThemes = $this->allTheme;
+            $valideThemes[] = 'all';
+            $filter['theme'] = in_array($searchInfos['searchTheme'], $valideThemes) ?
+                $searchInfos['searchTheme'] :
+                $filter['theme'];
+            $filter['sort'] = array_key_exists($searchInfos['searchOrder'], self::SORTING) ?
+                self::SORTING[$searchInfos['searchOrder']] :
+                self::SORTING[1];
+            $filter['include'] = $searchInfos['searchInput'];
+        }
+
+
+        $questions = $this->questionManager->selectAllWithFilter($filter);
+        $nbTotalQuestions = $this->questionManager->getTotalEntries()['total'];
+
+        $gameManager = new GameManager();
+        $nbTotalGames = $gameManager->getTotalEntries()['total'];
+
+        $userManager = new UserManager();
+        $nbTotalUsers = $userManager->getTotalEntries()['total'];
+
+        return $this->twig->render('Admin/show.html.twig', [
+            'nbTotalQuestions' => $nbTotalQuestions,
+            'nbTotalGames' => $nbTotalGames,
+            'nbTotalUsers' => $nbTotalUsers,
+            'questions' => $questions,
+            'themes' => $this->allTheme,
+            'searchInfos' => $searchInfos,
+        ]);
     }
 
     public function update(int $id)
@@ -152,9 +200,8 @@ class QuestionController extends AbstractController
             $questionInfos = array_map('trim', $_POST);
             $errors = $this->validate($questionInfos);
 
-
-
-            if ($_FILES['picture']['error'] != 4) {
+            $uploadError = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
+            if ($uploadError != self::FILE_UPLOAD_ERROR[4]) {
                 $errorsFiles = $this->validateImg();
                 empty($errorsFiles) ?: $errors['file'] = [...$errorsFiles];
             }
@@ -193,7 +240,7 @@ class QuestionController extends AbstractController
             // Je récupère l'extension du fichier
             $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
             // Les extensions autorisées
-            $authorizedExtensions = ['jpg', 'JPG','jpeg','png', 'gif', 'webp'];
+            $authorizedExtensions = ['jpg', 'JPG', 'jpeg', 'png', 'gif', 'webp'];
             // Le poids max géré en octet
             $maxFileSize = 2000000;
 
@@ -204,7 +251,7 @@ class QuestionController extends AbstractController
             /****** On vérifie si l'image existe et si le poids est autorisé en octets *************/
             if (
                 file_exists($_FILES['picture']['tmp_name'])
-                    && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
+                && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
             ) {
                 $errors[] = "Votre fichier doit faire moins de 2M !";
             }

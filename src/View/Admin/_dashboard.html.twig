@@ -6,7 +6,7 @@
     <div class="card bg-primary text-light h-100">
       <div class="card-body">
         <div class="icon mdi mdi-48px mdi-comment-question-outline"></div>
-        <h4 class="card-title">{{ data.questions ?? "524" }}</h4>
+        <h4 class="card-title">{{ nbTotalQuestions ?? "524" }}</h4>
         <p>questions dans la base !</p>
       </div>
     </div>
@@ -15,7 +15,7 @@
     <div class="card  bg-primary text-light h-100">
       <div class="card-body">
         <div class="icon mdi mdi-48px mdi-gamepad-variant-outline"></div>
-        <h4 class="card-title">{{ data.game ?? "1247" }}</h4>
+        <h4 class="card-title">{{ nbTotalGames ?? "1247" }}</h4>
         <p>parties jouées !</p>
       </div>
     </div>
@@ -24,7 +24,7 @@
     <div class="card  bg-primary text-light h-100">
       <div class="card-body">
         <div class="icon mdi mdi-48px mdi-account-outline"></div>
-        <h4 class="card-title">426</h4>
+        <h4 class="card-title">{{ nbTotalUsers ?? "1247" }}</h4>
         <p>Joueurs dans la base !</p>
       </div>
     </div>
