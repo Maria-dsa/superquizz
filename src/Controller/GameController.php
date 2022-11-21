@@ -247,9 +247,7 @@ class GameController extends AbstractController
             $arrayResult[] = $result['pourcentage_reussite'];
         }
 
-
-        $gameHasQuestion = new GameHasQuestionManager();
-        $userAnswers = $gameHasQuestion->selectAllUserAnswer($game->getId());
+        $userAnswers = $resultManager->matchingAnswerByGameId($game->getId());
 
         return $this->twig->render('Game/result.html.twig', [
             'session' => $_SESSION,

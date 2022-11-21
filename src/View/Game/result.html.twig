@@ -10,8 +10,8 @@
 {% set gameDuration = session.game.gameDuration %}
 {% set i = 0 %}
 <pre>
-    {{ dump(userAnswer) }}
-    {{ dump(questions.0.answers)}}
+    {{ dump(userAnswers) }}
+    {{ dump(questions.0.answers) }}
 </pre>
 	<div class="container-fluid">
 		<div class="row">
@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="container">
                                         <div class="row mt-4 row-question">
-                                            <div class="col border border-3">{{question.answers.0.answer}}</div>
+                                            <div class="col border border-3 {{ userAnswers[i].user_answer_id ==  userAnswers[i].correct_answer_id ? 'true' }}">{{question.answers.0.answer}}</div>
                                             <div class="col border border-3">{{question.answers.1.answer}}</div>
                                         </div>
                                         <div class="row mt-3 row-question">
