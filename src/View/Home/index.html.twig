@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block content %}
-
 	<div class="container-fluid">
+
 		<div class="row">
-			<div class="col-lg-3 col-md-4 col-sm-4 col-8 mx-auto mt-5 d-block">
+			<div class="col-lg-3 col-md-5 col-sm-6 col-8 mx-auto mt-5 d-block">
 				<img src="/assets/images/home-quiz.png" class="img-fluid" alt="Mix Quiz">
 			</div>
-
 		</div>
+
 		<div class="row">
 			<div class="col-lg-6 col-md-9 col-sm-10 col-11 mx-auto mt-4 d-block bg-secondary shadow p-3 mb-5 rounded">
 				<h1 class="text-white text-center font-weight-bold">À toi de jouer !</h1>
@@ -48,19 +48,18 @@
 
 						<input type="radio" class="btn-check" name="gameType" id="option2" value="2" autocomplete="off">
 						<label class="btn btn-primary" for="option2">Time Attack</label>
-						
 					</div>
 					<span>{{ errors.gameType }}</span>
 
 
-
-					<div class="text-center">
-						<button type="submit" class="btn btn-neutral btn-round btn-sm mt-2">C'est parti !</button>
+					<div class="text-center d-flex justify-content-center">
+						<button type="submit" class="btn btn-neutral btn-round btn-sm mt-2">C'est parti !<i class="fa-solid fa-chevron-right"></i>
+							<i class="fa-solid fa-chevron-right"></i>
+						</button>
 					</div>
+
 				</form>
 			</div>
 		</div>
-
-
 	</div>
 {% endblock %}

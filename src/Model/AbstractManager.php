@@ -56,4 +56,15 @@ abstract class AbstractManager
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
     }
+
+        /**
+     * Get number total of Ids
+     */
+    public function getTotalEntries()
+    {
+        $statement = $this->pdo->prepare('SELECT COUNT(*) AS total FROM ' . static::TABLE);
+        $statement->execute();
+
+        return $statement->fetch();
+    }
 }

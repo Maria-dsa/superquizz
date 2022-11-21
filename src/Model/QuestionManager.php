@@ -8,6 +8,38 @@ class QuestionManager extends AbstractManager
 {
     public const TABLE = 'question';
 
+
+    /**
+     * Get all row from database.
+     */
+    public function selectAllWithFilter(array $filter): array
+    {
+        $query = "SELECT * FROM " . self::TABLE . " WHERE";
+        if ($filter['theme'] != 'all') {
+            $query .= ' theme=:theme AND ';
+        }
+        $query .= " content LIKE :include ORDER BY " . $filter['sort'][0] . " " . $filter['sort'][1];
+
+        $statement = $this->pdo->prepare($query);
+
+        if ($filter['theme'] != 'all') {
+            $statement->bindValue(':theme', $filter['theme'], PDO::PARAM_STR);
+        }
+
+        $statement->bindValue(':include', '%' . $filter['include'] . '%', PDO::PARAM_STR);
+
+        $statement->execute();
+        $questions = $statement->fetchAll();
+        $answerManager = new AnswerManager();
+        foreach ($questions as &$question) {
+            $answers = $answerManager->selectAllByQuestionsId($question['id']);
+            foreach ($answers as $answer) {
+                $question['answers'][$answer['answer']] = $answer['isTrue'];
+            }
+        }
+        return $questions;
+    }
+
     /**
      * SELECT all question & associates answers : ok !
      **/
@@ -23,6 +55,8 @@ class QuestionManager extends AbstractManager
         }
         return $questions;
     }
+
+
 
     public function selectQuestionsWithAnswer(int $number = 15, string $theme = ''): array
     {

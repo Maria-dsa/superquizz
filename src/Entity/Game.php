@@ -33,6 +33,11 @@ class Game
         return $this->score;
     }
 
+    public function getScoreById($id): int
+    {
+        return $this->score[$id];
+    }
+
     /**
      * Set the value of id
      */
@@ -201,8 +206,8 @@ class Game
         $duration = floatval($interval->format('%a')) * 86400
             + floatval($interval->format('%h')) * 3600
             + floatval($interval->format('%i')) * 60
-            + floatval($interval->format('%s'));
-            
+            + floatval($interval->format('%s'))
+            + floatval($interval->format('%f')) / 1000000;
         return $duration;
     }
 
@@ -226,8 +231,8 @@ class Game
     public function setQuestionsDuration(): float
     {
         $duration = $this->calculateGameDuration($this->questionStartedAt, new DateTime());
-        $this->questionsDuration[] = $duration;
+        $this->questionsDuration[] = round($duration, 2);
 
-        return $duration;
+        return round($duration, 2);
     }
 }

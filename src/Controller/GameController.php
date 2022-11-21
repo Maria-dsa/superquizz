@@ -13,7 +13,7 @@ use DateTime;
 class GameController extends AbstractController
 {
     private QuestionManager $questionManager;
-    private int $maxQuestion = 3;
+    private int $maxQuestion = 15;
 
     public const GAME_TYPES = ['1', '2'];
     public const FILE_UPLOAD_ERROR = [
@@ -26,6 +26,8 @@ class GameController extends AbstractController
         7 => 'Failed to write file to disk.',
         8 => 'A PHP extension stopped the file upload.',
     ];
+
+    public const ID_AVATAR = [];
 
     public function startGame()
     {
@@ -44,7 +46,9 @@ class GameController extends AbstractController
 
             if (empty($errors)) {
                 $userManager = new UserManager();
-                $newGame['userId'] = $userManager->insert($newGame['nickname'], basename($_FILES['picture']['name']));
+                //$picture = basename($_FILES['picture']['name']) ?? 'avatar_default_' . rand(1,19);
+                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19);
+                $newGame['userId'] = $userManager->insert($newGame['nickname'], $picture);
 
                 $gameManager = new GameManager();
                 // Insère en BDD un nouveau game et récupère son ID
@@ -69,7 +73,12 @@ class GameController extends AbstractController
                 header('Location: /question');
             }
         }
-        return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
+        $questionController = new QuestionController();
+        $allThemes = $questionController->getAllTheme();
+        return $this->twig->render('Home/index.html.twig', [
+            'errors' => $errors,
+            'themes' => $allThemes
+        ]);
     }
 
     public function validate(array &$newGame): array
@@ -107,7 +116,7 @@ class GameController extends AbstractController
             // Je récupère l'extension du fichier
             $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
             // Les extensions autorisées
-            $authorizedExtensions = ['jpg', 'JPG','jpeg','png', 'gif', 'webp'];
+            $authorizedExtensions = ['jpg', 'JPG', 'jpeg', 'png', 'gif', 'webp'];
             // Le poids max géré en octet
             $maxFileSize = 2000000;
 
@@ -118,7 +127,7 @@ class GameController extends AbstractController
             /****** On vérifie si l'image existe et si le poids est autorisé en octets *************/
             if (
                 file_exists($_FILES['picture']['tmp_name'])
-                    && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
+                && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
             ) {
                 $errors[] = "Votre fichier doit faire moins de 2M !";
             }
@@ -133,7 +142,7 @@ class GameController extends AbstractController
             $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
-            $uploadDir = 'images/';
+            $uploadDir = 'upload/avatar/';
             // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur
             //le poste du client (mais d'autre stratégies de nommage sont possibles)
             $uploadFile = $uploadDir . basename($_FILES['picture']['name']);
@@ -211,12 +220,35 @@ class GameController extends AbstractController
         $game->setQuestionStartedAt();
         $question = $game->selectOneQuestion($currentQuestion);
         shuffle($question['answers']);
+        $nbQuestions = count($game->getQuestions());
 
-        return $this->twig->render('Game/index.html.twig', ['question' => $question, 'session' => $_SESSION]);
+        $temporaryScore = [];
+        if (!empty($game->getScore())) {
+            for ($i = 0; $i < $nbQuestions; $i++) {
+                $temporaryScore[] = $game->getScoreById($game->getCurrentQuestion() - 1);
+            }
+        }
+
+        return $this->twig->render(
+            'Game/index.html.twig',
+            [
+                'question' => $question,
+                'session' => $_SESSION,
+                'nbQuestions' => $nbQuestions,
+                'temporaryScore' => $temporaryScore,
+                'score' => $game->getScore()
+            ]
+        );
     }
 
     public function result(): string
     {
+        if (!isset($_SESSION['game'])) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 403 Forbidden');
+            exit();
+        }
+
         $resultmanager = new ResultManager();
         $game =  $_SESSION['game'];
         if (!(count($game->getScore()) === $this->maxQuestion)) {
@@ -236,7 +268,7 @@ class GameController extends AbstractController
         //US.5.3.1 : Affichage scores/stats sur page results
         $resultManager = new ResultManager();
         $allUsersRanks = $resultManager->selectAllByRank();
-        $podium = $resultManager->selectPodium();
+        $podium = $resultManager->selectPodium($game->getType());
         $id = $game->getUserId();
         $userRank = $resultManager->selectOneRankById($id);
         $questionSuccess = $resultManager->selectAllQuestionSuccess();
@@ -249,6 +281,7 @@ class GameController extends AbstractController
 
         $userAnswers = $resultManager->matchingAnswerByGameId($game->getId());
 
+        $questionTimer = $game->getQuestionsDuration();
         return $this->twig->render('Game/result.html.twig', [
             'session' => $_SESSION,
 
@@ -262,6 +295,17 @@ class GameController extends AbstractController
             'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
             'userAnswers' => $userAnswers,
+            'questionsTimer' => $questionTimer
+        ]);
+    }
+
+    public function rank(): string
+    {
+        $resultmanager = new ResultManager();
+        $ranks = $resultmanager->selectAllByRank();
+
+        return $this->twig->render('Game/rank.html.twig', [
+            'ranks' => $ranks,
         ]);
     }
 }
