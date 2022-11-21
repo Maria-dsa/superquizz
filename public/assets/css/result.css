@@ -200,4 +200,12 @@
     margin-left: 0px;
   }
 
+  .true {
+    background-color: var(--good-answer);
+
+  }
+
+  .false {
+    background-color: var(--bad-answer);
+  }
 
