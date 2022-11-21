@@ -239,6 +239,12 @@ class GameController extends AbstractController
 
     public function result(): string
     {
+        if (!isset($_SESSION['game'])) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 403 Forbidden');
+            exit();
+        }
+
         $resultmanager = new ResultManager();
         $game =  $_SESSION['game'];
         if (!(count($game->getScore()) === $this->maxQuestion)) {
