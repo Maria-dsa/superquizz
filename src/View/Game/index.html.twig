@@ -8,11 +8,11 @@
 	<div class="col-11 col-sm-10 mx-auto">
 		<div class="container-fluid mb-3 mx-auto mt-5 pt-1 text-center text-white">
 			<div class="d-flex">
-                {% for i in 0..nbQuestions - 1 %}
-                    <svg>
-                        <circle cx="7" cy="7" r="7" class="{{ score[i] ? 'true' : score[i] is empty ? 'neutral' : 'false' }}"></circle>
-                    </svg>
-                {% endfor %}
+				{% for i in 0..nbQuestions - 1 %}
+					<svg>
+						<circle cx="7" cy="7" r="7" class="{{ score[i] ? 'true' : score[i] is empty ? 'neutral' : 'false' }}"></circle>
+					</svg>
+				{% endfor %}
 			</div>
 			<div class="col-8 mx-auto d-block ">
 				<h3 class="text-center bg-secondary rounded">{{session.nickname}}, voici ta question</h3>
@@ -39,7 +39,7 @@
 					{% for answer in question.answers %}
 						<div class="col-sm-6 mx-auto col-12">
 							<div class="row border rounded m-3 bg-white">
-								<input class="btn-check" type="radio" name="answer" id="{{answer.id}}" value="{{answer.id}}" autocomplete="off">
+								<input class="btn-check" type="radio" name="answer" id="{{answer.id}}" value="{{answer.id}}" autocomplete="off" required>
 								<label class="btn btn-outline-success" for="{{answer.id}}">{{answer.answer}}</label>
 							</div>
 						</div>

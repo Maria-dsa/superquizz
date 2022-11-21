@@ -294,4 +294,14 @@ class GameController extends AbstractController
             'questionsTimer' => $questionTimer
         ]);
     }
+
+    public function rank(): string
+    {
+        $resultmanager = new ResultManager();
+        $ranks = $resultmanager->selectAllByRank();
+
+        return $this->twig->render('Game/rank.html.twig', [
+            'ranks' => $ranks,
+        ]);
+    }
 }
