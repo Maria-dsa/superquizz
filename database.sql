@@ -79,7 +79,7 @@ CREATE TABLE `game_has_question` (
   `question_id` int NOT NULL,
   `answer_id` int NOT NULL,
   `is_true` tinyint(1) NOT NULL,
-  `time` int DEFAULT NULL,
+  `time` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_game_has_question_game` (`game_id`),
   KEY `fk_game_has_question_question` (`question_id`),
