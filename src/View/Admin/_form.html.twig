@@ -3,9 +3,9 @@
 {% block content %}
 
 	<div class="m-auto container-md ">
-		{% block title %}{% endblock %}
 
-		<form method="post" enctype="multipart/form-data">
+		<form method="post" enctype="multipart/form-data" class="addForm pt-1 pb-3 my-3">
+			{% block title %}{% endblock %}
 
 			{% block hiddenInput %}{% endblock %}
 
@@ -13,7 +13,7 @@
 				<select class="form-select" aria-label="Choix du thème" name="theme" id="theme" required>
 					<option selected value="">Choississez le thème de la question</option>
 					{% for theme in themes %}
-						<option value="{{theme}}" {% if questionsInfos.theme == theme %}selected{% endif %}>{{theme}}</option>
+						<option value="{{theme}}" {% if questionsInfos.theme == theme %} selected {% endif %}>{{theme}}</option>
 					{% endfor %}
 				</select>
 				<label for="theme">Thème</label>
@@ -30,7 +30,7 @@
 				<select class="form-select" aria-label="Default select example" name="level" id="level" required>
 					<option selected value="">Choississez la difficulté de la question</option>
 					{% for level in levels %}
-						<option value="{{level}}" {% if questionsInfos.level == level %}selected{% endif %}>{{level}}</option>
+						<option value="{{level}}" {% if questionsInfos.level == level %} selected {% endif %}>{{level}}</option>
 					{% endfor %}
 				</select>
 				<label for="level">Niveau de difficulté</label>
@@ -69,7 +69,9 @@
 
 
 			<div class="text-center">
-				<button type="submit" class="btn btn-primary submit-btn"><span>Submit</span></button>
+				<button type="submit" class="btn btn-primary submit-btn">
+					<span>Submit</span>
+				</button>
 			</div>
 		</form>
 

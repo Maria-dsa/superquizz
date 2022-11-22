@@ -1,25 +1,26 @@
-<span class="loupe mdi mdi-36px mdi-magnify text-dark"></span>
-<form method="post" class="search text-dark" name="searchForm">
-
-	<div class="form-floating field">
-		<input type="text" class="searchFormField form-control" id="searchInput" name="searchInput" placeholder="Recherche" value="{{ searchInfos.searchInput }}">
-		<label class="searchField" for="searchInput">Recherche</label>
-	</div>
-
-	<select class="form-select field searchFormField" id="searchTheme" name="searchTheme">
-		<option selected value="">Filtrer par Thème</option>
-        <option value="all">Tous</option>
-		{% for theme in themes %}
-			<option value="{{theme}}" {% if searchInfos.searchTheme == theme %} selected {% endif %}>{{theme}}</option>
-		{% endfor %}
-	</select>
-
-	<select class="form-select field searchFormField" id="searchOrder" name="searchOrder">
-		<option selected>Trier par :</option>
-		<option value="1">A-Z croissant</option>
-		<option value="2">A-Z croissant</option>
-		<option value="3">Level croissant</option>
-		<option value="4">Level décroissant</option>
-	</select>
-
-</form>
+<div class="mt-3">
+	<span class="loupe mdi mdi-36px mdi-magnify text-dark"></span>
+	<form method="post" class="search text-dark" name="searchForm">
+	
+		<div class="form-floating field">
+			<input type="text" class="searchFormField form-control" id="searchInput" name="searchInput" placeholder="Recherche" value="{{ searchInfos.searchInput }}">
+			<label class="searchField" for="searchInput">Recherche</label>
+		</div>
+	
+		<select class="form-select field searchFormField" id="searchTheme" name="searchTheme">
+			<option selected value="">Filtrer par Thème</option>
+			<option value="all">Tous</option>
+			{% for theme in themes %}
+				<option value="{{theme}}" {% if searchInfos.searchTheme == theme %} selected {% endif %}>{{theme}}</option>
+			{% endfor %}
+		</select>
+	
+		<select class="form-select field searchFormField" id="searchOrder" name="searchOrder">
+			<option selected>Trier par :</option>
+			<option value="1">A-Z croissant</option>
+			<option value="2">A-Z croissant</option>
+			<option value="3">Level croissant</option>
+			<option value="4">Level décroissant</option>
+		</select>
+	</form>
+</div>
