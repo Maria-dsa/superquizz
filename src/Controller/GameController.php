@@ -37,6 +37,8 @@ class GameController extends AbstractController
             $newGame = array_map('trim', $_POST); // champ type de jeu + nickname
 
             $errors = $this->validate($newGame);
+            //var_dump($_FILES);
+            //var_dump(pathinfo($_FILES['picture']['full_path'])['extension']);
 
             $uploadError = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
             if ($uploadError != self::FILE_UPLOAD_ERROR[4]) {
@@ -136,10 +138,9 @@ class GameController extends AbstractController
         }
 
         if (empty($errors)) {
-            // ON récupère l'extension
-            $fileExtension = pathinfo($_FILES['picture']['full_path'])['extension'];
             //ON donne un nom unique au fichier avec son extension
-            $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
+            $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
+            $_FILES['picture']['name'] = uniqid() . '.' . $extension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
             $uploadDir = 'uploads/avatar/';
@@ -174,7 +175,6 @@ class GameController extends AbstractController
             }
 
             $errors = $this->validateAnswer($userAnswer, $answerId);
-            var_dump($errors);
 
             if (empty($errors)) {
                 $gameQuestionManager = new GameHasQuestionManager();
@@ -232,10 +232,6 @@ class GameController extends AbstractController
         }
         return $errors;
     }
-
-
-
-
 
     public function displayQuestion(Game $game)
     {
