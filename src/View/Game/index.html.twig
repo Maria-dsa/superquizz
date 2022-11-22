@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block content %}
-	<div class="col-11 col-sm-10 mx-auto">
+	<div id="main" class="col-11 col-sm-10 mx-auto">
+
 		<div class="container-fluid mb-3 mx-auto mt-5 pt-1 text-center text-white">
 			<div class="d-flex">
 				{% for i in 0..nbQuestions - 1 %}
@@ -14,10 +15,13 @@
 					</svg>
 				{% endfor %}
 			</div>
-			<div class="col-8 mx-auto d-block ">
-				<h3 class="text-center bg-secondary rounded">{{session.nickname}}, voici ta question</h3>
-			</div>
+
 		</div>
+
+		<div class="col-8 mx-auto d-block my-3">
+			<h3 class="text-center bg-secondary rounded p-2">{{session.nickname}}, voici ta question</h3>
+		</div>
+
 		<div class="card mb-3 mx-auto bg-white">
 			<div class="row g-1">
 				<div class="col-md-4 col-12">
@@ -34,11 +38,12 @@
 
 
 		<form action="/question" method="POST">
+
 			<div class="answer-display container-fluid">
 				<div class="row ">
 					{% for answer in question.answers %}
 						<div class="col-sm-6 mx-auto col-12">
-							<div class="row border rounded m-3 bg-white">
+							<div class="border rounded m-1 m-md-2 m-lg-3 bg-white">
 								<input class="btn-check" type="radio" name="answer" id="{{answer.id}}" value="{{answer.id}}" autocomplete="off" required>
 								<label class="btn btn-outline-success" for="{{answer.id}}">{{answer.answer}}</label>
 							</div>
@@ -46,6 +51,7 @@
 					{% endfor %}
 				</div>
 			</div>
+
 			<div class="d-flex align-items-end flex-column m-2">
 				<div class="mt-auto p-2">
 					<button type="submit" class="btn bg-secondary m-1 text-white">

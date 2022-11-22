@@ -1,7 +1,10 @@
 .navbar-toggler {
     border-color: #eef1f6;
     color: #eef1f6;
+}
 
+.navbar.fixed-top {
+    width: 80px;
 }
 
 h2 {
