@@ -260,10 +260,9 @@ class QuestionController extends AbstractController
         }
 
         if (empty($errors)) {
-            // ON récupère l'extension
-            $fileExtension = pathinfo($_FILES['picture']['full_path'])['extension'];
+            $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
             //ON donne un nom unique au fichier avec son extension
-            $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
+            $_FILES['picture']['name'] = uniqid() . '.' . $extension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
             $uploadDir = 'uploads/imagesquestions/';
