@@ -47,7 +47,7 @@ class GameController extends AbstractController
             if (empty($errors)) {
                 $userManager = new UserManager();
                 //$picture = basename($_FILES['picture']['name']) ?? 'avatar_default_' . rand(1,19);
-                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19);
+                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19) . ".png";
                 $newGame['userId'] = $userManager->insert($newGame['nickname'], $picture);
 
                 $gameManager = new GameManager();
