@@ -141,4 +141,22 @@ class ResultManager extends AbstractManager
     {
         return round($nbGoodAnswer / $nbQuestions  *  100);
     }
+
+//US 5.2 : matching reponse joueur avec réponse correct
+
+    public function matchingAnswerByGameId($game): array
+    {
+        $query = "SELECT g.question_id AS question_id,
+    g.answer_id AS user_answer_id,
+    g.is_true AS is_true,
+    a.id AS correct_answer_id,
+    a.is_correct AS is_correct
+    FROM game_has_question g JOIN answer a ON a.question_id = g.question_id
+    WHERE g.game_id=:game and is_correct=1;";
+
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('game', $game, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 }

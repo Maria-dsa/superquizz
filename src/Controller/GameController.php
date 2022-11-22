@@ -142,7 +142,7 @@ class GameController extends AbstractController
             $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
-            $uploadDir = 'upload/avatar/';
+            $uploadDir = 'uploads/avatar/';
             // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur
             //le poste du client (mais d'autre stratégies de nommage sont possibles)
             $uploadFile = $uploadDir . basename($_FILES['picture']['name']);
@@ -303,9 +303,9 @@ class GameController extends AbstractController
             $arrayResult[] = $result['pourcentage_reussite'];
         }
 
+        $userAnswers = $resultManager->matchingAnswerByGameId($game->getId());
+
         $questionTimer = $game->getQuestionsDuration();
-        $gameHasQuestion = new GameHasQuestionManager();
-        $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
         return $this->twig->render('Game/result.html.twig', [
             'session' => $_SESSION,
 
@@ -318,7 +318,7 @@ class GameController extends AbstractController
             'nbGoodAnswer' => $nbGoodAnswer,
             'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
-            'userAnswer' => $userAnswer,
+            'userAnswers' => $userAnswers,
             'questionsTimer' => $questionTimer,
             'answeredQuestions' => $answeredQuestions
         ]);

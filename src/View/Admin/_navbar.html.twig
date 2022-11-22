@@ -1,31 +1,40 @@
 <nav class="navbar navbar-dark navbar-expand-lg bg-primary p-lg-3 pt-lg-4 align-items-lg-start">
-    <div class="container-fluid flex-lg-column">
-        <img src="/assets/images/home-quiz.png" alt="">
-        <a class="navbar-brand" href="#"><h1>Melting <br class="d-sm-none d-lg-block d-xl-none" > Quizz !</h1></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav flex-lg-column">
-                <li class="nav-item">
-                <a class="nav-link {{ afficher }}" aria-current="page" href="./show"><span class="mdi mdi-format-list-bulleted"></span>Afficher</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link {{ ajouter }}" href="./add"><span class="mdi mdi-form-select"></span>Ajouter</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled"><span class="mdi mdi-email-outline"></span>Message</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link disabled">Disabled</a>
-                </li>
-                
-            </ul>
-            <div class="info-admin">
-                <img src="/assets/images/default.png" alt="">
-                <p class=>Bienvenue {{ admin.username ?? "Admin" }} </p>
-            </div>
-        </div>
-    </div>
-    
+	<div class="container-fluid flex-lg-column">
+		<img src="/assets/images/home-quiz.png" alt="">
+		<a class="navbar-brand" href="#">
+			<h1>Melting
+				<br class="d-sm-none d-lg-block d-xl-none">
+				Quizz !</h1>
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav flex-lg-column">
+				<li class="nav-item">
+					<a class="nav-link {{ afficher }}" aria-current="page" href="./show">
+						<span class="mdi mdi-format-list-bulleted"></span>Afficher</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {{ ajouter }}" href="./add">
+						<span class="mdi mdi-form-select"></span>Ajouter</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled">
+						<span class="mdi mdi-email-outline"></span>Message</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled">Disabled</a>
+				</li>
+
+			</ul>
+			<div class="info-admin">
+				<img src="/uploads/avatar/avatar_default_1.png" alt="Photo de profil de l'admin">
+				<p class=>Bienvenue
+					{{ admin.username ?? "Admin" }}
+				</p>
+			</div>
+		</div>
+	</div>
+
 </nav>
