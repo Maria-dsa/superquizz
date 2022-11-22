@@ -266,7 +266,7 @@ class QuestionController extends AbstractController
             $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
-            $uploadDir = 'upload/imagesquestions/';
+            $uploadDir = 'uploads/imagesquestions/';
             // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur
             //le poste du client (mais d'autre stratégies de nommage sont possibles)
             $uploadFile = $uploadDir . basename($_FILES['picture']['name']);
