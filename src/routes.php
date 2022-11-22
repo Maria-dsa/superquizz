@@ -14,6 +14,7 @@ return [
     'admin/signup' => ['AdminController', 'signUp',],
     'result' => ['GameController', 'result',],
     'game' => ['GameController', 'index'],
+    'rank' => ['GameController', 'rank'],
     'admin/add' => ['QuestionController', 'add',],
     'admin/show' => ['QuestionController', 'index',],
     'admin/delete' => ['QuestionController', 'delete',],

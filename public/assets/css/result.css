@@ -1,203 +1,211 @@
-.btn{
-    background-color: var(--bs-secondary);
+.btn {
+  background-color: var(--bs-secondary);
 }
 
 .containers {
-    display: flex;
-    align-items: flex-end;
-  }
+  display: flex;
+  align-items: flex-end;
+}
 
 .podium__item {
-    width: 10.9375rem;
-  }
+  width: 10.9375rem;
+}
 
-  .podium__rank {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.8125rem;
-    color: #fff;
-  }
+.podium__rank {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.8125rem;
+  color: #fff;
+}
 
-  .podium__city {
-    text-align: center;
-    padding: 0 .5rem;
+.podium__city {
+  text-align: center;
+  padding: 0 .5rem;
+}
+
+.podium .first {
+  min-height: 9.375rem;
+}
+
+.podium .second {
+  min-height: 6.25rem;
+}
+
+.podium .third {
+  min-height: 4.375rem;
+}
+
+.content-image-podium {
+  width: 7.8125rem;
+  height: 4.6875rem;
+}
+
+.img-podium {
+  width: 7.8125rem;
+  height: 4.6875rem;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 650px) {
+  .podium__item {
+    width: 7.8125rem;
   }
 
   .podium .first {
-    min-height: 9.375rem;
+    min-height: 5.9375rem;
   }
 
   .podium .second {
-    min-height: 6.25rem;
+    min-height: 4.0625rem;
   }
 
   .podium .third {
-    min-height: 4.375rem;
+    min-height: 3.125rem;
+    max-height: 3.125rem;
   }
 
   .content-image-podium {
-    width: 7.8125rem;
-    height: 4.6875rem;
-  }
-
-  .img-podium{
-    width: 7.8125rem;
-    height: 4.6875rem;
-    object-fit: cover;
-  }
-
-    @media screen and (max-width: 650px){
-    .podium__item{
-        width: 7.8125rem;
-    }
-
-    .podium .first{
-        min-height: 5.9375rem;
-    }
-
-    .podium .second {
-        min-height: 4.0625rem;
-      }
-
-    .podium .third {
-        min-height: 3.125rem;
-        max-height: 3.125rem;
-    }
-
-    .content-image-podium {
-        width: 6.25rem;
-        height: 3.75rem;
-      }
-
-      .img-podium{
-        width: 6.25rem;
-        height: 3.75rem;
-        object-fit: cover;
-      }
-  }
-
-  .row-question{
-    gap: 1.25rem;
-  }
-
-  .img-question-div{
-    width: 7.8125rem;
-    height: 4.6875rem;
-  }
-
-  .img-question{
-    width: 7.8125rem;
-    height: 4.6875rem;
-    object-fit: cover;
-  }
-
-  .color-podium{
-    background-color:cadetblue;
-  }
-
-  .true-false{
-    position: relative;
-    top:0.3125rem
-  }
-
-  .btn:hover{
-    background-color: rgb(255, 82, 1);
-  }
-   .percent{
-    transform: rotate(270deg);
-    position: relative;
-    width: 9.375rem;
-    height: 9.375rem;
-  }
-
-  .percent svg circle{
-    width: 100%;
-    height: 100%;
-    fill: transparent;
-    stroke-width: 5;
-    stroke: black;
-    transform: translate(0.3125rem,0.3125rem);
-  }
-
-  .percent svg circle:nth-child(2){
-    stroke: cadetblue;
-    stroke-dasharray: 440;
-    stroke-dashoffset: calc(440 - (440 * var(--num)) / 100);
-  }
-
-  .number-circle{
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .circle-container{
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .number-circle h3{
-    transform: rotate(-270deg);
-  }
-
-  .answerGood{
-    background-color: var(--good-answer);
-  }
-
-  .circle-text-size{
-    font-size: 0.75rem;
-  }
-
-  .percent-2{
-    transform: rotate(270deg);
-    position: relative;
     width: 6.25rem;
-    height: 6.25rem;
+    height: 3.75rem;
   }
 
-  .percent-2 svg circle{
-    width: 100%;
-    height: 100%;
-    fill: transparent;
-    stroke-width: 5;
-    stroke: black;
-    transform: translate(0.3125rem,0.3125rem);
+  .img-podium {
+    width: 6.25rem;
+    height: 3.75rem;
+    object-fit: cover;
+  }
+}
+
+.row-question {
+  gap: 1.25rem;
+}
+
+.img-question-div {
+  width: 7.8125rem;
+  height: 4.6875rem;
+}
+
+.img-question {
+  width: 7.8125rem;
+  height: 4.6875rem;
+  object-fit: cover;
+}
+
+.color-podium {
+  background-color: cadetblue;
+}
+
+.true-false {
+  position: relative;
+  top: 0.3125rem
+}
+
+.btn:hover {
+  background-color: rgb(255, 82, 1);
+}
+
+.percent {
+  transform: rotate(270deg);
+  position: relative;
+  width: 9.375rem;
+  height: 9.375rem;
+}
+
+.percent svg circle {
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  stroke-width: 5;
+  stroke: black;
+  transform: translate(0.3125rem, 0.3125rem);
+}
+
+.percent svg circle:nth-child(2) {
+  stroke: cadetblue;
+  stroke-dasharray: 440;
+  stroke-dashoffset: calc(440 - (440 * var(--num)) / 100);
+}
+
+.number-circle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.number-circle h3 {
+  transform: rotate(-270deg);
+}
+
+.answerGood {
+  background-color: var(--good-answer);
+}
+
+.circle-text-size {
+  font-size: 0.75rem;
+}
+
+.percent-2 {
+  transform: rotate(270deg);
+  position: relative;
+  width: 6.25rem;
+  height: 6.25rem;
+}
+
+.percent-2 svg circle {
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  stroke-width: 5;
+  stroke: black;
+  transform: translate(0.3125rem, 0.3125rem);
+}
+
+.percent-2 svg circle:nth-child(2) {
+  stroke: cadetblue;
+  stroke-dasharray: 220;
+  stroke-dashoffset: calc(220 - (220 * var(--num)) / 100);
+}
+
+.question-type {
+  font-size: 0.75rem;
+}
+
+.percent-2 .number-circle h3 {
+  position: relative;
+  bottom: 0.3125rem;
+  right: 0.625rem;
+}
+
+.size-presentation {
+  font-size: 4rem;
+}
+
+.presentation-color {
+  background-color: rgb(197, 209, 212);
+
+  .true {
+    background-color: var(--good-answer);
+
   }
 
-  .percent-2 svg circle:nth-child(2){
-    stroke: cadetblue;
-    stroke-dasharray: 220;
-    stroke-dashoffset: calc(220 - (220 * var(--num)) / 100);
+  .false {
+    background-color: var(--bad-answer);
   }
+  
+  width: 40%;
+}
 
-  .question-type{
-    font-size: 0.75rem;
-  }
-
-  .percent-2 .number-circle h3{
-    position: relative;
-    bottom: 0.3125rem;
-    right: 0.625rem;
-  }
-
-  .size-presentation{
-    font-size: 4rem;
-  }
-
-  .presentation-color{
-    background-color: rgb(197, 209, 212);
-
-    width: 40%;
-  }
-
-  .row-color{
-    background-color: rgb(197, 209, 212);
-    margin-left: 0px;
-  }
-
-
+.row-color {
+  background-color: rgb(197, 209, 212);
+  margin-left: 0px;
+}

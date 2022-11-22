@@ -41,7 +41,7 @@ class ResultManager extends AbstractManager
     {
       // prepared request
         $query = "SELECT * FROM (
-        SELECT user_id, username, game_type, rank()
+        SELECT user_id, username, game_type, picture, rank()
         OVER (PARTITION BY game_type ORDER BY score_moyen DESC, temps_moyen ASC) AS rang
         , nb_parties, score_moyen, temps_moyen
         FROM
@@ -50,12 +50,13 @@ class ResultManager extends AbstractManager
         user.id as user_id,
         user.username,
         game.type as game_type,
+        user.picture as picture,
         COUNT(DISTINCT game.id) as nb_parties,
         ROUND((SUM(game_has_question.is_true)/COUNT(DISTINCT game.id)),2) as score_moyen,
         ROUND((SUM(game_has_question.time)/COUNT(DISTINCT game.id)),2) as temps_moyen
           FROM game_has_question INNER JOIN game ON game.id = game_has_question.game_id
           INNER JOIN user ON user.id = game.userId
-          WHERE game.endedAt IS NOT NULL GROUP BY user.id, user.username, game.type
+          WHERE game.endedAt IS NOT NULL GROUP BY user.id, user.username, game.type, user.picture
           ORDER BY score_moyen DESC, temps_moyen ASC
           ) sq1
         ) sq2
@@ -140,5 +141,23 @@ class ResultManager extends AbstractManager
     public function answerIntoPercent($nbGoodAnswer, $nbQuestions)
     {
         return round($nbGoodAnswer / $nbQuestions  *  100);
+    }
+
+//US 5.2 : matching reponse joueur avec réponse correct
+
+    public function matchingAnswerByGameId($game): array
+    {
+        $query = "SELECT g.question_id AS question_id,
+    g.answer_id AS user_answer_id,
+    g.is_true AS is_true,
+    a.id AS correct_answer_id,
+    a.is_correct AS is_correct
+    FROM game_has_question g JOIN answer a ON a.question_id = g.question_id
+    WHERE g.game_id=:game and is_correct=1;";
+
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue('game', $game, \PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll();
     }
 }

@@ -9,7 +9,7 @@ class GameHasQuestionManager extends AbstractManager
 {
     public const TABLE = 'game_has_question';
 
-    public function insert(int $gameId, int $questionId, int $answerId, bool $isTrue, int $time)
+    public function insert(int $gameId, int $questionId, int $answerId, bool $isTrue, float $time)
     {
         $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE .
             " (game_id, question_id, answer_id, is_true, time)

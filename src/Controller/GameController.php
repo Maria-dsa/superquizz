@@ -27,6 +27,8 @@ class GameController extends AbstractController
         8 => 'A PHP extension stopped the file upload.',
     ];
 
+    public const ID_AVATAR = [];
+
     public function startGame()
     {
         $errors = [];
@@ -35,6 +37,8 @@ class GameController extends AbstractController
             $newGame = array_map('trim', $_POST); // champ type de jeu + nickname
 
             $errors = $this->validate($newGame);
+            //var_dump($_FILES);
+            //var_dump(pathinfo($_FILES['picture']['full_path'])['extension']);
 
             $uploadError = self::FILE_UPLOAD_ERROR[$_FILES['picture']['error']];
             if ($uploadError != self::FILE_UPLOAD_ERROR[4]) {
@@ -44,7 +48,9 @@ class GameController extends AbstractController
 
             if (empty($errors)) {
                 $userManager = new UserManager();
-                $newGame['userId'] = $userManager->insert($newGame['nickname'], basename($_FILES['picture']['name']));
+                //$picture = basename($_FILES['picture']['name']) ?? 'avatar_default_' . rand(1,19);
+                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19) . ".png";
+                $newGame['userId'] = $userManager->insert($newGame['nickname'], $picture);
 
                 $gameManager = new GameManager();
                 // Insère en BDD un nouveau game et récupère son ID
@@ -55,8 +61,8 @@ class GameController extends AbstractController
                 $this->questionManager = new QuestionManager();
 
                 if ($newGame['gameType'] === self::GAME_TYPES[1]) {
-                    // Valeur 100
-                    $this->maxQuestion = 5;
+                    $this->maxQuestion = 30;
+                    $game->setEndedAtGame2();
                 }
                 $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(
                     $this->maxQuestion,
@@ -69,7 +75,12 @@ class GameController extends AbstractController
                 header('Location: /question');
             }
         }
-        return $this->twig->render('Home/index.html.twig', ['errors' => $errors]);
+        $questionController = new QuestionController();
+        $allThemes = $questionController->getAllTheme();
+        return $this->twig->render('Home/index.html.twig', [
+            'errors' => $errors,
+            'themes' => $allThemes
+        ]);
     }
 
     public function validate(array &$newGame): array
@@ -107,7 +118,7 @@ class GameController extends AbstractController
             // Je récupère l'extension du fichier
             $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
             // Les extensions autorisées
-            $authorizedExtensions = ['jpg', 'JPG','jpeg','png', 'gif', 'webp'];
+            $authorizedExtensions = ['jpg', 'JPG', 'jpeg', 'png', 'gif', 'webp'];
             // Le poids max géré en octet
             $maxFileSize = 2000000;
 
@@ -118,7 +129,7 @@ class GameController extends AbstractController
             /****** On vérifie si l'image existe et si le poids est autorisé en octets *************/
             if (
                 file_exists($_FILES['picture']['tmp_name'])
-                    && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
+                && filesize($_FILES['picture']['tmp_name']) > $maxFileSize
             ) {
                 $errors[] = "Votre fichier doit faire moins de 2M !";
             }
@@ -127,13 +138,12 @@ class GameController extends AbstractController
         }
 
         if (empty($errors)) {
-            // ON récupère l'extension
-            $fileExtension = pathinfo($_FILES['picture']['full_path'])['extension'];
             //ON donne un nom unique au fichier avec son extension
-            $_FILES['picture']['name'] = uniqid() . '.' . $fileExtension;
+            $extension = pathinfo($_FILES['picture']['name'], PATHINFO_EXTENSION);
+            $_FILES['picture']['name'] = uniqid() . '.' . $extension;
             // chemin vers un dossier sur le serveur qui va recevoir les fichiers transférés
             //(attention ce dossier doit être accessible en écriture)
-            $uploadDir = 'images/';
+            $uploadDir = 'uploads/avatar/';
             // le nom de fichier sur le serveur est celui du nom d'origine du fichier sur
             //le poste du client (mais d'autre stratégies de nommage sont possibles)
             $uploadFile = $uploadDir . basename($_FILES['picture']['name']);
@@ -164,15 +174,7 @@ class GameController extends AbstractController
                 $answerId[$answer['id']] = $answer['isTrue'];
             }
 
-            if (!array_key_exists('answer', $userAnswer)) {
-                $errors[] = 'Invalid Answer';
-            } else {
-                $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
-                // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
-                if (!array_key_exists($userAnswer['answer'], $answerId)) {
-                    $errors[] = 'Invalid Answer';
-                }
-            }
+            $errors = $this->validateAnswer($userAnswer, $answerId);
 
             if (empty($errors)) {
                 $gameQuestionManager = new GameHasQuestionManager();
@@ -187,12 +189,23 @@ class GameController extends AbstractController
                     $time
                 );
                 $game->setScore($answerId[$userAnswer['answer']]);
-                if ($game->getCurrentQuestion() <= $this->maxQuestion - 2) {
-                    $game->incrementCurrentQuestion();
-                    header('Location: /question');
-                    exit();
+
+                if ($game->getType() == self::GAME_TYPES[0]) {
+                    if ($game->getCurrentQuestion() <= $this->maxQuestion - 2) {
+                        $game->incrementCurrentQuestion();
+                        header('Location: /question');
+                        exit();
+                    }
+                } else {
+                    $end = $game->getEndedAt();
+                    if (new DateTime($end) > new DateTime('now')) {
+                        $game->incrementCurrentQuestion();
+                        header('Location: /question');
+                        exit();
+                    }
                 }
                 $game->setEndedAt();
+                $game->setGameEnded(true);
                 header('Location: /result');
                 exit();
             }
@@ -203,6 +216,21 @@ class GameController extends AbstractController
             exit();
         }
         return $this->displayQuestion($_SESSION['game']);
+    }
+
+    public function validateAnswer(array $userAnswer, array $answerId): array
+    {
+        $errors = [];
+        if (!array_key_exists('answer', $userAnswer)) {
+            $errors[] = 'Invalid Answer';
+        } else {
+            $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
+            // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
+            if (!array_key_exists($userAnswer['answer'], $answerId)) {
+                $errors[] = 'Invalid Answer';
+            }
+        }
+        return $errors;
     }
 
     public function displayQuestion(Game $game)
@@ -220,23 +248,29 @@ class GameController extends AbstractController
             }
         }
 
-            return $this->twig->render(
-                'Game/index.html.twig',
-                [
-                    'question' => $question,
-                    'session' => $_SESSION,
-                    'nbQuestions' => $nbQuestions,
-                    'temporaryScore' => $temporaryScore,
-                    'score' => $game->getScore()
-                ]
-            );
+        return $this->twig->render(
+            'Game/index.html.twig',
+            [
+                'question' => $question,
+                'session' => $_SESSION,
+                'nbQuestions' => $nbQuestions,
+                'temporaryScore' => $temporaryScore,
+                'score' => $game->getScore()
+            ]
+        );
     }
 
     public function result(): string
     {
+        if (!isset($_SESSION['game'])) {
+            echo 'Unauthorized access';
+            header('HTTP/1.1 403 Forbidden');
+            exit();
+        }
+
         $resultmanager = new ResultManager();
         $game =  $_SESSION['game'];
-        if (!(count($game->getScore()) === $this->maxQuestion)) {
+        if (!$game->getGameEnded()) {
             unset($_SESSION['game']);
             unset($_SESSION['nickname']);
             header('Location: /');
@@ -245,7 +279,6 @@ class GameController extends AbstractController
         $nbGoodAnswer = array_sum($game->getScore());
         $game->setGameDuration();
         $nbQuestions = count($game->getQuestions());
-        $percentGoodAnswers = $resultmanager->answerIntoPercent($nbGoodAnswer, $nbQuestions);
 
         // Calcul de la durée de la partie en seconde
 
@@ -259,14 +292,16 @@ class GameController extends AbstractController
         $questionSuccess = $resultManager->selectAllQuestionSuccess();
 
         $arrayResult = [];
-        foreach ($game->getQuestions() as $question) {
+        $answeredQuestions = array_slice($game->getQuestions(), 0, count($game->getScore()));
+        $percentGoodAnswers = $resultmanager->answerIntoPercent($nbGoodAnswer, count($answeredQuestions));
+        foreach ($answeredQuestions as $question) {
             $result = $resultManager->selectQuestionSuccessById($question['id']);
             $arrayResult[] = $result['pourcentage_reussite'];
         }
 
+        $userAnswers = $resultManager->matchingAnswerByGameId($game->getId());
+
         $questionTimer = $game->getQuestionsDuration();
-        $gameHasQuestion = new GameHasQuestionManager();
-        $userAnswer = $gameHasQuestion->selectAllUserAnswer($game->getId());
         return $this->twig->render('Game/result.html.twig', [
             'session' => $_SESSION,
 
@@ -279,8 +314,19 @@ class GameController extends AbstractController
             'nbGoodAnswer' => $nbGoodAnswer,
             'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
-            'userAnswer' => $userAnswer,
-            'questionsTimer' => $questionTimer
+            'userAnswers' => $userAnswers,
+            'questionsTimer' => $questionTimer,
+            'answeredQuestions' => $answeredQuestions
+        ]);
+    }
+
+    public function rank(): string
+    {
+        $resultmanager = new ResultManager();
+        $ranks = $resultmanager->selectAllByRank();
+
+        return $this->twig->render('Game/rank.html.twig', [
+            'ranks' => $ranks,
         ]);
     }
 }

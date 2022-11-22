@@ -5,92 +5,98 @@
 {% endblock %}
 
 {% block content %}
-{% set questions = session.game.questions %}
-{% set score = session.game.score %}
-{% set gameDuration = session.game.gameDuration %}
-{% set i = 0 %}
+	{% set questions = session.game.questions %}
+	{% set score = session.game.score %}
+	{% set gameDuration = session.game.gameDuration %}
+	{% set i = 0 %}
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-7 col-md-10 col-12 mx-auto mt-4 d-block bg-white">
-                <h1 class="text-center mt-4 bg-secondary text-white">{{userRank.username}}, voici tes résultats </h1>
-                <div class="row">
-                    <div class="col text-center presentation-color p-0 m-3">
-                        <div>
-                            <h4 class="text-secondary font-weight-bold mt-2 mx-3">Nombre de bonnes réponses</h4>
-                        </div>
-                        <div>
-                            <h1 class="mt-4 size-presentation">{{nbGoodAnswer}}</h1>
-                        </div>
-                    </div>
-                    <div class="col text-center presentation-color p-0 m-3">
-                        <div>
-                            <h4 class="text-secondary font-weight-bold mt-2 mx-3">Taux de réussite</h4>
-                        </div>
-                        <div>
-                            <div class="circle-container">
-                                <div class="percent" style="--num:{{percentGoodAnswers}};">
-                                    <svg>
-                                        <circle cx="70" cy="70" r="70"></circle>
-                                        <circle cx="70" cy="70" r="70"></circle>
-                                    </svg>
-                                    <div class="number-circle">
-                                        <h3 class="fs-2">{{percentGoodAnswers}}%</h3>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <div class="row row-color">
-                    <div class="col text-center presentation-color p-0 m-3 ">
-                        <div>
-                            <h4 class="text-secondary font-weight-bold ">Classement</h4>
-                        </div>
-                        <div>
-                            <h1 class="d-inline-block ms-3 size-presentation">{% if userRank.rang == 1 %}{{userRank.rang}}er{% else %}
-                                {{userRank.rang}}ème {% endif %}</h1>
-                        </div>
-                    </div>
-                    <div class="col text-center presentation-color p-0 m-3 ">
-                        <div>
-                            <h4 class="text-secondary font-weight-bold">Temps (sec.)</h4>
-                        </div>
-                        <div>
-                            <h1 class="d-inline-block ms-3 size-presentation">{{gameDuration}}</h1>
-                        </div>
-                    </div>
-                </div>
+				<h1 class="text-center mt-4 bg-secondary text-white">{{userRank.username}}, voici tes résultats
+				</h1>
+				<div class="row">
+					<div class="col text-center presentation-color p-0 m-3">
+						<div>
+							<h4 class="text-secondary font-weight-bold mt-2 mx-3">Nombre de bonnes réponses</h4>
+						</div>
+						<div>
+							<h1 class="mt-4 size-presentation">{{nbGoodAnswer}}</h1>
+						</div>
+					</div>
+					<div class="col text-center presentation-color p-0 m-3">
+						<div>
+							<h4 class="text-secondary font-weight-bold mt-2 mx-3">Taux de réussite</h4>
+						</div>
+						<div>
+							<div class="circle-container">
+								<div class="percent" style="--num:{{percentGoodAnswers}};">
+									<svg>
+										<circle cx="70" cy="70" r="70"></circle>
+										<circle cx="70" cy="70" r="70"></circle>
+									</svg>
+									<div class="number-circle">
+										<h3 class="fs-2">{{percentGoodAnswers}}%</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row row-color">
+						<div class="col text-center presentation-color p-0 m-3 ">
+							<div>
+								<h4 class="text-secondary font-weight-bold ">Classement</h4>
+							</div>
+							<div>
+								<h1 class="d-inline-block ms-3 size-presentation">
+									{% if userRank.rang == 1 %}
+										{{userRank.rang}}er
+									{% else %}
+										{{userRank.rang}}ème
+									{% endif %}
+								</h1>
+							</div>
+						</div>
+						<div class="col text-center presentation-color p-0 m-3 ">
+							<div>
+								<h4 class="text-secondary font-weight-bold">Temps (sec.)</h4>
+							</div>
+							<div>
+								<h1 class="d-inline-block ms-3 size-presentation">{{gameDuration}}</h1>
+							</div>
+						</div>
+					</div>
 
-                <div class="d-flex justify-content-center mt-4">
-                    <div class="containers podium">
-                        <div class="podium__item">
-                            <div class="d-flex justify-content-center content-image-podium mx-auto">
-                                <img src="https://picsum.photos/125/75" alt="" class="img-podium">
-                            </div>
-                            <p class="podium__city">{{podium.1.username}}</p>
-                            <div class="podium__rank second color-podium">2</div>
-                        </div>
-                        <div class="podium__item">
-                            <div class="d-flex justify-content-center content-image-podium mx-auto">
-                                <img src="https://picsum.photos/125/75" alt="" class="img-podium">
-                            </div>
-                            <p class="podium__city">{{podium.0.username}}</p>
-                            <div class="podium__rank first color-podium">1</div>
-                        </div>
-                        <div class="podium__item">
-                            <div class="d-flex justify-content-center content-image-podium mx-auto">
-                                <img src="https://picsum.photos/125/75" alt="" class="img-podium">
-                            </div>
-                            <p class="podium__city">{{podium.2.username}}</p>
-                            <div class="podium__rank third color-podium">3</div>
-                        </div>
-                    </div>
-                </div>
+					<div class="d-flex justify-content-center mt-4">
+						<div class="containers podium">
+							<div class="podium__item">
+								<div class="d-flex justify-content-center content-image-podium mx-auto">
+									<img src="/uploads/avatar/{{podium.1.picture is not null ? podium.1.picture : 'avatar_default_1.png'}}" alt="{{podium.1.username}}" class="img-podium">
+								</div>
+								<p class="podium__city">{{podium.1.username}}</p>
+								<div class="podium__rank second color-podium">2</div>
+							</div>
+							<div class="podium__item">
+								<div class="d-flex justify-content-center content-image-podium mx-auto">
+									<img src="/uploads/avatar/{{podium.0.picture is not null ? podium.0.picture : 'avatar_default_2.png'}}" alt="{{podium.0.username}}" class="img-podium">
+								</div>
+								<p class="podium__city">{{podium.0.username}}</p>
+								<div class="podium__rank first color-podium">1</div>
+							</div>
+							<div class="podium__item">
+								<div class="d-flex justify-content-center content-image-podium mx-auto">
+									<img src="/uploads/avatar/{{podium.2.picture is not null ? podium.2.picture : 'avatar_default_3.png' }}" alt="{{podium.2.username}}" class="img-podium">
+								</div>
+								<p class="podium__city">{{podium.2.username}}</p>
+								<div class="podium__rank third color-podium">3</div>
+							</div>
+						</div>
+					</div>
 
-                <div class="text-center">
-                    <a href="/" class="btn btn-neutral btn-round my-3 w-25">rejouer</a>
-                </div>
+					<div class="text-center">
+						<a href="/" class="btn btn-neutral btn-round my-3 w-25">rejouer</a>
+					</div>
 
-                {% for question in questions %}
+                {% for question in answeredQuestions %}
                     <div class="accordion" id="accordionExample{{i}}">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading{{i}}">
@@ -106,7 +112,7 @@
                                 <div class="accordion-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="img-question-div">
-                                            <img src="https://picsum.photos/125/75" alt="" class="img-question">
+                                            <img src="/uploads/imagesquestions/{{question.image}}" alt="{{question.content}}" class="img-question">
                                         </div>
                                         <div>
                                             <div class="mx-auto d-flex justify-content-center">
@@ -129,12 +135,20 @@
                                     </div>
                                     <div class="container">
                                         <div class="row mt-4 row-question">
-                                            <div class="col border border-3">{{question.answers.0.answer}}</div>
-                                            <div class="col border border-3">{{question.answers.1.answer}}</div>
+                                            <div class="col border border-3 {% if userAnswers[i].correct_answer_id == question.answers.0.id %} true
+                                            {% elseif userAnswers[i].user_answer_id == question.answers.0.id %} false {% endif %}">
+                                                {{question.answers.0.answer}}</div>
+                                            <div class="col border border-3 {% if userAnswers[i].correct_answer_id == question.answers.1.id %} true
+                                            {% elseif userAnswers[i].user_answer_id == question.answers.1.id %} false {% endif %}">
+                                                {{question.answers.1.answer}}</div>
                                         </div>
                                         <div class="row mt-3 row-question">
-                                            <div class="col border border-3">{{question.answers.2.answer}}</div>
-                                            <div class="col border border-3">{{question.answers.3.answer}}</div>
+                                            <div class="col border border-3 {% if userAnswers[i].correct_answer_id == question.answers.2.id %} true
+                                            {% elseif userAnswers[i].user_answer_id == question.answers.2.id %} false {% endif %}">
+                                                {{question.answers.2.answer}}</div>
+                                            <div class="col border border-3 {% if userAnswers[i].correct_answer_id == question.answers.3.id %} true
+                                            {% elseif userAnswers[i].user_answer_id == question.answers.3.id %} false {% endif %}">
+                                                {{question.answers.3.answer}}</div>
                                         </div>
                                     </div>
                                 </div>
