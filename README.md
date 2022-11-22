@@ -1,4 +1,12 @@
-# Simple MVC
+# SUPER Quizz 
+
+## Tables of contents
+
+1. [Installation en local](#simple-mvc)  
+2. [Utilisation du service](#utilisation-super-quizz)
+3. [Known Issues](#known-issues)
+
+# **Simple MVC**
 
 ## Description
 
@@ -78,4 +86,41 @@ then, run it to open it on your localhot :
 ```
 docker run -i -t --name simple-mvc  -p 80:80 simple-mvc-container
 ```
+
+# **Utilisation Super Quizz**
+
+## 1. Utilisation en temps que joueur
+
+1. Le joueur met son pseudo
+2. Le joueur peut éventuellement choisir un avatar. Dans le cas contraire, un avatar par défaut lui sera attribué.
+3. Le joueur choisit son thème. Le thème "Melting Quizz correspond à tous les thèmes mélangés.
+4. Le joueur choisit son type de jeu et click sur "C'est parti !".
+5. Les règles des deux jeux sont accessibles dans le menu hamburger.
+6. Les classements sont accessibles également dans le menu hamburger.
+
+## 2. Utilisation en temps qu'administrateur
+
+Identifiant compte : admin password
+1. Pour accéder au compte admin, l'utilisateur se rend ici :  
+https://super-quizz-demo.remote-fr-1.wilders.dev/admin/signin
+2. Il rentre les identifiants suivants :
+     - admin
+     - password
+3. L'administrateur peut donc :
+    - rechercher des questions dans la base de données
+    - ajouter des questions
+    - modifier des questions
+4. Le dashboard s'actualise en fonction du nombre de questions dans la BDD et des parties jouées.
+
+
+
+
+
+
+# **Known Issues**
+
+1. Utilisation des thèmes Humour, Logique posent problèmes. Manque de questions à l'heure actuelle. Ne pas tester avec ces catégories.
+2. Certaines questions n'ont pas d'images et cause un affichage disgracieux de la légende "alt".
+3. Base de données vide, pas de parties enregistrées. Score, podium et classement vide au début. Se rempliront en créant des parties. Le pourcentage de réussite au question sera donc de 0% ou 100%.
+
 
