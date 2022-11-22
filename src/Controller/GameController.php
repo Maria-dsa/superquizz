@@ -47,7 +47,7 @@ class GameController extends AbstractController
             if (empty($errors)) {
                 $userManager = new UserManager();
                 //$picture = basename($_FILES['picture']['name']) ?? 'avatar_default_' . rand(1,19);
-                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19);
+                $picture = basename($_FILES['picture']['name']) ?: 'avatar_default_' . rand(1, 19) . ".png";
                 $newGame['userId'] = $userManager->insert($newGame['nickname'], $picture);
 
                 $gameManager = new GameManager();
@@ -59,8 +59,8 @@ class GameController extends AbstractController
                 $this->questionManager = new QuestionManager();
 
                 if ($newGame['gameType'] === self::GAME_TYPES[1]) {
-                    // Valeur 100
-                    $this->maxQuestion = 5;
+                    $this->maxQuestion = 30;
+                    $game->setEndedAtGame2();
                 }
                 $game->setQuestions($this->questionManager->selectQuestionsWithAnswer(
                     $this->maxQuestion,
@@ -173,15 +173,8 @@ class GameController extends AbstractController
                 $answerId[$answer['id']] = $answer['isTrue'];
             }
 
-            if (!array_key_exists('answer', $userAnswer)) {
-                $errors[] = 'Invalid Answer';
-            } else {
-                $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
-                // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
-                if (!array_key_exists($userAnswer['answer'], $answerId)) {
-                    $errors[] = 'Invalid Answer';
-                }
-            }
+            $errors = $this->validateAnswer($userAnswer, $answerId);
+            var_dump($errors);
 
             if (empty($errors)) {
                 $gameQuestionManager = new GameHasQuestionManager();
@@ -196,12 +189,23 @@ class GameController extends AbstractController
                     $time
                 );
                 $game->setScore($answerId[$userAnswer['answer']]);
-                if ($game->getCurrentQuestion() <= $this->maxQuestion - 2) {
-                    $game->incrementCurrentQuestion();
-                    header('Location: /question');
-                    exit();
+
+                if ($game->getType() == self::GAME_TYPES[0]) {
+                    if ($game->getCurrentQuestion() <= $this->maxQuestion - 2) {
+                        $game->incrementCurrentQuestion();
+                        header('Location: /question');
+                        exit();
+                    }
+                } else {
+                    $end = $game->getEndedAt();
+                    if (new DateTime($end) > new DateTime('now')) {
+                        $game->incrementCurrentQuestion();
+                        header('Location: /question');
+                        exit();
+                    }
                 }
                 $game->setEndedAt();
+                $game->setGameEnded(true);
                 header('Location: /result');
                 exit();
             }
@@ -213,6 +217,25 @@ class GameController extends AbstractController
         }
         return $this->displayQuestion($_SESSION['game']);
     }
+
+    public function validateAnswer(array $userAnswer, array $answerId): array
+    {
+        $errors = [];
+        if (!array_key_exists('answer', $userAnswer)) {
+            $errors[] = 'Invalid Answer';
+        } else {
+            $userAnswer['answer'] ?: $errors[] = "Vous devez répondre à la question";
+            // On vérifie que la réponse de l'utilisateur soit bien parmi les réponses possibles
+            if (!array_key_exists($userAnswer['answer'], $answerId)) {
+                $errors[] = 'Invalid Answer';
+            }
+        }
+        return $errors;
+    }
+
+
+
+
 
     public function displayQuestion(Game $game)
     {
@@ -251,7 +274,7 @@ class GameController extends AbstractController
 
         $resultmanager = new ResultManager();
         $game =  $_SESSION['game'];
-        if (!(count($game->getScore()) === $this->maxQuestion)) {
+        if (!$game->getGameEnded()) {
             unset($_SESSION['game']);
             unset($_SESSION['nickname']);
             header('Location: /');
@@ -260,7 +283,6 @@ class GameController extends AbstractController
         $nbGoodAnswer = array_sum($game->getScore());
         $game->setGameDuration();
         $nbQuestions = count($game->getQuestions());
-        $percentGoodAnswers = $resultmanager->answerIntoPercent($nbGoodAnswer, $nbQuestions);
 
         // Calcul de la durée de la partie en seconde
 
@@ -274,7 +296,9 @@ class GameController extends AbstractController
         $questionSuccess = $resultManager->selectAllQuestionSuccess();
 
         $arrayResult = [];
-        foreach ($game->getQuestions() as $question) {
+        $answeredQuestions = array_slice($game->getQuestions(), 0, count($game->getScore()));
+        $percentGoodAnswers = $resultmanager->answerIntoPercent($nbGoodAnswer, count($answeredQuestions));
+        foreach ($answeredQuestions as $question) {
             $result = $resultManager->selectQuestionSuccessById($question['id']);
             $arrayResult[] = $result['pourcentage_reussite'];
         }
@@ -295,7 +319,8 @@ class GameController extends AbstractController
             'nbQuestions' => $nbQuestions,
             'percentGoodAnswers' => $percentGoodAnswers,
             'userAnswers' => $userAnswers,
-            'questionsTimer' => $questionTimer
+            'questionsTimer' => $questionTimer,
+            'answeredQuestions' => $answeredQuestions
         ]);
     }
 

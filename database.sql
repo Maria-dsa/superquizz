@@ -1,9 +1,4 @@
-
 -- MySQL dump 10.13  Distrib 8.0.31, for Linux (x86_64)
-
--- SQLBook: Code
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
-
 --
 -- Host: localhost    Database: superquizz
 -- ------------------------------------------------------
@@ -71,12 +66,6 @@ CREATE TABLE `game` (
 -- Dumping data for table `game`
 --
 
-LOCK TABLES `game` WRITE;
-/*!40000 ALTER TABLE `game` DISABLE KEYS */;
-INSERT INTO `game` VALUES (1,1,'2022-11-10 10:39:43','2022-11-10 10:40:19',6),(2,1,'2022-11-10 10:40:37','2022-11-10 10:41:15',7),(3,1,'2022-11-10 10:41:38','2022-11-10 10:42:07',8),(4,1,'2022-11-10 10:42:29','2022-11-10 10:43:05',9),(6,1,'2022-11-10 10:44:46','2022-11-10 10:45:16',11),(9,1,'2022-11-18 21:38:28',NULL,14);
-/*!40000 ALTER TABLE `game` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `game_has_question`
 --
@@ -105,11 +94,7 @@ CREATE TABLE `game_has_question` (
 -- Dumping data for table `game_has_question`
 --
 
-LOCK TABLES `game_has_question` WRITE;
-/*!40000 ALTER TABLE `game_has_question` DISABLE KEYS */;
-INSERT INTO `game_has_question` VALUES (1,1,13,49,1,NULL),(2,1,30,118,0,NULL),(3,1,22,86,0,NULL),(4,1,26,104,0,NULL),(5,1,23,92,0,NULL),(6,1,6,24,0,NULL),(7,1,2,5,1,NULL),(8,1,12,46,0,NULL),(9,1,28,110,0,NULL),(10,1,15,59,0,NULL),(11,1,5,19,0,NULL),(12,1,31,122,0,NULL),(13,1,29,113,1,NULL),(14,1,19,76,0,NULL),(15,1,32,125,1,NULL),(16,2,22,86,0,NULL),(17,2,14,53,1,NULL),(18,2,27,105,1,NULL),(19,2,10,37,1,NULL),(20,2,7,26,0,NULL),(21,2,1,3,0,NULL),(22,2,9,33,1,NULL),(23,2,5,18,0,NULL),(24,2,18,69,1,NULL),(25,2,29,115,0,NULL),(26,2,26,101,1,NULL),(27,2,17,65,1,NULL),(28,2,8,30,0,NULL),(29,2,12,47,0,NULL),(30,2,20,80,0,NULL),(31,3,23,92,0,NULL),(32,3,28,110,0,NULL),(33,3,18,70,0,NULL),(34,3,6,24,0,NULL),(35,3,19,73,1,NULL),(36,3,16,61,1,NULL),(37,3,29,114,0,NULL),(38,3,8,31,0,NULL),(39,3,30,119,0,NULL),(40,3,2,7,0,NULL),(41,3,9,36,0,NULL),(42,3,20,79,0,NULL),(43,3,11,42,0,NULL),(44,3,5,20,0,NULL),(45,3,32,127,0,NULL),(46,4,1,3,0,NULL),(47,4,3,11,0,NULL),(48,4,17,66,0,NULL),(49,4,21,81,1,NULL),(50,4,25,98,0,NULL),(51,4,26,104,0,NULL),(52,4,11,41,1,NULL),(53,4,24,93,1,NULL),(54,4,4,13,1,NULL),(55,4,23,91,0,NULL),(56,4,8,32,0,NULL),(57,4,19,74,0,NULL),(58,4,27,108,0,NULL),(59,4,18,70,0,NULL),(60,4,12,45,1,NULL),(74,6,31,123,0,NULL),(75,6,18,69,1,NULL),(76,6,22,87,0,NULL),(77,6,24,93,1,NULL),(78,6,7,27,0,NULL),(79,6,13,49,1,NULL),(80,6,27,105,1,NULL),(81,6,10,39,0,NULL),(82,6,20,79,0,NULL),(83,6,14,56,0,NULL),(84,6,12,47,0,NULL),(85,6,32,128,0,NULL),(86,6,4,15,0,NULL),(87,6,30,117,1,NULL),(88,6,17,67,0,NULL),(103,9,1688,6752,0,11);
-/*!40000 ALTER TABLE `game_has_question` ENABLE KEYS */;
-UNLOCK TABLES;
+
 
 --
 -- Table structure for table `question`
@@ -185,10 +170,9 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'florent','$2y$10$IFqHOwYG2mhTqcmQ4F.3oeviPTj/LxLA8x2IEdHTLbwp.jwwmTgHu',NULL,'admin'),(2,'nicolas',NULL,NULL,'admin'),(3,'maria',NULL,NULL,'admin'),(4,'magali',NULL,NULL,'admin'),(5,'JF',NULL,NULL,'admin'),(6,'maria',NULL,NULL,NULL),(7,'newplayer',NULL,NULL,NULL),(8,'Florent','$2y$10$IFqHOwYG2mhTqcmQ4F.3oeviPTj/LxLA8x2IEdHTLbwp.jwwmTgHu',NULL,NULL),(9,'Magali',NULL,NULL,NULL),(10,'Nicolas',NULL,NULL,NULL),(11,'Victor',NULL,NULL,NULL),(12,'Hugo',NULL,NULL,NULL),(13,'Max',NULL,NULL,NULL),(14,'Tintin',NULL,NULL,NULL);
+INSERT INTO `user` VALUES (1,'florent','$2y$10$IFqHOwYG2mhTqcmQ4F.3oeviPTj/LxLA8x2IEdHTLbwp.jwwmTgHu',NULL,'admin'),(2,'nicolas',NULL,NULL,'admin'),(3,'maria',NULL,NULL,'admin'),(4,'magali',NULL,NULL,'admin'),(5,'JF',NULL,NULL,'admin');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -198,6 +182,5 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
 
 -- Dump completed on 2022-11-18 23:58:27

@@ -25,6 +25,8 @@ class Game
 
     private array $questions;
 
+    private bool $gameEnded = false;
+
     /**
      * Get the value of id
      */
@@ -122,8 +124,16 @@ class Game
     {
         $gameManager = new GameManager();
         $gameManager->updateEndedAt($this->id);
-        $this->endedAt = $gameManager->selectEndedAtById($this->id);
+        if ($this->type === 1) {
+            $this->endedAt = $gameManager->selectEndedAtById($this->id);
+        }
         return $this;
+    }
+
+    public function setEndedAtGame2()
+    {
+        $end = new DateTime($this->createdAt);
+        $this->endedAt = $end->modify('+60 second')->format('Y-m-d H:i:s');
     }
 
     /**
@@ -234,5 +244,25 @@ class Game
         $this->questionsDuration[] = round($duration, 2);
 
         return round($duration, 2);
+    }
+
+    /**
+     * Get the value of gameEnded
+     */
+    public function getGameEnded(): bool
+    {
+        return $this->gameEnded;
+    }
+
+    /**
+     * Set the value of gameEnded
+     *
+     * @return  self
+     */
+    public function setGameEnded(bool $gameEnded)
+    {
+        $this->gameEnded = $gameEnded;
+
+        return $this;
     }
 }
