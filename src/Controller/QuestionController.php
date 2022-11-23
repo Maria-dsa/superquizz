@@ -85,25 +85,32 @@ class QuestionController extends AbstractController
                 self::SORTING[1];
             $filter['include'] = $searchInfos['searchInput'];
         }
-
-
         $questions = $this->questionManager->selectAllWithFilter($filter);
-        $nbTotalQuestions = $this->questionManager->getTotalEntries()['total'];
 
-        $gameManager = new GameManager();
-        $nbTotalGames = $gameManager->getTotalEntries()['total'];
-
-        $userManager = new UserManager();
-        $nbTotalUsers = $userManager->getTotalEntries()['total'];
+        $stat = $this->getStat();
 
         return $this->twig->render('Admin/show.html.twig', [
-            'nbTotalQuestions' => $nbTotalQuestions,
-            'nbTotalGames' => $nbTotalGames,
-            'nbTotalUsers' => $nbTotalUsers,
+            'nbTotalQuestions' => $stat['nbTotalQuestions'],
+            'nbTotalGames' => $stat['nbTotalGames'],
+            'nbTotalUsers' => $stat['nbTotalUsers'],
             'questions' => $questions,
             'themes' => $this->allTheme,
             'searchInfos' => $searchInfos,
         ]);
+    }
+
+    public function getStat(): array
+    {
+        $stat = [];
+        $stat['nbTotalQuestions'] = $this->questionManager->getTotalEntries()['total'];
+
+        $gameManager = new GameManager();
+        $stat['nbTotalGames'] = $gameManager->getTotalEntries()['total'];
+
+        $userManager = new UserManager();
+        $stat['nbTotalUsers'] = $userManager->getTotalEntries()['total'];
+
+        return $stat;
     }
 
     public function update(int $id)
@@ -148,7 +155,13 @@ class QuestionController extends AbstractController
             }
         }
 
+        $stat = $this->getStat();
+
+
         return $this->twig->render('Admin/update.html.twig', [
+            'nbTotalQuestions' => $stat['nbTotalQuestions'],
+            'nbTotalGames' => $stat['nbTotalGames'],
+            'nbTotalUsers' => $stat['nbTotalUsers'],
             'questionsInfos' => $questionInfos,
             'errors' => $errors,
             'id' => $id,
@@ -195,6 +208,7 @@ class QuestionController extends AbstractController
             exit();
         }
         $errors = [];
+        $stat = $this->getStat();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // clean $_POST data
             $questionInfos = array_map('trim', $_POST);
@@ -222,6 +236,9 @@ class QuestionController extends AbstractController
                 'errors' => $errors,
                 'themes' => $this->allTheme,
                 'levels' => self::LEVEL,
+                'nbTotalQuestions' => $stat['nbTotalQuestions'],
+                'nbTotalGames' => $stat['nbTotalGames'],
+                'nbTotalUsers' => $stat['nbTotalUsers'],
             ]);
         }
 
@@ -229,6 +246,9 @@ class QuestionController extends AbstractController
             'errors' => $errors,
             'themes' => $this->allTheme,
             'levels' => self::LEVEL,
+            'nbTotalQuestions' => $stat['nbTotalQuestions'],
+            'nbTotalGames' => $stat['nbTotalGames'],
+            'nbTotalUsers' => $stat['nbTotalUsers'],
         ]);
     }
 

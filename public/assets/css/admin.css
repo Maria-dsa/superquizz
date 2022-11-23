@@ -45,7 +45,7 @@ nav ul li {
     font-size: calc(var(--font-size-text)*1.5);
     background-color: var(--bs-primary);
     padding: var(--spacing-1) var(--spacing-4);
-    margin-top: var(--spacing-4);
+    margin-top: var(--spacing-1);
     border: 2px solid var(--bs-white);
 }
 
