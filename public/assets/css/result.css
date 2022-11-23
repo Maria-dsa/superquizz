@@ -192,17 +192,15 @@
 
 .presentation-color {
   background-color: rgb(197, 209, 212);
+}
 
-  .true {
-    background-color: var(--good-answer);
+.true {
+  background-color: var(--good-answer);
 
-  }
+}
 
-  .false {
-    background-color: var(--bad-answer);
-  }
-  
-  width: 40%;
+.false {
+  background-color: var(--bad-answer);
 }
 
 .row-color {
